@@ -14,15 +14,10 @@ import socket
 LISTEN_IP = "0.0.0.0"
 LISTEN_PORT = 1234
 
-def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
-
-def runMainApp():
+def run_main_app():
     #set up the config
-    global LISTEN_IP
-    LISTEN_IP = get_ip_address()
+    #global LISTEN_IP
+    #LISTEN_IP = get_ip_address()
     conf = {
         '/': {
             'tools.staticdir.root': os.getcwd(),
@@ -64,8 +59,6 @@ def runMainApp():
                             'engine.autoreload.on': True,
                            })
 
-    #cherrypy.tools.auth = cherrypy.Tool('before_handler', auth.check_auth, 99)
-
     print("========================================")
     print("           Softeng 701 Server")
     print("========================================")
@@ -73,8 +66,6 @@ def runMainApp():
     # Start the web server
     cherrypy.engine.start()
 
-    # run a function from the other file/class
-    #server.authoriseUserLogin("", "")
     # And stop doing anything else. Let the web server take over.
     cherrypy.engine.block()
 

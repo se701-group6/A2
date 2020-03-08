@@ -18,16 +18,16 @@ class MainApp(object):
     @cherrypy.expose
     def default(self, *args, **kwargs):
         """The default page, given when we don't recognise where the request is for."""
-        Page = open(SITE_ROOT + "/test/index.html", "r")
+        page = open(SITE_ROOT + "/test/index.html", "r")
         cherrypy.response.status = "404server"
-        return Page
+        return page
 
     # PAGES (which return HTML that can be viewed in browser)
     @cherrypy.expose
     def index(self):
-        Page = Page = open(SITE_ROOT + "/test/index.html", "r")
-        return Page
+        page = open(SITE_ROOT + "/test/index.html", "r")
+        return page
 
 
-class apiServer(object):
-    pass;
+class ApiServer(object):
+    pass
