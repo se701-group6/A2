@@ -50,7 +50,7 @@ def run_main_app():
     }
 
     # Create an instance of MainApp and tell Cherrypy to send all requests under / to it. (ie all of them)
-    cherrypy.tree.mount(server.apiServer(), "/api/", conf)
+    cherrypy.tree.mount(server.ApiServer(), "/api/", conf)
     cherrypy.tree.mount(server.MainApp(), "/", conf)
 
     # Tell cherrypy where to listen, and to turn autoreload on
@@ -71,4 +71,4 @@ def run_main_app():
 
 #Run the function to start everything
 if __name__ == '__main__':
-    runMainApp()
+    run_main_app()
