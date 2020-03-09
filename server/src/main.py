@@ -27,9 +27,6 @@ def run_main_app():
             'tools.sessions.timeout': 60 * 1, #timeout is in minutes, * 60 to get hours
 
             # The default session backend is in RAM. Other options are 'file',
-            # 'postgres', 'memcached'. For example, uncomment:
-             'tools.sessions.storage_type': 'file',
-             'tools.sessions.storage_path': './tmp/mysessions',
         },
 
         #configuration for the static assets directory
