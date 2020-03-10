@@ -22,9 +22,9 @@ class MainApp(object):
 
     @cherrypy.expose
     def index(self):
+        """
+        Returns:
+            String -- returns a string in html format
+        """
         page = open(SITE_ROOT + "/test/index.html", "r")
         return page
-
-
-class ApiServer(object):
-    pass

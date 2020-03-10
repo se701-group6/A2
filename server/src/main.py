@@ -3,6 +3,7 @@ import os
 import cherrypy
 
 import server
+import api.base_api
 
 import socket
 
@@ -31,8 +32,10 @@ def run_main_app():
         'base_path': os.getcwd()
     }
     
-    cherrypy.tree.mount(server.ApiServer(), "/api/", conf)
-    cherrypy.tree.mount(server.MainApp(), "/", conf)
+    #cherrypy.tree.mount(server.ApiServer(), "/api/", conf)
+    main_app = server.MainApp()
+    main_app.api = api.base_api.BaseApi()
+    cherrypy.tree.mount(main_app, "/", conf)
 
     cherrypy.config.update({'server.socket_host': LISTEN_IP,
                             'server.socket_port': LISTEN_PORT,
