@@ -7,11 +7,19 @@ assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+**User Story**
+For example: 
+As a developer
+I want to add this feature
+So this can happen
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+**Priority**
+[]: High
+[]: Medium
+[]: Low
+
+**Describe the solution you want to implement**
+Solution explanation
 
 **Describe alternatives you've considered**
 A clear and concise description of any alternative solutions or features you've considered.
