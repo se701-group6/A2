@@ -17,23 +17,29 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
+**Severity**
+Mark with an x.
+[]: Minor effect eg. graphical
+[]: Functional error eg. App does not function correctly
+[]: Severe eg. Crashing
+
+**Reproducibility**
+Mark with an x.
+[]: Consistent
+[]: Occasional
+[]: Cannot reproduce at the moment eg. unsure
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Screenshots, Images and Traces**
+If applicable, add screenshots, images or stack Traces to help explain your problem.
 
-**Platform:**
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Conditions**
+List the setup you used to create this bug, eg OS, hardware, browser
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Issue Dependencies**
+Does this issue depend on any other issues?
 
 **Additional context**
 Add any other context about the problem here.

@@ -19,5 +19,10 @@ Mark with an x
 **Describe the change you would like to be made**
 A clear and concise description of the change you would like to have made.
 
+**Issue Dependencies**
+Does this issue depend on any other issues?
+
 **Additional context**
 Add any other context or screenshots about the feature request here.
+
+
