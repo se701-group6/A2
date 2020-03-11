@@ -1,4 +1,4 @@
-Closes (issue name)#(number).
+Closes #(number) - (issue name)
 
 This PR introduces... (write a simple description of the added feature or solution to the bug)
 - you can have a bullet list with distinct bits of functionality
