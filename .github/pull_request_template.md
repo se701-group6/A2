@@ -2,7 +2,7 @@ Closes #(issue)
 
 **Description**
 
-Wwrite a simple description of the added feature or solution to the bug.
+Write a simple description of the added feature or solution to the bug.
 - you can have a bullet list with distinct bits of functionality
 - a good thing to mention here would be API calls made or DB tables accessed, etc.
 
