@@ -18,25 +18,13 @@ import socket
         return json.dumps(response)
 """
 
-class TransactionsApi(object):
+class BillExecApi(object):
     @cherrypy.expose
-    def list_transactions(self):
-        """Searches database for all bills
-            does not modify database
-            Check database structure doc
-            
-        Arguments:
-            json -- check api doc for json format
-        """
-        return "2"
-    
-    @cherrypy.expose
-    def get_transaction_info(self):
-        """Searches database for transaction info on specific transaction id
-            does not modify database
-            Check database structure doc
+    def create_bill(self):
+        """modifies transaction on database
+        Check database structure doc
         
         Arguments:
             json -- check api doc for json format
         """
-        pass
+        return "3"

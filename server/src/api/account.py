@@ -27,7 +27,7 @@ class AccountApi(object):
         Arguments:
             json -- check api doc for json format
         """
-        return "1"
+        return "2"
     
     @cherrypy.expose
     def login(self):

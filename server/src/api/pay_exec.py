@@ -18,13 +18,13 @@ import socket
         return json.dumps(response)
 """
 
-class MakeTransactionApi(object):
+class PayExecApi(object):
     @cherrypy.expose
-    def make_transaction(self):
+    def make_payment(self):
         """Adds transaction to database
         Check database structure doc
         
         Arguments:
             json -- check api doc for json format
         """
-        return "3"
+        return "1"

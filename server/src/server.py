@@ -23,6 +23,7 @@ class MainApp(object):
     @cherrypy.expose
     def index(self):
         """
+        This method serves the client the page
         Returns:
             String -- returns a string in html format
         """
