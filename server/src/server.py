@@ -4,7 +4,7 @@ import json
 import base64
 import socket
 
-SITE_ROOT = "../../frontend"
+SITE_ROOT = "../../split-webapp/split"
 
 class MainApp(object):
 
@@ -27,5 +27,5 @@ class MainApp(object):
         Returns:
             String -- returns a string in html format
         """
-        page = open(SITE_ROOT + "/test/index.html", "r")
+        page = open(SITE_ROOT + "/public/index.html", "r")
         return page
