@@ -1,8 +1,7 @@
 # Looking to contribute to the project?
- see below for links and information related to your intended contributions
+ See below for links and information related to your intended contributions
 
-## For raising issues and reporting bugs see the links below for further information
-- ###  [Bug reporting](https://github.com/SOFTENG701G1/A1/wiki/Bug-Reporting)  
+## For raising issues and reporting bugs see the link below for further information
 - ###  [Issue raising](https://github.com/SOFTENG701G1/A1/wiki/Issue-Raising)
 
 ## Looking to help development?
@@ -14,7 +13,7 @@
 
 - Remember to document any api development in [Api documentation](https://github.com/SOFTENG701G1/A1/wiki/API-Description) 
 
-## other useful links
+## Other useful links
 - [README](https://github.com/SOFTENG701G1/A1/blob/master/README.md)
 - [Code of conduct](https://github.com/SOFTENG701G1/A1/blob/master/CODE_OF_CONDUCT.md)
 - [License](https://github.com/SOFTENG701G1/A1/blob/master/LICENSE)
