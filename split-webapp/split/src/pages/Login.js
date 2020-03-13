@@ -7,7 +7,7 @@ function Login() {
         <header className="App-header">
         <h1>Sp/it Login</h1>
         <ul className="App-header">
-        <NavLink to="/home"><button>To Home</button></NavLink>
+        <NavLink to="/home/transactions"><button>To Home</button></NavLink>
         </ul>
         </header>
       </div>
