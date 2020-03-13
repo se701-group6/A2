@@ -10,7 +10,7 @@ function Home() {
     <div>
       <div className="Sidebar">
         <h1>Sp/it Home</h1>
-        <NavLink to="/login"><button>Sign Out</button></NavLink>
+        <NavLink to="/"><button>Sign Out</button></NavLink>
         <ul className="">
           <li><NavLink to="/home/transactions">Transactions</NavLink></li>
           <li><NavLink to="/home/split">Split</NavLink></li>

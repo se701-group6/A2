@@ -10,7 +10,7 @@ function App() {
       <div className="App">
         <header className="App-header">
         <div>
-          <Route path="/login" component={Login}/>
+          <Route exact path="/" component={Login}/>
           <Route path="/home" component={Home}/>
         </div>
         </header>
