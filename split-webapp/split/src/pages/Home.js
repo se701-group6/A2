@@ -3,23 +3,26 @@ import { Route, NavLink, HashRouter} from "react-router-dom"
 import Transactions from './Transactions';
 import Split from './Split';
 import '../App.css';
+import NavList from '../components/NavList';
+import MenuBar from '../components/MenuBar';
 
 function Home() {
   return (
     <HashRouter>
+      <MenuBar className="AppBar"/>
     <div>
       <div className="Sidebar">
         <h1>Sp/it Home</h1>
         <NavLink to="/"><button>Sign Out</button></NavLink>
-        <ul className="">
-          <li><NavLink to="/home/transactions">Transactions</NavLink></li>
-          <li><NavLink to="/home/split">Split</NavLink></li>
-        </ul>
+        <NavList />
+        {/* <ul className="">
+        <NavLink className="NavText" to="/home/transactions"><button className="NavOptions">Transactions</button></NavLink>
+        <NavLink className="NavText" to="/home/split"><button className="NavOptions">Split</button></NavLink>
+        </ul> */}
         </div>
-        <div>
+        <div className="HomeScreen">
           <Route path="/home/transactions" component={Transactions}/>
           <Route path="/home/split" component={Split}/>
-
         </div>
       </div>
     </HashRouter>
