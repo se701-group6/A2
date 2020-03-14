@@ -31,7 +31,7 @@
 
 .SplitLogo {
   color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .Sidebar {
@@ -57,12 +57,12 @@
 }
 
 .MenuBar {
-display: flex;
+  display: flex;
   flex-direction: row;
   justify-content: right;
 }
 
-.ProfileName  {
+.ProfileName {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
   color: #79a2f4;
@@ -156,4 +156,39 @@ display: flex;
   flex-direction: row;
   justify-content: space-between;
   justify-self: flex-start;
+}
+
+/* Sign In */
+
+.outterContainer {
+  background-color: #6fa2fb;
+  height: 75vh;
+  width: 50vh;
+  text-align: center;
+}
+.innerContainer {
+  background-color: #6fa2fb;
+  height: 65%;
+  width: 90%;
+  text-align: center;
+  margin-top: 10%;
+  margin-left: 4%;
+  text-align: left;
+}
+.textField {
+  background-color: white;
+  margin-top: 10%;
+  margin-left: 10%;
+  border-color: #6fa2fb;
+}
+.signIn {
+  font-size: 120%;
+  color: white;
+  margin-left: 10%;
+}
+.logIn {
+  font-size: 3vw;
+  color: white;
+  margin-top: 10%;
+  margin-left: 40%;
 }
