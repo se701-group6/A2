@@ -41,7 +41,7 @@ const transaction = {
           <ListItemText primary="Split a Bill" className="UnselectedNavText"/>
           </ListItemLink>
         </ListItem>
-        <Divider />
+        <Divider /> 
       </List>
     </div>
   );

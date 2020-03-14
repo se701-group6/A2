@@ -12,7 +12,7 @@ function Home() {
       <MenuBar className="AppBar"/>
     <div>
       <div className="Sidebar">
-        <h1>Sp/it Home</h1>
+        <h1 className="SplitLogo">Sp/it</h1>
         <NavLink to="/"><button>Sign Out</button></NavLink>
         <NavList />
         {/* <ul className="">

@@ -24,30 +24,41 @@ const transaction = {
     <div>
       <List component="nav" aria-label="main mailbox folders">
       <Divider />
-        <ListItem button>
-          <ListItemText primary="Ryan owes Vanessa $5" />
+      <ListItem button>
+        <ListItemLink href="#simple-list" className="TransactionSummary">
+          <ListItemText primary="Ryan owes Vanessa $10" />
           <ListItemIcon>
             <PaymentIcon className="PaymentIcon"/>
           </ListItemIcon>
+        </ListItemLink>
         </ListItem>
         <Divider />
         <ListItem button>
+        <ListItemLink href="#simple-list" className="TransactionSummary">
           <ListItemText primary="Vanessa owes sean $4" />
           <ListItemIcon>
             <PaymentIcon className="PaymentIcon"/>
           </ListItemIcon>
-        </ListItem>
-      </List>
-      <Divider />
-      <List component="nav" aria-label="secondary mailbox folders">
-        <ListItem button>
-          <ListItemText primary="Lorem Ipsum" />
-        </ListItem>
-        <Divider />
-        <ListItemLink href="#simple-list">
-          <ListItemText primary="Lorem Ipsum" />
         </ListItemLink>
+        </ListItem>
         <Divider />
+        <ListItem button>
+        <ListItemLink href="#simple-list" className="TransactionSummary">
+          <ListItemText primary="Ryan owes Vanessa a cat" />
+          <ListItemIcon>
+            <PaymentIcon className="PaymentIcon"/>
+          </ListItemIcon>
+          </ListItemLink>
+        </ListItem>
+        <Divider />
+        <ListItem button>
+        <ListItemLink href="#simple-list" className="TransactionSummary">
+          <ListItemText primary="Sean owes Ryan an apology"/>
+          <ListItemIcon>
+            <PaymentIcon className="PaymentIcon"/>
+          </ListItemIcon>
+          </ListItemLink>
+        </ListItem>
       </List>
     </div>
   );
