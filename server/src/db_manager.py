@@ -143,7 +143,6 @@ class DatabaseManager(object):
                     (?, ?, ?, ?)""", (bill_name, username, total, 0))
             c.execute('SELECT last_insert_rowid()')
             next_id = c.fetchone()
-            print(next_id)
             conn.commit()
 
             for payment in payments:

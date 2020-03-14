@@ -1,8 +1,13 @@
 import unittest
+import logging
 from db_manager import DatabaseManager
 
 class TestDatabaseMethods(unittest.TestCase):
-    def test_add_user(self):
+    def test_add_user(self):    
+        logging.basicConfig()
+        log = logging.getLogger("LOG")
+        log.warning("Testing adding user")
+        
         test_db = DatabaseManager()
         test_db.init_db("test.db")
         test_db.add_user("bob", "bobiscool1")
@@ -10,6 +15,10 @@ class TestDatabaseMethods(unittest.TestCase):
         test_db.delete_db()
 
     def test_add_bill(self):
+        logging.basicConfig()
+        log = logging.getLogger("LOG")
+        log.warning("Testing adding bill")
+        
         test_db = DatabaseManager()
         test_db.init_db("test.db")
 
@@ -38,6 +47,10 @@ class TestDatabaseMethods(unittest.TestCase):
         test_db.delete_db()
 
     def test_get_payments(self):
+        logging.basicConfig()
+        log = logging.getLogger("LOG")
+        log.warning("Testing getting payments")
+        
         test_db = DatabaseManager()
         test_db.init_db("test.db")
 
@@ -58,6 +71,10 @@ class TestDatabaseMethods(unittest.TestCase):
         test_db.delete_db()
 
     def test_pay_bill(self):
+        logging.basicConfig()
+        log = logging.getLogger("LOG")
+        log.warning("Testing paying bill")
+        
         test_db = DatabaseManager()
         test_db.init_db("test.db")
 
@@ -87,4 +104,4 @@ class TestDatabaseMethods(unittest.TestCase):
         test_db.delete_db()
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(buffer=False)
