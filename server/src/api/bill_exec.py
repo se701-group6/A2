@@ -19,6 +19,9 @@ import socket
 """
 
 class BillExecApi(object):
+    def __init__(self, database):
+        self.database = database
+
     @cherrypy.expose
     def create_bill(self):
         """modifies transaction on database
