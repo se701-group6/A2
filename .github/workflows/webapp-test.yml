@@ -32,7 +32,3 @@ jobs:
         working-directory: ${{env.working-directory}}
       - run: npm run build
         working-directory: ${{env.working-directory}}
-      - run: npm test
-        working-directory: ${{env.working-directory}}
-        env:
-          CI: true
