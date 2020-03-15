@@ -19,6 +19,9 @@ import socket
 """
 
 class AccountApi(object):
+    def __init__(self, database):
+        self.database = database
+
     @cherrypy.expose
     def register(self):
         """Called when client requests to register, should create the user on the user database, 

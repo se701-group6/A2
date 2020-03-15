@@ -1,8 +1,6 @@
 import cherrypy
 import urllib.request
 import json
-import base64
-import socket
 
 SITE_ROOT = "../../split-webapp/split"
 
@@ -16,7 +14,7 @@ class MainApp(object):
     @cherrypy.expose
     def default(self, *args, **kwargs):
         """The default page, given when we don't recognise where the request is for."""
-        page = open(SITE_ROOT + "/test/index.html", "r")
+        page = open(SITE_ROOT + "/public/index.html", "r")
         cherrypy.response.status = "404server"
         return page
 
