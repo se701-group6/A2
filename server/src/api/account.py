@@ -24,13 +24,26 @@ class AccountApi(object):
 
     @cherrypy.expose
     def register(self):
-        """Called when client requests to register, should create the user on the user database, 
+        """Called when client requests to register, should create the user on the user table, 
             after creating a new user the client should be logged in
         
         Arguments:
-            json -- check api doc for json format
+            username (string): Name used for login
+            password (string): Password used for login
         """
-        return "2"
+        JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
+        username = JSON_object.get("username")
+        password = JSON_object.get("password")
+
+        try:
+            isRegistered = self.database.add_user(username, password)
+        except Exception as e:
+            print(e)
+        finally:
+            response = {
+                'success': isRegistered
+            }
+            return json.dumps(response)
     
     @cherrypy.expose
     def login(self):
