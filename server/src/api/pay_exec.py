@@ -19,6 +19,9 @@ import socket
 """
 
 class PayExecApi(object):
+    def __init__(self, database):
+        self.database = database
+
     @cherrypy.expose
     def make_payment(self):
         """Adds transaction to database

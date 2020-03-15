@@ -19,6 +19,9 @@ import socket
 """
 
 class BillDataApi(object):
+    def __init__(self, database):
+        self.database = database
+
     @cherrypy.expose
     def list_bills(self):
         """Searches database for all bills

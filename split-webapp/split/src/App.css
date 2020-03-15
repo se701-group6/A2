@@ -97,7 +97,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 70%;
+  width: 60%;
   left: 17%;
   margin-top: 100px;
   margin-left: 100px;
@@ -158,6 +158,7 @@
   justify-self: flex-start;
 }
 
+
 /* Sign In */
 
 .SignInContainer {
@@ -188,13 +189,19 @@
   margin-left: 5%;
 }
 
-/* .TextField {
-
+.AddButton {
+  border-radius: 50% !important;
+  min-width: 0px !important;
+  margin: 10px auto !important;
 }
 
-.logIn {
-  font-size: 3vw;
-  color: white;
-  margin-top: 10px;
-  margin-left: 40%;
-} */
+#name {
+  padding-left: 15px;
+  height: 56.5px;
+}
+
+.splitButton {
+  bottom: 40px;
+  right: 40px;
+  position: fixed !important;
+}
