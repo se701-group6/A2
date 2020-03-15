@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: 200
+      width: 200,
+      background: "white"
     }
   },
   margin: {
@@ -58,14 +59,14 @@ export default function Login() {
                     <TextField
                       id="outlined-basic"
                       label="Username"
-                      variant="outlined"
+                      variant="filled"
                     />
 
                     <TextField
                       id="outlined-password-input"
                       type="password"
                       label="Password"
-                      variant="outlined"
+                      variant="filled"
                     />
                   </form>
 
