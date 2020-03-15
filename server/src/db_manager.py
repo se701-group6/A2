@@ -1,6 +1,35 @@
 import sqlite3
 import os
 
+class Bill(object):
+    def __init__(self,bill_id, bill_name, account_username, timestamp, total, is_paid):
+        self.bill_id = bill_id
+        self.bill_name = bill_name
+        self.account_username = account_username
+        self.timestamp = timestamp
+        self.total = total
+        self.is_paid = is_paid
+    def __eq__(self, other):
+        if(self.bill_id == other.bill_id and self.bill_name == other.bill_name and self.account_username == other.account_username
+            and self.total == other.total and self.is_paid == other.is_paid):
+            return True
+        else:
+            return False
+        
+class Payment(object):
+    def __init__(self, bill_id, payee_name, amount_owed, is_paid):
+        self.bill_id = bill_id
+        self.payee_name = payee_name
+        self.amount_owed = amount_owed
+        self.is_paid = is_paid
+    
+    def __eq__(self, other):
+        if(self.bill_id == other.bill_id and self.payee_name == other.payee_name and self.amount_owed == other.amount_owed
+            and self.is_paid == other.is_paid):
+            return True
+        else:
+            return False
+
 class DatabaseManager(object):
     def check_db_exists(self):
         """check if a database file already exists"""
@@ -11,9 +40,18 @@ class DatabaseManager(object):
         else: return True
 
     def init_db(self, filename):
+        """
+        
+        Arguments:
+            filename {String} -- name of database file with .db extension
+        
+        Returns:
+            bool -- success or fail
+        """        
         self.db_name = filename
         if(self.check_db_exists()):
             print("Existing SQL database detected!")
+            return True
         else:
             print("No SQL database detected! Creating...")
             try:
@@ -23,7 +61,7 @@ class DatabaseManager(object):
                 c.execute("""CREATE TABLE `users` (
                             `username`	TEXT NOT NULL,
                             `password`	TEXT NOT NULL,
-                            unique (username) on conflict ignore 
+                            unique (username) on conflict abort 
                         );""")
 
                 c.execute("""CREATE TABLE `payments` (
@@ -41,10 +79,11 @@ class DatabaseManager(object):
                             `total`	float NOT NULL,
                             `is_paid` bit NOT NULL
                         );""")
-
+                return True
                 
             except Exception as e:
                 print(e)
+                return False
             finally:
                 try:
                     conn.close()
@@ -53,6 +92,13 @@ class DatabaseManager(object):
 
 
     def get_password(self, username):
+        """
+        Arguments:
+            username {string}
+        
+        Returns:
+            string -- password
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
@@ -68,13 +114,19 @@ class DatabaseManager(object):
                 pass
 
     def get_bill_from_id(self, id):
-        """returns tuple (bill_id, bill_name, account_username, timestamp, total, is_paid)"""
+        """
+        Arguments:
+            id {integer} -- unique bill id
+        
+        Returns:
+            Bill
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
             c.execute("""select * from bills where bill_id=?""", (id,))
             bill = c.fetchone()
-            return bill
+            return Bill(*bill)
         except Exception as e:
             print(e)
         finally:
@@ -84,13 +136,24 @@ class DatabaseManager(object):
                 pass
 
     def get_payments_from_id(self, id):
-        """returns tuple (bill_id, payee_name, amount_owed, is_paid)"""
+        """
+        Arguments:
+            id {integer}
+        
+        Returns:
+            list of Payment
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
             c.execute("""select * from payments where bill_id=?""", (id,))
             payments = c.fetchall()
-            return payments
+
+            list_of_payments = []
+            for payment in payments:
+                list_of_payments.append(Payment(*payment))
+
+            return list_of_payments
         except Exception as e:
             print(e)
         finally:
@@ -100,13 +163,24 @@ class DatabaseManager(object):
                 pass
 
     def get_bills_from_username(self, username):
-        """returns list of tuple (bill_id, bill_name, account_username, timestamp, total, is_paid)"""
+        """
+        
+        Arguments:
+            username {String}
+        
+        Returns:
+            list of Bill
+        """        
+        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
             c.execute("""select * from bills where username=?""", (username,))
             bills = c.fetchall()
-            return bills
+            list_of_bills = []
+            for bill in bills:
+                list_of_bills.append(Bill(*bill))
+            return list_of_bills
         except Exception as e:
             print(e)
         finally:
@@ -115,8 +189,15 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-
     def add_user(self, username, password):
+        """
+        Arguments:
+            username {String} 
+            password {String} 
+        
+        Returns:
+            boolean -- success or fail
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
@@ -125,8 +206,10 @@ class DatabaseManager(object):
                     values 
                     (?, ?)""", (username, password))
             conn.commit()
+            return True
         except Exception as e:
             print(e)
+            return False
         finally:
             try:
                 conn.close()
@@ -134,6 +217,16 @@ class DatabaseManager(object):
                 pass
 
     def add_bill(self, username, bill_name, total, payments):
+        """
+        Arguments:
+            username {String}
+            bill_name {String}
+            total {Integer}
+            payments {List of tuple} -- (bill_id, payee_name, amount_owed, is_paid)
+        
+        Returns:
+            boolean -- success or fail
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
@@ -151,9 +244,10 @@ class DatabaseManager(object):
                     values 
                     (?, ?, ?, ?)""", (next_id[0], payment["payee"], payment["amount_owed"], payment["is_paid"]))
                 conn.commit()
-
+            return True
         except Exception as e:
             print(e)
+            return False
         finally:
             try:
                 conn.close()
@@ -161,6 +255,14 @@ class DatabaseManager(object):
                 pass
 
     def make_payment(self, bill_id, payee):
+        """
+        Arguments:
+            bill_id {integer}
+            payee {String} -- username of the payee
+        
+        Returns:
+            boolean -- success or fail
+        """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
@@ -180,9 +282,10 @@ class DatabaseManager(object):
                     set is_paid = ?
                     where bill_id = ?""", (1, bill_id))
                 conn.commit()
-
+            return True
         except Exception as e:
             print(e)
+            return False
         finally:
             try:
                 conn.close()
@@ -191,7 +294,13 @@ class DatabaseManager(object):
 
 
     def delete_db(self):
+        """
+        Returns:
+            boolean -- success or fail
+        """        
         try:
             os.remove(self.db_name)
+            return True
         except Except as e:
             print(e)
+            return False
