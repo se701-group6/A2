@@ -1,31 +1,32 @@
 import sqlite3
 import os
+from typing import List
 
 class Bill(object):
-    def __init__(self,bill_id : int, bill_name : str, account_username : str, timestamp, total : float, is_paid : bool):
+    def __init__(self,bill_id : int, title : str, creator_username : str, timestamp, total : float, payer : str):
         self.bill_id = bill_id
-        self.bill_name = bill_name
-        self.account_username = account_username
+        self.title = title
+        self.creator_username = creator_username
         self.timestamp = timestamp
         self.total = total
-        self.is_paid = is_paid
+        self.payer = payer
+        self.payments = []
     def __eq__(self, other):
-        if(self.bill_id == other.bill_id and self.bill_name == other.bill_name and self.account_username == other.account_username
-            and self.total == other.total and self.is_paid == other.is_paid):
+        if(self.bill_id == other.bill_id and self.title == other.title and self.creator_username == other.creator_username
+            and self.total == other.total and self.payer == other.payer):
             return True
         else:
             return False
         
 class Payment(object):
-    def __init__(self, bill_id : int, payee_name : str, amount_owed : float, is_paid : bool):
-        self.bill_id = bill_id
+    def __init__(self, payee_name : str, amount_owed : float, is_paid : bool, payment_id : int):
         self.payee_name = payee_name
         self.amount_owed = amount_owed
         self.is_paid = is_paid
-    
+        self.payment_id = payment_id
     def __eq__(self, other):
-        if(self.bill_id == other.bill_id and self.payee_name == other.payee_name and self.amount_owed == other.amount_owed
-            and self.is_paid == other.is_paid):
+        if(self.payee_name == other.payee_name and self.amount_owed == other.amount_owed
+            and self.is_paid == other.is_paid and self.payment_id == other.payment_id):
             return True
         else:
             return False
@@ -68,16 +69,17 @@ class DatabaseManager(object):
                             `bill_id`	INT NOT NULL,
                             `payee_name`	TEXT NOT NULL,
                             `amount_owed`	float NOT NULL,
-                            `is_paid` bit NOT NULL
+                            `is_paid` bit NOT NULL,
+                            `payment_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
                         );""")
 
                 c.execute("""CREATE TABLE `bills` (
                             `bill_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                            `name`	TEXT NOT NULL,
-                            `username`	TEXT NOT NULL,
+                            `title`	TEXT NOT NULL,
+                            `creator_username`	TEXT NOT NULL,
                             `timestamp`	TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
                             `total`	float NOT NULL,
-                            `is_paid` bit NOT NULL
+                            `payer` TEXT NOT NULL
                         );""")
                 return True
                 
@@ -89,7 +91,6 @@ class DatabaseManager(object):
                     conn.close()
                 except UnboundLocalError:
                     pass
-
 
     def get_password(self, username : str):
         """
@@ -134,8 +135,30 @@ class DatabaseManager(object):
                 conn.close()
             except UnboundLocalError:
                 pass
-
-    def get_payments_from_id(self, id : int):
+    
+    def get_payment_from_id(self, id : int):
+            """
+            Arguments:
+                id {integer} -- unique payment id
+            
+            Returns:
+                Payment
+            """        
+            conn = sqlite3.connect(self.db_name)
+            c = conn.cursor()
+            try:
+                c.execute("""select payee_name, amount_owed, is_paid, payment_id from payments where payment_id=?""", (id,))
+                payment = c.fetchone()
+                return Payment(*payment)
+            except Exception as e:
+                print(e)
+            finally:
+                try:
+                    conn.close()
+                except UnboundLocalError:
+                    pass
+                
+    def get_payments_from_bill_id(self, id : int):
         """
         Arguments:
             id {integer}
@@ -146,7 +169,7 @@ class DatabaseManager(object):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
-            c.execute("""select * from payments where bill_id=?""", (id,))
+            c.execute("""select payee_name, amount_owed, is_paid, payment_id from payments where bill_id=?""", (id,))
             payments = c.fetchall()
 
             list_of_payments = []
@@ -175,11 +198,13 @@ class DatabaseManager(object):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
-            c.execute("""select * from bills where username=?""", (username,))
+            c.execute("""select * from bills where creator_username=?""", (username,))
             bills = c.fetchall()
             list_of_bills = []
             for bill in bills:
-                list_of_bills.append(Bill(*bill))
+                tmpBill = Bill(*bill)
+                tmpBill.payments = self.get_payments_from_bill_id(tmpBill.bill_id)
+                list_of_bills.append(tmpBill)
             return list_of_bills
         except Exception as e:
             print(e)
@@ -216,7 +241,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def add_bill(self, username : str, bill_name : str, total : float, payments):
+    def add_bill(self, payer : str, creator_username : str, title : str, total : float, payments: List[Payment]):
         """
         Arguments:
             username {String}
@@ -231,9 +256,9 @@ class DatabaseManager(object):
         c = conn.cursor()
         try:
             c.execute("""insert into bills
-                    (name, username, total, is_paid) 
+                    (title, creator_username, total, payer) 
                     values 
-                    (?, ?, ?, ?)""", (bill_name, username, total, 0))
+                    (?, ?, ?, ?)""", (title, creator_username, total, payer))
             c.execute('SELECT last_insert_rowid()')
             next_id = c.fetchone()
             conn.commit()
@@ -242,7 +267,7 @@ class DatabaseManager(object):
                 c.execute("""insert into payments
                     (bill_id, payee_name, amount_owed, is_paid) 
                     values 
-                    (?, ?, ?, ?)""", (next_id[0], payment["payee"], payment["amount_owed"], payment["is_paid"]))
+                    (?, ?, ?, ?)""", (next_id[0], payment.payee_name, payment.amount_owed, payment.is_paid))
                 conn.commit()
             return True
         except Exception as e:
@@ -254,10 +279,11 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def make_payment(self, bill_id : int, payee : str):
+
+    def make_payment(self, payment_id : int, done : bool):
         """
         Arguments:
-            bill_id {integer}
+            payment_id {integer}
             payee {String} -- username of the payee
         
         Returns:
@@ -268,20 +294,8 @@ class DatabaseManager(object):
         try:
             c.execute("""update payments
                     set is_paid = ?
-                    where bill_id = ? and payee_name = ?""", (1, bill_id, payee))
+                    where payment_id = ?""", (done, payment_id))
             conn.commit()
-            # check whether this payment was the final payment for this bill
-            c.execute("""select is_paid from payments where bill_id = ?""", (bill_id,))
-            all_paid_payments = c.fetchall()
-            comparison_all_paid = []
-            for i in range(len(all_paid_payments)):
-                comparison_all_paid.append((1,))
-
-            if(all_paid_payments == comparison_all_paid):
-                c.execute("""update bills
-                    set is_paid = ?
-                    where bill_id = ?""", (1, bill_id))
-                conn.commit()
             return True
         except Exception as e:
             print(e)
@@ -301,6 +315,13 @@ class DatabaseManager(object):
         try:
             os.remove(self.db_name)
             return True
-        except Except as e:
+        except Exception as e:
             print(e)
             return False
+        
+    def create_test_data(self):
+        if self.add_user("Bob", "password"):
+            self.add_user("Bil", "password")
+            payment2 = Payment("Jim", 45.98, False, 0)
+            payment3 = Payment("Tom", 10.00, False, 0)
+            self.add_bill("Bob", "Bob", "maccas", 105.98, [payment1, payment2, payment3])
