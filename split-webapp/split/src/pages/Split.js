@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import { Button, ListItem, ListItemText, ListItemIcon, Divider, TextField, List } from '@material-ui/core';
-import { MapDispatchToProps, MapStateToProps, connect } from "react-redux"; 
-import { addTransaction } from "../redux/actions"
+
 
 
 class Split extends Component {
@@ -48,9 +47,24 @@ class Split extends Component {
         
         let bill = {
             title: "Transaction title",
+            payer: "",
+            total: cost,
             payments: paymentArray,
-            payed: ""
         }
+
+        this.createBill(bill);
+    }
+
+    createBill(data) {
+        return fetch('/api/bill_exec/create_bill', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            return res;
+        }).catch(err => alert(err))
     }
 
     render() {
