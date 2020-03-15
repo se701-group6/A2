@@ -7,10 +7,10 @@ name: Webapp build check
 on:
   push:
     branches: [master]
-    paths: split-webapp/*
+    paths: split-webapp/**/*
   pull_request:
     branches: [master]
-    paths: split-webapp/*
+    paths: split-webapp/**/*
 
 jobs:
   build:
