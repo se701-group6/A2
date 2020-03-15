@@ -3,7 +3,6 @@ import {
   Button,
   ListItem,
   ListItemText,
-  ListItemIcon,
   Divider,
   TextField,
   List
@@ -23,31 +22,35 @@ class Split extends Component {
   }
 
   addUser() {
-    let name = document.getElementById("name").value;
+    const { transaction } = this.state;
+    const name = document.getElementById("name").value;
     document.getElementById("name").value = "";
 
     this.setState({
       transaction: {
-        users: this.state.transaction.users.concat(name)
+        users: transaction.users.concat(name)
       }
     });
   }
 
   split() {
-    let users = this.state.transaction.users;
-    let cost = document.getElementById("cost").value;
-    let perPersonCost = cost / users.length;
+    const {
+      transaction: { users }
+    } = this.state;
+    const usersArray = users;
+    const cost = document.getElementById("cost").value;
+    const perPersonCost = cost / usersArray.length;
 
-    let paymentArray = [];
+    const paymentArray = [];
 
-    users.forEach(user => {
+    usersArray.forEach(user => {
       paymentArray.push({
         name: user,
         amount: perPersonCost
       });
     });
 
-    let bill = {
+    const bill = {
       title: "Transaction title",
       payer: "",
       total: cost,
@@ -66,30 +69,33 @@ class Split extends Component {
       }
     })
       .then(res => {
+        // If "this" is not called in the createBill method, you may have to create the function outside of the class (es-lint rule)
+        this.setState({});
         return res;
       })
-      .catch(err => alert(err));
+      .catch(err => console.log(err));
   }
 
   render() {
+    const { transaction } = this.state;
     return (
       <div>
         <div className="Transactions">
           <div className="TransactionsTitle">
             <h1 className="TransactionsText">New Payment </h1>
-            <TextField id="cost" placeholder="Amount Paid"></TextField>
+            <TextField id="cost" placeholder="Amount Paid" />
           </div>
 
           <List component="nav" aria-label="main mailbox folders">
-            {this.state.transaction &&
-              this.state.transaction.users.map((user, index) => (
+            {transaction &&
+              transaction.users.map(user => (
                 <ListItem button>
                   <ListItemText primary={user} />
                 </ListItem>
               ))}
           </List>
           <Divider />
-          <TextField id="name" placeholder="Name" type="text"></TextField>
+          <TextField id="name" placeholder="Name" type="text" />
           <Button
             className="AddButton"
             onClick={() => this.addUser()}

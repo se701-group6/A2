@@ -4,3 +4,5 @@
 # https://github.com/facebook/create-react-app/issues/8386
 
 /node_modules/
+
+package-lock.json

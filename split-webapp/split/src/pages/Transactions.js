@@ -1,10 +1,9 @@
-import React, {Component} from "react";
-import TransactionList from "../components/TransactionList";
+import React from "react";
 import SearchIcon from '@material-ui/icons/Search';
+import TransactionList from "../components/TransactionList";
 import '../App.css';
 
-class Transactions extends Component {
-    render() {
+function Transactions() {
         return (
             <div className="Transactions">
             <div className="TransactionsTitle">
@@ -14,7 +13,6 @@ class Transactions extends Component {
                 <TransactionList />
             </div>
         );
-    }
 }
 
 export default Transactions;

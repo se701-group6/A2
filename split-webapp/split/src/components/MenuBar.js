@@ -1,38 +1,38 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1,
-  },
+    flexGrow: 1
+  }
 }));
 
 export default function MenuBar() {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+  // relates to handleChange
+  const [auth /* , setAuth  */] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const handleChange = event => {
-    setAuth(event.target.checked);
-  };
+  // const handleChange = event => {
+  //   setAuth(event.target.checked);
+  // };
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -46,11 +46,15 @@ export default function MenuBar() {
     <div className={classes.root}>
       <AppBar position="static" className="AppBar" color="white">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="pink" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="pink"
+            aria-label="menu"
+          >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-          </Typography>
+          <Typography variant="h6" className={classes.title} />
           {auth && (
             <div className="MenuBar">
               <h3 className="ProfileName">David Dollar</h3>
@@ -67,13 +71,13 @@ export default function MenuBar() {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right"
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right"
                 }}
                 open={open}
                 onClose={handleClose}
