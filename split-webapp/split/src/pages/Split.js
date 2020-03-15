@@ -51,8 +51,6 @@ class Split extends Component {
             payments: paymentArray,
             payed: ""
         }
-
-
     }
 
     render() {
@@ -77,13 +75,6 @@ class Split extends Component {
                     <TextField id="name" placeholder="Name" type="text"></TextField>
                     <Button className="AddButton" onClick={() => this.addUser()} variant="contained">+</Button>
                 </div>
-
-
-                {/* <Button 
-                variant="contained" 
-                color="primary" 
-                onClick={() => this.props.addTransaction(document.getElementById("name").value, document.getElementById("cost").value)} >
-                    Click</Button> */}
                 
                 <Button className="splitButton" variant="contained" color="primary" onClick={() => this.split()}>Split</Button> 
 
