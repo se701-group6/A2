@@ -1,8 +1,8 @@
-import { INCREMENT } from './action-types';
+import  INCREMENT  from './action-types';
 
-export function increment(count) {
+export default function increment(count) {
     return {
         type: INCREMENT,
         count
-    }
+    };
 }

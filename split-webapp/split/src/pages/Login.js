@@ -1,20 +1,15 @@
-import React, { Component } from "react";
-import Paper from "@material-ui/core/Paper";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
 import Typography from "@material-ui/core/Typography";
-import { Grid } from "@material-ui/core";
-import { Box } from "@material-ui/core";
+import { Grid, Box, TextField, Button } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
-import { TextField } from "@material-ui/core";
-import { Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import mainLogo from "./split2.png";
 import "../App.css";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import mainLogo from "./split2.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,10 +24,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login() {
+function Login() {
   const classes = useStyles();
   return (
-    <React.Fragment>
+    <React.Fragment key="LoginKey">
       <CssBaseline />
       <Grid
         container
@@ -53,6 +48,7 @@ export default function Login() {
                 <img
                   src={mainLogo}
                   style={{ width: "50%", marginTop: "10%" }}
+                  alt="Main logo for login"
                 />
                 <Box component="div" className="InnerContainer">
                   <Typography component="h3" className="SignIn">
@@ -119,3 +115,5 @@ export default function Login() {
     </React.Fragment>
   );
 }
+
+export default Login;
