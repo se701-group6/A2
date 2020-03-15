@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 class Bill(object):
-    def __init__(self,bill_id, bill_name, account_username, timestamp, total, is_paid):
+    def __init__(self,bill_id : int, bill_name : str, account_username : str, timestamp, total : float, is_paid : bool):
         self.bill_id = bill_id
         self.bill_name = bill_name
         self.account_username = account_username
@@ -17,7 +17,7 @@ class Bill(object):
             return False
         
 class Payment(object):
-    def __init__(self, bill_id, payee_name, amount_owed, is_paid):
+    def __init__(self, bill_id : int, payee_name : str, amount_owed : float, is_paid : bool):
         self.bill_id = bill_id
         self.payee_name = payee_name
         self.amount_owed = amount_owed
@@ -39,7 +39,7 @@ class DatabaseManager(object):
             return False
         else: return True
 
-    def init_db(self, filename):
+    def init_db(self, filename : str):
         """
         
         Arguments:
@@ -91,7 +91,7 @@ class DatabaseManager(object):
                     pass
 
 
-    def get_password(self, username):
+    def get_password(self, username : str):
         """
         Arguments:
             username {string}
@@ -113,7 +113,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def get_bill_from_id(self, id):
+    def get_bill_from_id(self, id : int):
         """
         Arguments:
             id {integer} -- unique bill id
@@ -135,7 +135,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def get_payments_from_id(self, id):
+    def get_payments_from_id(self, id : int):
         """
         Arguments:
             id {integer}
@@ -162,7 +162,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def get_bills_from_username(self, username):
+    def get_bills_from_username(self, username : str):
         """
         
         Arguments:
@@ -189,7 +189,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def add_user(self, username, password):
+    def add_user(self, username : str, password : str):
         """
         Arguments:
             username {String} 
@@ -216,7 +216,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def add_bill(self, username, bill_name, total, payments):
+    def add_bill(self, username : str, bill_name : str, total : float, payments):
         """
         Arguments:
             username {String}
@@ -254,7 +254,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def make_payment(self, bill_id, payee):
+    def make_payment(self, bill_id : int, payee : str):
         """
         Arguments:
             bill_id {integer}
