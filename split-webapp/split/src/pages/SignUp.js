@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login() {
+export default function SignUp() {
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -58,32 +58,20 @@ export default function Login() {
                     <TextField
                       id="outlined-basic"
                       label="Username"
-                      variant="outlined"
+                      variant="filled"
                     />
 
                     <TextField
                       id="outlined-password-input"
                       type="password"
                       label="Password"
-                      variant="outlined"
+                      variant="filled"
                     />
                   </form>
 
                   <Typography component="h3" className="LogIn">
                     <div>
                       <NavLink to="/home/transactions">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className={classes.margin}
-                        >
-                          Log In
-                        </Button>
-                      </NavLink>
-                    </div>
-                    <div>
-                      <NavLink to="/SignUp">
                         <Button
                           variant="contained"
                           color="primary"

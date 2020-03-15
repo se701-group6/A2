@@ -160,35 +160,41 @@
 
 /* Sign In */
 
-.outterContainer {
+.SignInContainer {
   background-color: #6fa2fb;
   height: 75vh;
   width: 50vh;
   text-align: center;
 }
-.innerContainer {
-  background-color: #6fa2fb;
+.SignInContainer .InnerContainer {
   height: 65%;
   width: 90%;
   text-align: center;
   margin-top: 10%;
-  margin-left: 4%;
-  text-align: left;
+  margin-left: 5%;
 }
-.textField {
-  background-color: white;
-  margin-top: 10%;
-  margin-left: 10%;
-  border-color: #6fa2fb;
+
+.SignInContainer .InnerContainer .TextField {
+  margin-top: 2em;
 }
-.signIn {
-  font-size: 120%;
+
+.SignInContainer .InnerContainer button {
+  margin-top: 2.5em;
+}
+
+.SignIn {
+  font-size: 10%;
   color: white;
-  margin-left: 10%;
+  margin-left: 5%;
 }
+
+/* .TextField {
+
+}
+
 .logIn {
   font-size: 3vw;
   color: white;
-  margin-top: 10%;
+  margin-top: 10px;
   margin-left: 40%;
-}
+} */
