@@ -13,14 +13,34 @@ import "../App.css";
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
- 
-export default function TransactionList() {
 
-const transaction = {
+class TransactionList extends React.Component {
+  constructor(props) {
+    super(props);
 
-}
+    this.state = {
+        transaction: {
+            users: [],
+            cost: 0,
+            payed: ""
+        }
+    }
+  }
 
-  return (
+  componentDidMount() {
+
+    fetch('api/adress/goes/here')
+    .then(res => {
+      return res.json();
+    }).then(data => {
+      // make a mapping of bills to list items here and render it below
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  render() {
+    return (
     <div>
       <List component="nav" aria-label="main mailbox folders">
       <Divider />
@@ -61,5 +81,8 @@ const transaction = {
         </ListItem>
       </List>
     </div>
-  );
+    );
+  }
 }
+
+export default TransactionList;
