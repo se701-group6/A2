@@ -31,7 +31,7 @@
 
 .SplitLogo {
   color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .Sidebar {
@@ -57,12 +57,12 @@
 }
 
 .MenuBar {
-display: flex;
+  display: flex;
   flex-direction: row;
   justify-content: right;
 }
 
-.ProfileName  {
+.ProfileName {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
   color: #79a2f4;
@@ -156,6 +156,37 @@ display: flex;
   flex-direction: row;
   justify-content: space-between;
   justify-self: flex-start;
+}
+
+
+/* Sign In */
+
+.SignInContainer {
+  background-color: #6fa2fb;
+  height: 75vh;
+  width: 50vh;
+  text-align: center;
+}
+.SignInContainer .InnerContainer {
+  height: 65%;
+  width: 90%;
+  text-align: center;
+  margin-top: 10%;
+  margin-left: 5%;
+}
+
+.SignInContainer .InnerContainer .TextField {
+  margin-top: 2em;
+}
+
+.SignInContainer .InnerContainer button {
+  margin-top: 2.5em;
+}
+
+.SignIn {
+  font-size: 10%;
+  color: white;
+  margin-left: 5%;
 }
 
 .AddButton {
