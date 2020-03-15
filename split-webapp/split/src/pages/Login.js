@@ -12,6 +12,9 @@ import { Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import mainLogo from "./split2.png";
 import "../App.css";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import VpnKey from "@material-ui/icons/VpnKey";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,6 +63,13 @@ export default function Login() {
                       id="outlined-basic"
                       label="Username"
                       variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircle />
+                          </InputAdornment>
+                        )
+                      }}
                     />
 
                     <TextField
@@ -67,34 +77,38 @@ export default function Login() {
                       type="password"
                       label="Password"
                       variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKey />
+                          </InputAdornment>
+                        )
+                      }}
                     />
                   </form>
 
                   <Typography component="h3" className="LogIn">
-                    <div>
-                      <NavLink to="/home/transactions">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className={classes.margin}
-                        >
-                          Log In
-                        </Button>
-                      </NavLink>
-                    </div>
-                    <div>
-                      <NavLink to="/SignUp">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className={classes.margin}
-                        >
-                          Sign up
-                        </Button>
-                      </NavLink>
-                    </div>
+                    <NavLink to="/home/transactions">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        borderRadius={30}
+                        className={classes.margin}
+                      >
+                        Log In
+                      </Button>
+                    </NavLink>
+
+                    <NavLink to="/SignUp">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        borderRadius={30}
+                        className={classes.margin}
+                      >
+                        Sign up
+                      </Button>
+                    </NavLink>
                   </Typography>
                 </Box>
               </Box>
