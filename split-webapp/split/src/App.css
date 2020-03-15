@@ -97,7 +97,7 @@ display: flex;
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 70%;
+  width: 60%;
   left: 17%;
   margin-top: 100px;
   margin-left: 100px;
@@ -156,4 +156,21 @@ display: flex;
   flex-direction: row;
   justify-content: space-between;
   justify-self: flex-start;
+}
+
+.AddButton {
+  border-radius: 50% !important;
+  min-width: 0px !important;
+  margin: 10px auto !important;
+}
+
+#name {
+  padding-left: 15px;
+  height: 56.5px;
+}
+
+.splitButton {
+  bottom: 40px;
+  right: 40px;
+  position: fixed !important;
 }
