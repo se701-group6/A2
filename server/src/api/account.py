@@ -28,7 +28,8 @@ class AccountApi(object):
             after creating a new user the client should be logged in
         
         Arguments:
-            json -- check api doc for json format
+            username (string): Name used for login
+            password (string): Password used for login
         """
         JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
         username = JSON_object.get("username")
