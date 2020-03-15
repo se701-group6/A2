@@ -66,8 +66,6 @@ class Split extends Component {
                     {this.state.transaction && this.state.transaction.users.map((user, index) => 
                         <ListItem button>
                             <ListItemText primary={user} />
-                            <ListItemIcon>     
-                            </ListItemIcon>
                         </ListItem>
                     )}
                     </List>
