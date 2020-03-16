@@ -322,6 +322,6 @@ class DatabaseManager(object):
     def create_test_data(self):
         if self.add_user("Bob", "password"):
             self.add_user("Bil", "password")
-            payment2 = Payment("Jim", 45.98, False, 0)
-            payment3 = Payment("Tom", 10.00, False, 0)
-            self.add_bill("Bob", "Bob", "maccas", 105.98, [payment1, payment2, payment3])
+            payment1 = Payment("Jim", 45.98, False, 0)
+            payment2 = Payment("Tom", 10.00, False, 0)
+            self.add_bill("Bob", "Bob", "maccas", 105.98, [payment1, payment2])

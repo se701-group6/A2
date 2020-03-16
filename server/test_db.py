@@ -1,6 +1,6 @@
 import unittest
 import logging
-from db_manager import *
+from src.db_manager import *
 
 class TestDatabaseMethods(unittest.TestCase):
     def test_add_user(self):    
