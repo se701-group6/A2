@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Login() {
+function SignUp() {
   const classes = useStyles();
   return (
     <React.Fragment key="LoginKey">
