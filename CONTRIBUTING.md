@@ -1,4 +1,6 @@
 # Looking to contribute to the project?
+First of all, thank you for considering contributing to Split! This project would not be possible if it was not for people like you =)
+
  See below for links and information related to your intended contributions
 
 ## For raising issues and reporting bugs see the link below for further information
