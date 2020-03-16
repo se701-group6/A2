@@ -1,4 +1,5 @@
 # SPLit
+![](https://i.imgur.com/qXONyae.jpg)
 (TODO : project information)
 
 # Getting Started
@@ -21,7 +22,7 @@ See [List of Contributors](https://github.com/SOFTENG701G1/A1/wiki/List-of-contr
 # License
 This Project is licensed under GNU General Public License v3.0. See [LICENSE.md](https://github.com/SOFTENG701G1/A1/blob/master/LICENSE.md) for more details
 
-# Aknowledgements
+# Acknowledgements
 * Special thanks to Kelly Blincoe
 
 
