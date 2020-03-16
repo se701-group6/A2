@@ -1,0 +1,39 @@
+# This workflow will do a clean install of node dependencies, build the source code and run the test npm-script. This will ensure
+#   that the webapp builds and renders without errors
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Webapp build check
+
+on:
+  push:
+    branches: [master]
+    paths: split-webapp/**/*
+  pull_request:
+    branches: [master]
+    paths: split-webapp/**/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./split-webapp/split
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{env.working-directory}}
+      - name: Build
+        run: npm run build
+        working-directory: ${{env.working-directory}}
+      - name: Lint
+        run: npm run lint
+        working-directory: ${{env.working-directory}}
