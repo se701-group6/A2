@@ -37,6 +37,8 @@ class AccountApi(object):
 
         try:
             isRegistered = self.database.add_user(username, password)
+            cherrypy.session["username"] = username
+            cherrypy.session["password"] = password
         except Exception as e:
             print(e)
         finally:
@@ -47,9 +49,25 @@ class AccountApi(object):
     
     @cherrypy.expose
     def login(self):
-        """Will verify user identity by checking user and password on user database
+        """Will verify user identity by checking user and password on user table
         
         Arguments:
-            json -- check api doc for json format
+            username (string): Name used for login
+            password (string): Password used for login
         """
-        pass
+        JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
+        username = JSON_object.get("username")
+        password = JSON_object.get("password")
+
+        try:
+            isLoggedIn = self.database.get_password(username) == password
+            cherrypy.session["username"] = username
+            cherrypy.session["password"] = password
+        except Exception as e:
+            isLoggedIn = False
+            print(e)
+        finally:
+            response = {
+                'success': isLoggedIn
+            }
+            return json.dumps(response)
