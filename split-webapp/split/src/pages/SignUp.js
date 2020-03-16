@@ -81,6 +81,19 @@ function SignUp() {
                         )
                       }}
                     />
+                    <TextField
+                      id="outlined-password-input-confirm"
+                      type="password"
+                      label="Confirm Password"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKey />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
                   </form>
 
                   <Typography component="h3" className="LogIn">
@@ -114,6 +127,7 @@ function SignUp() {
       </Grid>
     </React.Fragment>
   );
+  
 }
 
 export default SignUp;
