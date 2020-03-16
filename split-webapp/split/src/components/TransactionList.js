@@ -21,7 +21,7 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-function mapDataToElements(bills) {
+function populateBills(bills) {
   return bills.map(bill => (
     <ExpansionPanel>
       <ExpansionPanelSummary>
@@ -54,8 +54,6 @@ class TransactionList extends React.Component {
     super(props);
 
     this.state = {
-      // If you're using state in component remove the es-lint line below, (else make it a functional component)
-      // eslint-disable-next-line react/no-unused-state
       bills: []
     };
   }
@@ -73,7 +71,7 @@ class TransactionList extends React.Component {
         });
       })
       .catch(err => {
-        alert.err(err);
+        console.log(err);
       });
   }
 
@@ -81,7 +79,7 @@ class TransactionList extends React.Component {
     const { bills } = this.state;
     return (
       <div>
-        {mapDataToElements(bills)}
+        {populateBills(bills)}
         <List component="nav" aria-label="main mailbox folders">
           <Divider />
           <ListItem button>
