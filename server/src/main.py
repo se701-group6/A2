@@ -8,6 +8,7 @@ import api.base_api
 from db_manager import DatabaseManager 
 
 DB_NAME = "webapp_data.db"
+CREATE_TEST_DATA = True
 
 LISTEN_IP = "0.0.0.0"
 LISTEN_PORT = 1234
@@ -35,6 +36,8 @@ def run_main_app():
     }
     database = DatabaseManager()
     database.init_db(DB_NAME)
+    if CREATE_TEST_DATA:
+        database.create_test_data()
 
     main_app = server.MainApp()
     main_app.api = api.base_api.BaseApi(database)
