@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 function SignUp() {
   const classes = useStyles();
   return (
-    <React.Fragment key="LoginKey">
+    <React.Fragment key="SignUpKey">
       <CssBaseline />
       <Grid
         container
@@ -48,7 +48,7 @@ function SignUp() {
                 <img
                   src={mainLogo}
                   style={{ width: "50%", marginTop: "10%" }}
-                  alt="Main logo for login"
+                  alt="main logo for sign up"
                 />
                 <Box component="div" className="InnerContainer">
                   <Typography component="h3" className="SignIn">
@@ -116,4 +116,4 @@ function SignUp() {
   );
 }
 
-export default Login;
+export default SignUp;
