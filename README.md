@@ -20,7 +20,7 @@ Please read [CONTRIBUTING.md](https://github.com/SOFTENG701G1/A1/blob/master/CON
 See [List of Contributors](https://github.com/SOFTENG701G1/A1/wiki/List-of-contributors) to see who worked on this project. Remember to add yourself to this file if you also worked on it :blush:    
 
 # License
-This Project is licensed under GNU General Public License v3.0. See [LICENSE.md](https://github.com/SOFTENG701G1/A1/blob/master/LICENSE.md) for more details
+This project is licensed under GNU General Public License v3.0. See [LICENSE.md](https://github.com/SOFTENG701G1/A1/blob/master/LICENSE.md) for more details
 
 # Acknowledgements
 * Special thanks to Kelly Blincoe
