@@ -4,7 +4,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography,
+  Checkbox,
+  FormControlLabel
 } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
 import "../App.css";
@@ -15,6 +21,34 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
+function mapDataToElements(bills) {
+  return bills.map(bill => (
+    <ExpansionPanel>
+      <ExpansionPanelSummary>
+        <Typography variant="h5">
+          {bill.title}, ${bill.total}
+        </Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        {bill.payments.map(payment => {
+          const label = `${payment.from} owes ${payment.to} $${payment.amount}`;
+          return (
+            <div key={payment.id}>
+              <FormControlLabel
+                aria-label="Acknowledge"
+                onClick={event => event.stopPropagation()}
+                onFocus={event => event.stopPropagation()}
+                control={<Checkbox checked={payment.is_paid} />}
+                label={label}
+              />
+            </div>
+          );
+        })}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  ));
+}
+
 class TransactionList extends React.Component {
   constructor(props) {
     super(props);
@@ -22,31 +56,32 @@ class TransactionList extends React.Component {
     this.state = {
       // If you're using state in component remove the es-lint line below, (else make it a functional component)
       // eslint-disable-next-line react/no-unused-state
-      transaction: {
-        users: [],
-        cost: 0,
-        payed: ""
-      }
+      bills: []
     };
   }
 
   componentDidMount() {
-    fetch("api/adress/goes/here")
+    //  actual address http://0.0.0.0:1234/api/bill_data/get_bill
+    fetch("https://jake-good.free.beeceptor.com/my/api/path") // temp
       .then(res => {
         return res.json();
       })
       .then(data => {
         // make a mapping of bills to list items here and render it below
-        console.log(data); // Temporary code (Adjust as required)
+        this.setState({
+          bills: data
+        });
       })
       .catch(err => {
-        alert(err);
+        alert.err(err);
       });
   }
 
   render() {
+    const { bills } = this.state;
     return (
       <div>
+        {mapDataToElements(bills)}
         <List component="nav" aria-label="main mailbox folders">
           <Divider />
           <ListItem button>
