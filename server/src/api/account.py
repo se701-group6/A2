@@ -37,6 +37,8 @@ class AccountApi(object):
 
         try:
             isRegistered = self.database.add_user(username, password)
+            cherrypy.session["username"] = username
+            cherrypy.session["password"] = password
         except Exception as e:
             print(e)
         finally:
@@ -59,7 +61,10 @@ class AccountApi(object):
 
         try:
             isLoggedIn = self.database.get_password(username) == password
+            cherrypy.session["username"] = username
+            cherrypy.session["password"] = password
         except Exception as e:
+            isLoggedIn = False
             print(e)
         finally:
             response = {
