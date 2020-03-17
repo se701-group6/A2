@@ -264,7 +264,6 @@ class DatabaseManager(object):
             conn.commit()
 
             for payment in payments:
-                print(payment)
                 c.execute("""insert into payments
                     (bill_id, payee_name, amount_owed, is_paid) 
                     values 
