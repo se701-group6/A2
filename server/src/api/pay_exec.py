@@ -32,17 +32,21 @@ class PayExecApi(object):
         """
         
         error_msg = ""
+        success = False
 
+        #extract information from JSON object
         JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
         is_paid = JSON_object.get("is_paid")
         payment_id = JSON_object.get("payment_id")
         
         try:
+            #checking if user is logged in successfully
             username = cherrypy.session["username"]
             password = cherrypy.session["password"]
             isLoggedIn = self.database.get_password(username) == password
 
             if (isLoggedIn == True):
+                #make payment if user is Logged in
                 success = self.database.make_payment(payment_id, is_paid)
             else:
                 error_msg = "User not logged in"
