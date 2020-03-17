@@ -33,6 +33,11 @@ class TransactionList extends React.Component {
 
 
 populateBills(bills) {
+  if (bills.length === 0) {
+    return;
+  } else {
+
+    console.log(bills);
   return bills.map(bill => (
     <ExpansionPanel>
       <ExpansionPanelSummary>
@@ -48,7 +53,7 @@ populateBills(bills) {
               <FormControlLabel
                 aria-label="Acknowledge"
                 onClick={() => this.markPaid({
-                  payment_id: payment.id,
+                  payment_id: payment.payment_id,
                   is_paid: !payment.is_paid,
                 })}
                 onFocus={event => event.stopPropagation()}
@@ -61,10 +66,30 @@ populateBills(bills) {
       </ExpansionPanelDetails>
     </ExpansionPanel>
   ));
+      }
+}
+
+setPaidStatus(paymentId, paid) {
+  this.setState({
+    bills: this.state.bills.map((bill) => {
+      return {
+        ...bill,
+        payments: bill.payments.map((payment) => { 
+        if (payment.payment_id === paymentId) {
+          return { 
+            ...payment,
+            is_paid: paid,
+          }
+        }
+        return payment;
+      }) }
+      
+    })
+  });
 }
 
 markPaid(data) {
-  fetch("/api/bill_exec/make_payment", {
+  fetch("/api/pay_exec/make_payment", {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
@@ -73,7 +98,7 @@ markPaid(data) {
   })
     .then(res => {
       // If "this" is not called in the createBill method, you may have to create the function outside of the class (es-lint rule)
-      this.setState({});
+      this.setPaidStatus(data.payment_id, data.is_paid);
       return res;
     })
     .catch(err => console.log(err));
@@ -81,14 +106,15 @@ markPaid(data) {
 
   componentDidMount() {
     //  actual address http://0.0.0.0:1234/api/bill_data/get_bill
-    fetch("https://jake-good.free.beeceptor.com/my/api/path") // temp
+    fetch("/api/bill_data/get_bills") // temp
       .then(res => {
         return res.json();
       })
       .then(data => {
+        console.log(data.bills);
         // make a mapping of bills to list items here and render it below
         this.setState({
-          bills: data
+          bills: data.bills
         });
       })
       .catch(err => {
