@@ -9,6 +9,17 @@ import {
 import PaymentIcon from "@material-ui/icons/Payment";
 import "../App.css";
 
+function calculateTotalPaid(bill) {
+  let runningTotal = 0;
+  bill.payments.forEach(payment => {
+    if (payment.is_paid) {
+      runningTotal += payment.amount;
+    }
+  });
+
+  return runningTotal;
+}
+
 class TransactionList extends React.Component {
   constructor(props) {
     super(props);
@@ -67,6 +78,14 @@ class TransactionList extends React.Component {
         <ExpansionPanelDetails className="Payments">
           <div className="PaymentsTitle">
             <PaymentIcon className="PaymentHeaders" />
+            <div className="RunningTotal">
+              <div className="BillTitle Percentage">
+                ({Math.round((calculateTotalPaid(bill) / bill.total) * 100)}%){" "}
+              </div>
+              <div className="BillTitle">
+                ${calculateTotalPaid(bill)}/${bill.total}
+              </div>
+            </div>
           </div>
           {bill.payments.map(payment => {
             const label = `${payment.from} owes ${payment.to} $${payment.amount.toFixed(2)}`;
