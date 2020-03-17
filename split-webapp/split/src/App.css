@@ -216,3 +216,57 @@
   font-size: 20px;
   color: #e071ae;
 }
+
+.Bills {
+  box-shadow: none !important;
+  outline: none;
+  background: none !important;
+}
+
+.Payments {
+  flex-direction: column;
+  align-items: flex-start;
+  border-top-width: 0.3px;
+  border-top-style: solid;
+  justify-content: space-evenly;
+}
+
+.PaymentsTitle {
+  padding: 10px 0 5px 0;
+  flex-direction: row;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.PaymentHeaders {
+  margin-left: -2px;
+  size: 8px;
+  color: #3e8ef6;
+}
+
+.BillTitle {
+  display: flex;
+  font-size: 20px;
+  font-variant-caps: petite-caps;
+  align-self: flex-start;
+}
+
+.BillAmount {
+  display: flex;
+  font-size: 20px;
+  font-weight: 600;
+  justify-content: flex-end;
+  align-content: flex-end;
+}
+
+.BillSummary {
+  display: flex !important;
+  justify-content: space-between !important;
+  justify-items: flex-start; 
+  flex-direction: row;
+  align-items: flex-start !important;
+  width: 100%;
+  padding: 10px;
+  padding-right: 38xpx;
+}

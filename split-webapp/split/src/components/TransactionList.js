@@ -1,26 +1,13 @@
 import React from "react";
 import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  Typography,
   Checkbox,
   FormControlLabel
 } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
 import "../App.css";
-
-function ListItemLink(props) {
-  // Creates an error due to props spreading
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <ListItem button component="a" {...props} />;
-}
-
 
 class TransactionList extends React.Component {
   constructor(props) {
@@ -39,13 +26,21 @@ populateBills(bills) {
 
     console.log(bills);
   return bills.map(bill => (
-    <ExpansionPanel>
+    <ExpansionPanel className="Bills">
       <ExpansionPanelSummary>
-        <Typography variant="h5">
-          {bill.title}, ${bill.total}
-        </Typography>
+      <div className="BillSummary">
+        <div className="BillTitle">
+          {bill.title}
+        </div>
+        <div className="BillAmount">
+          ${bill.total}
+        </div>
+        </div>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      <ExpansionPanelDetails className="Payments">
+      <div className="PaymentsTitle">
+      <PaymentIcon className="PaymentHeaders"/>
+      </div>
         {bill.payments.map(payment => {
           const label = `${payment.from} owes ${payment.to} $${payment.amount}`;
           return (
@@ -127,44 +122,6 @@ markPaid(data) {
     return (
       <div>
         {this.populateBills(bills)}
-        <List component="nav" aria-label="main mailbox folders">
-          <Divider />
-          <ListItem button>
-            <ListItemLink href="#simple-list" className="TransactionSummary">
-              <ListItemText primary="Ryan owes Vanessa $10" />
-              <ListItemIcon>
-                <PaymentIcon className="PaymentIcon" />
-              </ListItemIcon>
-            </ListItemLink>
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemLink href="#simple-list" className="TransactionSummary">
-              <ListItemText primary="Vanessa owes sean $4" />
-              <ListItemIcon>
-                <PaymentIcon className="PaymentIcon" />
-              </ListItemIcon>
-            </ListItemLink>
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemLink href="#simple-list" className="TransactionSummary">
-              <ListItemText primary="Ryan owes Vanessa a cat" />
-              <ListItemIcon>
-                <PaymentIcon className="PaymentIcon" />
-              </ListItemIcon>
-            </ListItemLink>
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemLink href="#simple-list" className="TransactionSummary">
-              <ListItemText primary="Sean owes Ryan an apology" />
-              <ListItemIcon>
-                <PaymentIcon className="PaymentIcon" />
-              </ListItemIcon>
-            </ListItemLink>
-          </ListItem>
-        </List>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import SearchIcon from '@material-ui/icons/Search';
 import TransactionList from "../components/TransactionList";
+import { Divider } from '@material-ui/core'
 import '../App.css';
 
 function Transactions() {
@@ -10,6 +11,7 @@ function Transactions() {
                 <h1 className="TransactionsText">Transactions </h1>
                 <SearchIcon className="SearchTransactions" />
                 </div>
+                <Divider />
                 <TransactionList />
             </div>
         );
