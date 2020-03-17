@@ -1,8 +1,7 @@
 import cherrypy
 import urllib.request
 import json
-import base64
-import socket
+from db_manager import Payment
 
 """
     Json receiving example:
@@ -43,13 +42,18 @@ class BillExecApi(object):
         payer = JSON_object.get("payer")
         total = JSON_object.get("total")
         outstanding_payments = JSON_object.get("outstanding_payments")
-        
-        error_msg = ""
-        success = True
+
+        payment_objects = []
+        for payment in outstanding_payments:
+            payment_obj = Payment(*(payment['person'], payment['amount']), False, -1)
+            payment_objects.append(payment_obj)
+
+        error_msg = ""        
+        success = False
         
         try:
             username = cherrypy.session["username"]
-            success = self.database.add_bill(payer,username,title,total,outstanding_payments)
+            success = self.database.add_bill(payer,username,title,total,payment_objects)
         except KeyError as e:
             error_msg = "User not logged in"
         except Exception as e:
