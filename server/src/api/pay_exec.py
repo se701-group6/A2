@@ -30,4 +30,34 @@ class PayExecApi(object):
         Arguments:
             json -- check api doc for json format
         """
-        return "1"
+        
+        error_msg = ""
+
+        JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
+        is_paid = JSON_object.get("is_paid")
+        payment_id = JSON_object.get("payment_id")
+        
+        try:
+            username = cherrypy.session["username"]
+            password = cherrypy.session["password"]
+            isLoggedIn = self.database.get_password(username) == password
+
+            if (isLoggedIn == True):
+                success = self.database.make_payment(payment_id, is_paid)
+            else:
+                error_msg = "User not logged in"
+                success = False
+
+        except KeyError as e:
+            error_msg = "User not logged in"
+
+        except Exception as e:
+            print(e)
+            error_msg = "Unknown error occured"
+            
+        finally:
+            response = {
+                'success' : success,
+                'message' : error_msg
+            }
+            return json.dumps(response)
