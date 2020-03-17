@@ -21,7 +21,18 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-function populateBills(bills) {
+
+class TransactionList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bills: []
+    };
+  }
+
+
+populateBills(bills) {
   return bills.map(bill => (
     <ExpansionPanel>
       <ExpansionPanelSummary>
@@ -36,7 +47,7 @@ function populateBills(bills) {
             <div key={payment.id}>
               <FormControlLabel
                 aria-label="Acknowledge"
-                onClick={() => markPaid({
+                onClick={() => this.markPaid({
                   payment_id: payment.id,
                   is_paid: !payment.is_paid,
                 })}
@@ -52,7 +63,7 @@ function populateBills(bills) {
   ));
 }
 
-function markPaid(data) {
+markPaid(data) {
   fetch("/api/bill_exec/make_payment", {
     method: "POST",
     body: JSON.stringify(data),
@@ -67,15 +78,6 @@ function markPaid(data) {
     })
     .catch(err => console.log(err));
 }
-
-class TransactionList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bills: []
-    };
-  }
 
   componentDidMount() {
     //  actual address http://0.0.0.0:1234/api/bill_data/get_bill
@@ -98,7 +100,7 @@ class TransactionList extends React.Component {
     const { bills } = this.state;
     return (
       <div>
-        {populateBills(bills)}
+        {this.populateBills(bills)}
         <List component="nav" aria-label="main mailbox folders">
           <Divider />
           <ListItem button>
