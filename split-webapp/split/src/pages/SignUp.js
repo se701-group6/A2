@@ -5,14 +5,18 @@ import { Grid, Box, TextField, Button } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { NavLink } from "react-router-dom";
-import mainLogo from "./split2.png";
 import "../App.css";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import VpnKey from "@material-ui/icons/VpnKey";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import mainLogo from "./split2.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
     "& .MuiTextField-root": {
       margin: theme.spacing(1),
-      width: 200
+      width: 200,
+      background: "white"
     }
   },
   margin: {
@@ -48,13 +52,20 @@ function SignUp() {
                 />
                 <Box component="div" className="InnerContainer">
                   <Typography component="h3" className="SignIn">
-                    Sign In
+                    Sign Up
                   </Typography>
                   <form className={classes.root} noValidate autoComplete="off">
                     <TextField
                       id="outlined-basic"
                       label="Username"
                       variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircle />
+                          </InputAdornment>
+                        )
+                      }}
                     />
 
                     <TextField
@@ -62,22 +73,51 @@ function SignUp() {
                       type="password"
                       label="Password"
                       variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKey />
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                    <TextField
+                      id="outlined-password-input-confirm"
+                      type="password"
+                      label="Confirm Password"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKey />
+                          </InputAdornment>
+                        )
+                      }}
                     />
                   </form>
 
                   <Typography component="h3" className="LogIn">
-                    <div>
-                      <NavLink to="/home/transactions">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className={classes.margin}
-                        >
-                          Sign up
-                        </Button>
-                      </NavLink>
-                    </div>
+                    <NavLink to="/">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        borderRadius={30}
+                        className={classes.margin}
+                      >
+                        Return to Log In
+                      </Button>
+                    </NavLink>
+
+                    <NavLink to="/SignUp">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        borderRadius={30}
+                        className={classes.margin}
+                      >
+                        Sign up
+                      </Button>
+                    </NavLink>
                   </Typography>
                 </Box>
               </Box>
@@ -87,6 +127,7 @@ function SignUp() {
       </Grid>
     </React.Fragment>
   );
+  
 }
 
 export default SignUp;
