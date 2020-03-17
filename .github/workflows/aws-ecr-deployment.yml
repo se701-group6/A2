@@ -67,7 +67,7 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: taskDef.json
+          task-definition: ./.github/workflows/taskDef.json
           container-name: split
           image: ${{ steps.build-image.outputs.image }}
 
