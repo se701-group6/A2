@@ -158,7 +158,6 @@
   justify-self: flex-start;
 }
 
-
 /* Sign In */
 
 .SignInContainer {
@@ -204,4 +203,16 @@
   bottom: 40px;
   right: 40px;
   position: fixed !important;
+}
+
+.CreateBillHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 50px 100px 20px 50px;
+}
+
+.CreateBillTitle {
+  font-size: 20px;
+  color: #e071ae;
 }
