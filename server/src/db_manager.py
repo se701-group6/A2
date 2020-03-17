@@ -264,10 +264,11 @@ class DatabaseManager(object):
             conn.commit()
 
             for payment in payments:
+                print(payment)
                 c.execute("""insert into payments
                     (bill_id, payee_name, amount_owed, is_paid) 
                     values 
-                    (?, ?, ?, ?)""", (next_id[0], payment.payee_name, payment.amount_owed, payment.is_paid))
+                    (?, ?, ?, ?)""", (next_id[0], payment['person'], payment['amount'], False))
                 conn.commit()
             return True
         except Exception as e:
