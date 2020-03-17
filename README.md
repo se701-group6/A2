@@ -13,22 +13,26 @@ Future work includes extending the web app to allow budgeting and scenarios wher
 ## Requirements
 * npm for running the web app
 * CherryPy for running the server
-* Python3
+* Python 3
 
 ## Running the app locally
 
 ### Web-app
-1. Navigate to A1/split-webapp/split in your terminal
+1. Navigate to `A1/split-webapp/split` in your terminal
 2. Run `npm i` to install all the dependancies
 3. Run `npm start`
 
+The web app is built in [React](https://reactjs.org/) and uses [Material-UI](https://material-ui.com/).
+
 ### Server
-1. Navigate to A1/server
+1. Navigate to `A1/server`
 2. Make sure CherryPy is installed. You can install it with `pip install CherryPy` or `pip3 install CherryPy`
 3. Run `main.py` with Python3 e.g. `./main.py` or `python3 main.py`
 
+The back-end is built in Python and uses [CherryPy](https://cherrypy.org/) and [SQLite](https://www.sqlite.org/index.html).
+
 # Contributing
-Please read [CONTRIBUTING.md](https://github.com/SOFTENG701G1/A1/blob/master/CONTRIBUTING.md).
+To learn how to contribute, please read [CONTRIBUTING.md](https://github.com/SOFTENG701G1/A1/blob/master/CONTRIBUTING.md).
 
 # Authors
 See [List of Contributors](https://github.com/SOFTENG701G1/A1/wiki/List-of-contributors) to see who worked on this project. Remember to add yourself to this file if you also worked on it :blush:    
