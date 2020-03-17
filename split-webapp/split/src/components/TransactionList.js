@@ -36,7 +36,10 @@ function populateBills(bills) {
             <div key={payment.id}>
               <FormControlLabel
                 aria-label="Acknowledge"
-                onClick={event => event.stopPropagation()}
+                onClick={() => markPaid({
+                  payment_id: payment.id,
+                  is_paid: !payment.is_paid,
+                })}
                 onFocus={event => event.stopPropagation()}
                 control={<Checkbox checked={payment.is_paid} />}
                 label={label}
@@ -47,6 +50,22 @@ function populateBills(bills) {
       </ExpansionPanelDetails>
     </ExpansionPanel>
   ));
+}
+
+function markPaid(data) {
+  fetch("/api/bill_exec/make_payment", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => {
+      // If "this" is not called in the createBill method, you may have to create the function outside of the class (es-lint rule)
+      this.setState({});
+      return res;
+    })
+    .catch(err => console.log(err));
 }
 
 class TransactionList extends React.Component {
