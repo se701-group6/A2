@@ -263,10 +263,17 @@
 .BillSummary {
   display: flex !important;
   justify-content: space-between !important;
-  justify-items: flex-start; 
+  justify-items: flex-start;
   flex-direction: row;
   align-items: flex-start !important;
   width: 100%;
   padding: 10px;
   padding-right: 38xpx;
+}
+
+.NoTransactions {
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  padding: 10px;
 }

@@ -25,7 +25,6 @@ class TransactionList extends React.Component {
         return res.json();
       })
       .then(data => {
-        console.log(data.bills);
         // make a mapping of bills to list items here and render it below
         this.setState({
           bills: data.bills
@@ -57,7 +56,7 @@ class TransactionList extends React.Component {
   }
 
   populateBills(bills) {
-    return bills.map(bill => (
+    const transaction = bills.map(bill => (
       <ExpansionPanel className="Bills">
         <ExpansionPanelSummary>
           <div className="BillSummary">
@@ -91,6 +90,15 @@ class TransactionList extends React.Component {
         </ExpansionPanelDetails>
       </ExpansionPanel>
     ));
+
+    if (transaction.length === 0) {
+      return (
+        <div className="NoTransactions">
+          You have no outstanding transactions.
+        </div>
+      );
+    }
+    return transaction;
   }
 
   markPaid(data) {
@@ -102,7 +110,6 @@ class TransactionList extends React.Component {
       }
     })
       .then(res => {
-        // If "this" is not called in the createBill method, you may have to create the function outside of the class (es-lint rule)
         this.setPaidStatus(data.payment_id, data.is_paid);
         return res;
       })
