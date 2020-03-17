@@ -5,7 +5,11 @@ import {
   ListItemText,
   Divider,
   TextField,
-  List
+  List,
+  FormControlLabel,
+  Radio,
+  FormGroup,
+  RadioGroup
 } from "@material-ui/core";
 
 class Split extends Component {
@@ -14,6 +18,7 @@ class Split extends Component {
 
     this.state = {
       transaction: {
+        title: "title",
         users: [],
         cost: 0,
         payed: ""
@@ -28,33 +33,44 @@ class Split extends Component {
 
     this.setState({
       transaction: {
+        ...transaction,
         users: transaction.users.concat(name)
       }
     });
   }
 
+  handleChange(name) {
+    const { transaction } = this.state;
+
+    this.setState({
+      transaction: {
+        ...transaction,
+        payed: name
+      }
+    });
+  }
+
   split() {
-    const {
-      transaction: { users }
-    } = this.state;
-    const usersArray = users;
+    const { transaction } = this.state;
+    const usersArray = transaction.users;
     const cost = document.getElementById("cost").value;
+    const title = document.getElementById("title").value;
     const perPersonCost = cost / usersArray.length;
 
     const paymentArray = [];
 
     usersArray.forEach(user => {
       paymentArray.push({
-        name: user,
+        person: user,
         amount: perPersonCost
       });
     });
 
     const bill = {
-      title: "Transaction title",
-      payer: "",
+      title,
+      payer: transaction.payed,
       total: cost,
-      payments: paymentArray
+      outstanding_payments: paymentArray
     };
 
     this.createBill(bill);
@@ -81,21 +97,55 @@ class Split extends Component {
     return (
       <div>
         <div className="Transactions">
-          <div className="TransactionsTitle">
-            <h1 className="TransactionsText">New Payment </h1>
-            <TextField id="cost" placeholder="Amount Paid" />
-          </div>
+          <form>
+            <div className="CreateBillHeader">
+              <h1 className="CreateBillTitle">Create a New Payment </h1>
 
-          <List component="nav" aria-label="main mailbox folders">
-            {transaction &&
-              transaction.users.map(user => (
-                <ListItem button>
-                  <ListItemText primary={user} />
-                </ListItem>
-              ))}
-          </List>
+              <TextField
+                required
+                id="title"
+                placeholder="Title"
+                label="Transaction Title"
+              />
+              <TextField
+                required
+                id="cost"
+                placeholder="$45"
+                label="Amount Paid"
+              />
+            </div>
+            <Divider />
+          </form>
+          <FormGroup>
+            <RadioGroup>
+              {transaction.users.length !== 0 && (
+                <List component="nav" aria-label="main mailbox folders">
+                  {transaction &&
+                    transaction.users.map(user => (
+                      <ListItem button onClick={() => this.handleChange(user)}>
+                        <ListItemText primary={user} />
+                        <FormControlLabel
+                          control={<Radio />}
+                          label="Payee"
+                          checked={user === transaction.payed}
+                        />
+                      </ListItem>
+                    ))}
+                </List>
+              )}
+            </RadioGroup>
+          </FormGroup>
           <Divider />
-          <TextField id="name" placeholder="Name" type="text" />
+          <TextField
+            id="name"
+            placeholder="Name"
+            type="text"
+            onKeyUp={event => {
+              if (event.key === "Enter") {
+                this.addUser();
+              }
+            }}
+          />
           <Button
             className="AddButton"
             onClick={() => this.addUser()}
