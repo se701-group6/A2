@@ -25,7 +25,7 @@ Future work includes extending the web app to allow budgeting and scenarios wher
 The web app is built in [React](https://reactjs.org/) and uses [Material-UI](https://material-ui.com/).
 
 ### Server
-1. Navigate to `A1/server`
+1. Navigate to `A1/server/src`
 2. Make sure CherryPy is installed. You can install it with `pip install CherryPy` or `pip3 install CherryPy`
 3. Run `main.py` with Python3 e.g. `./main.py` or `python3 main.py`
 
