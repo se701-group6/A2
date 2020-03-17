@@ -267,7 +267,7 @@ class DatabaseManager(object):
                 c.execute("""insert into payments
                     (bill_id, payee_name, amount_owed, is_paid) 
                     values 
-                    (?, ?, ?, ?)""", (next_id[0], payment['person'], payment['amount'], False))
+                    (?, ?, ?, ?)""", (next_id[0], payment.payee_name, payment.amount_owed, payment.is_paid))
                 conn.commit()
             return True
         except Exception as e:
