@@ -21,7 +21,7 @@
           "containerPort": 80
         }
       ],
-      "command": ["nginx -g daemon off;"],
+      "command": ["nginx -g \"daemon off;\""],
       "linuxParameters": null,
       "cpu": 256,
       "environment": [],
