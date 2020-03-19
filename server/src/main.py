@@ -12,23 +12,26 @@ CREATE_TEST_DATA = True
 
 LISTEN_IP = "0.0.0.0"
 LISTEN_PORT = 1234
+SITE_ROOT = os.getenv("SITE_ROOT")
+if SITE_ROOT is None:
+    # if no environment variable has been set, we will assume the server is being used in development
+    SITE_ROOT = "../../split-webapp/split/build"
 
 def run_main_app():
     conf = {
         '/': {
-            'tools.staticdir.root': os.getcwd(),
+            'tools.staticdir.root': os.path.abspath(SITE_ROOT),
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': '.',
+            'tools.staticdir.index': "index.html",
+
             'tools.encode.on': True,
             'tools.encode.encoding': 'utf-8',
             'tools.sessions.on': True,
-            'tools.sessions.timeout': 60 * 1, #timeout is in minutes, * 60 to get hours
+            'tools.sessions.timeout': 60 * 1, # timeout is in minutes, * 60 to get hours
 
-            # The default session backend is in RAM. Other options are 'file',
-        },
-
-        '/static': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': 'static',
-        },
+            # The default session backend is in RAM. Other options are 'file'
+        }
     }
 
     cherrypy.site = {

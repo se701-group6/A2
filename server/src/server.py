@@ -2,28 +2,12 @@ import cherrypy
 import urllib.request
 import json
 
-SITE_ROOT = "../../split-webapp/split"
-
 class MainApp(object):
+    """This class would normally handle complex routing.
+    For now, no implementation is needed, as the object constructed from this class will simply
+    be used as a base CherryPy tree.
 
-    _cp_config = {'tools.encode.on': True,
-                  'tools.encode.encoding': 'utf-8',
-                  'tools.sessions.on' : 'True',
-                 }
-
-    @cherrypy.expose
-    def default(self, *args, **kwargs):
-        """The default page, given when we don't recognise where the request is for."""
-        page = open(SITE_ROOT + "/public/index.html", "r")
-        cherrypy.response.status = "404server"
-        return page
-
-    @cherrypy.expose
-    def index(self):
-        """
-        This method serves the client the page
-        Returns:
-            String -- returns a string in html format
-        """
-        page = open(SITE_ROOT + "/public/index.html", "r")
-        return page
+    CherryPy automatically handles differentiating between paths that correspond to files
+    and paths that correspond to API endpoints.
+    """
+    pass
