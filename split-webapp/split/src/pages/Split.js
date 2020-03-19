@@ -32,6 +32,16 @@ class Split extends Component {
     const name = document.getElementById("name").value;
     document.getElementById("name").value = "";
 
+    if (name.length === 0) {
+      alert("Please enter a valid non-empty name.");
+      return;
+    } if (transaction.users.includes(name)) {
+      alert(
+        "This person is already on the list. Please enter a different name."
+      );
+      return;
+    }
+
     this.setState({
       transaction: {
         ...transaction,
