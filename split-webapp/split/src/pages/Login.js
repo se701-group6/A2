@@ -83,7 +83,7 @@ function Login() {
                     />
                   </form>
 
-                  <Typography component="h3" className="LogIn">
+                  <Typography component="h3" className="LogIn" color="inherit">
                     <NavLink to="/home/transactions">
                       <Button
                         variant="contained"
@@ -94,17 +94,12 @@ function Login() {
                         Log In
                       </Button>
                     </NavLink>
+                    <div>
 
-                    <NavLink to="/SignUp">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        borderRadius={30}
-                        className={classes.margin}
-                      >
-                        Sign up
-                      </Button>
+                    <NavLink to="/SignUp" className="SignUpLink">
+                    If you dont have an account, sign up here
                     </NavLink>
+                    </div>
                   </Typography>
                 </Box>
               </Box>
