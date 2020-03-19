@@ -13,7 +13,6 @@ import mainLogo from "./split2.png";
 
 class Login extends Component {
   constructor(props) {
-    // assign props and give null/ appropriate values to required fields
     super(props);
     this.state = {
       username: "",
@@ -22,19 +21,14 @@ class Login extends Component {
     };
   }
 
-  // hadles live changes in the username field
   handleOnChangeUser = event => {
-    console.log("Click");
     this.state.username = event.target.value;
   };
 
-  // handles live changes in the password field
   handleOnChangePassword = event => {
-    console.log("Click");
     this.state.password = event.target.value;
   };
 
-  // handles live changes to the failedAuth field
   handleAuth = () => {
     this.setState({ failedAuth: true });
   };
@@ -42,12 +36,11 @@ class Login extends Component {
   // creates user and passes it to the api call.
   createDetails() {
     const user = this.state;
-    console.log(user);
-    this.Authenticate(user);
+    this.authenticate(user);
   }
 
-  // api call to the
-  Authenticate(user) {
+  // api call to the back-end
+  authenticate(user) {
     const { history } = this.props;
     fetch("/api/account/login", {
       method: "POST",
@@ -60,7 +53,6 @@ class Login extends Component {
         return res.json();
       })
       .then(data => {
-        console.log(data.success);
         if (data.success === true) {
           history.push("/home/transactions");
         } else {
@@ -105,7 +97,6 @@ class Login extends Component {
                       id="outlined-basic"
                       label="Username"
                       variant="filled"
-                      className="userTextField"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -121,7 +112,6 @@ class Login extends Component {
                       type="password"
                       label="Password"
                       variant="filled"
-                      className="userTextField"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
