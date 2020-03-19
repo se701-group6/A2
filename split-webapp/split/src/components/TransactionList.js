@@ -61,7 +61,7 @@ class TransactionList extends React.Component {
         <ExpansionPanelSummary>
           <div className="BillSummary">
             <div className="BillTitle">{bill.title}</div>
-            <div className="BillAmount">${bill.total}</div>
+            <div className="BillAmount">${bill.total.toFixed(2)}</div>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="Payments">
@@ -69,7 +69,7 @@ class TransactionList extends React.Component {
             <PaymentIcon className="PaymentHeaders" />
           </div>
           {bill.payments.map(payment => {
-            const label = `${payment.from} owes ${payment.to} $${payment.amount}`;
+            const label = `${payment.from} owes ${payment.to} $${payment.amount.toFixed(2)}`;
             return (
               <div key={payment.id}>
                 <FormControlLabel
