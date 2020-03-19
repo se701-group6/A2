@@ -35,7 +35,8 @@ class Split extends Component {
     if (name.length === 0) {
       alert("Please enter a valid non-empty name.");
       return;
-    } if (transaction.users.includes(name)) {
+    }
+    if (transaction.users.includes(name)) {
       alert(
         "This person is already on the list. Please enter a different name."
       );
@@ -88,6 +89,13 @@ class Split extends Component {
     };
 
     this.createBill(bill);
+
+    if (transaction.users.length < 2) {
+      alert(
+        "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
+      );
+      return;
+    }
 
     history.push("/home/transactions");
   }
