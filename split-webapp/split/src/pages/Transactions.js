@@ -8,7 +8,7 @@ function Transactions() {
   return (
     <div className="Transactions">
       <div className="TransactionsTitle">
-        <h1 className="TransactionsText">Transactions </h1>
+        <h1 className="CardTitle">Transactions </h1>
         <SearchIcon className="SearchTransactions" />
       </div>
       <Divider />

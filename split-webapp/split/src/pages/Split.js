@@ -32,6 +32,17 @@ class Split extends Component {
     const name = document.getElementById("name").value;
     document.getElementById("name").value = "";
 
+    if (name.length === 0) {
+      alert("Please enter a valid non-empty name.");
+      return;
+    }
+    if (transaction.users.includes(name)) {
+      alert(
+        "This person is already on the list. Please enter a different name."
+      );
+      return;
+    }
+
     this.setState({
       transaction: {
         ...transaction,
@@ -79,6 +90,23 @@ class Split extends Component {
 
     this.createBill(bill);
 
+    if (!title) {
+      alert("Please enter a title description for this bill.");
+      return;
+    } if (!cost) {
+      alert("Please enter an amount for this bill.");
+      return;
+    } if (transaction.users.length < 2) {
+      alert(
+        "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
+      );
+      return;
+    }
+    if (!transaction.payed) {
+      alert("Please choose a payee for this bill.");
+      return;
+    }
+
     history.push("/home/transactions");
   }
 
@@ -105,7 +133,7 @@ class Split extends Component {
         <div className="Transactions">
           <form>
             <div className="CreateBillHeader">
-              <h1 className="CreateBillTitle">Create a New Payment </h1>
+              <h1 className="CardTitle">Create a New Payment </h1>
 
               <TextField
                 required
@@ -113,12 +141,16 @@ class Split extends Component {
                 placeholder="Title"
                 label="Transaction Title"
               />
-              <TextField
-                required
-                id="cost"
-                placeholder="$45"
-                label="Amount Paid"
-              />
+              <div className="SplitLabels">
+                <div className="DollarLabel">$</div>
+                <TextField
+                  required
+                  type="number"
+                  id="cost"
+                  placeholder="45"
+                  label="Amount Paid"
+                />
+              </div>
             </div>
             <Divider />
           </form>
@@ -142,33 +174,37 @@ class Split extends Component {
             </RadioGroup>
           </FormGroup>
           <Divider />
-          <TextField
-            id="name"
-            placeholder="Name"
-            type="text"
-            onKeyUp={event => {
-              if (event.key === "Enter") {
-                this.addUser();
-              }
-            }}
-          />
+          <div className="BillPayers">
+            <TextField
+              id="name"
+              className="NoEffects"
+              placeholder="Name"
+              type="text"
+              disableUnderline="true"
+              onKeyUp={event => {
+                if (event.key === "Enter") {
+                  this.addUser();
+                }
+              }}
+            />
+            <Button
+              className="AddButton"
+              onClick={() => this.addUser()}
+              variant="contained"
+            >
+              + Add
+            </Button>
+          </div>
+
           <Button
-            className="AddButton"
-            onClick={() => this.addUser()}
+            className="splitButton"
             variant="contained"
+            color="primary"
+            onClick={() => this.split()}
           >
-            +
+            Split bill
           </Button>
         </div>
-
-        <Button
-          className="splitButton"
-          variant="contained"
-          color="primary"
-          onClick={() => this.split()}
-        >
-          Split
-        </Button>
       </div>
     );
   }
