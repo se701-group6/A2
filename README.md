@@ -1,5 +1,5 @@
 # Split
-<img src="https://i.imgur.com/qXONyae.jpg" width="400" height="250" /> 
+![split](https://user-images.githubusercontent.com/8885794/77110524-91a8a080-6a8a-11ea-9ad0-950b17ac6c93.png)
 
 When on a trip or vacation, or even just going to a restaurant, it's very likely that one person will front the bill for the group.
 
