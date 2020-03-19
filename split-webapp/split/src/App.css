@@ -277,3 +277,13 @@
   font-size: 13px;
   padding: 10px;
 }
+
+.MuiTextField-root {
+  margin: 5px !important;
+  width: 200px;
+  background: white;
+}
+
+.margin {
+  margin: 5px !important;
+}
