@@ -11,6 +11,7 @@ import {
   FormGroup,
   RadioGroup
 } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 class Split extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class Split extends Component {
 
   split() {
     const { transaction } = this.state;
+    const { history } = this.props;
     const usersArray = transaction.users;
     const cost = document.getElementById("cost").value;
     const title = document.getElementById("title").value;
@@ -60,10 +62,12 @@ class Split extends Component {
     const paymentArray = [];
 
     usersArray.forEach(user => {
-      paymentArray.push({
-        person: user,
-        amount: perPersonCost
-      });
+      if (user !== transaction.payed) {
+        paymentArray.push({
+          person: user,
+          amount: perPersonCost
+        });
+      }
     });
 
     const bill = {
@@ -74,6 +78,8 @@ class Split extends Component {
     };
 
     this.createBill(bill);
+
+    history.push("/home/transactions");
   }
 
   createBill(data) {
@@ -167,5 +173,9 @@ class Split extends Component {
     );
   }
 }
+
+Split.propTypes = {
+  history: PropTypes.node.isRequired
+};
 
 export default Split;
