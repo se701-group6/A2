@@ -21,7 +21,7 @@
           "containerPort": 80
         }
       ],
-      "command": ["nginx -g \"daemon off;\""],
+      "command": ["python3 /app/main.py"],
       "linuxParameters": null,
       "cpu": 256,
       "environment": [],
@@ -36,7 +36,7 @@
       "memoryReservation": 512,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "nginx:1.16.0-alpine",
+      "image": "python:3.9.0a4-buster",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
