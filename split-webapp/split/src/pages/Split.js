@@ -95,6 +95,9 @@ class Split extends Component {
         "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
       );
       return;
+    } if (!transaction.payed) {
+      alert("Please choose a payee for this bill.");
+      return;
     }
 
     history.push("/home/transactions");
