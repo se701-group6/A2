@@ -9,6 +9,26 @@ import {
 import PaymentIcon from "@material-ui/icons/Payment";
 import "../App.css";
 
+function calculateTotalPaid(bill) {
+  let runningTotal = 0;
+  bill.payments.forEach(payment => {
+    if (payment.is_paid) {
+      runningTotal += payment.amount;
+    }
+  });
+
+  return runningTotal;
+}
+
+function calculateTotalOutstanding(bill) {
+  let total = 0;
+  bill.payments.forEach(payment => {
+    total += payment.amount;
+  });
+
+  return total;
+}
+
 class TransactionList extends React.Component {
   constructor(props) {
     super(props);
@@ -19,13 +39,11 @@ class TransactionList extends React.Component {
   }
 
   componentDidMount() {
-    //  actual address http://0.0.0.0:1234/api/bill_data/get_bill
     fetch("/api/bill_data/get_bills") // temp
       .then(res => {
         return res.json();
       })
       .then(data => {
-        // make a mapping of bills to list items here and render it below
         this.setState({
           bills: data.bills
         });
@@ -67,6 +85,20 @@ class TransactionList extends React.Component {
         <ExpansionPanelDetails className="Payments">
           <div className="PaymentsTitle">
             <PaymentIcon className="PaymentHeaders" />
+            <div className="RunningTotal">
+              <div className="BillTitle Percentage">
+                (
+                {Math.round(
+                  (calculateTotalPaid(bill) / calculateTotalOutstanding(bill)) *
+                    100
+                )}
+                %){" "}
+              </div>
+              <div className="BillTitle">
+                ${calculateTotalPaid(bill).toFixed(2)}/$
+                {calculateTotalOutstanding(bill).toFixed(2)}
+              </div>
+            </div>
           </div>
           {bill.payments.map(payment => {
             const label = `${payment.from} owes ${payment.to} $${payment.amount.toFixed(2)}`;
