@@ -9,7 +9,12 @@ COPY ./split-webapp/split /app
 RUN npm run build
 
 # production environment
-FROM nginx:1.16.0-alpine
-COPY --from=build /app/build /usr/share/nginx/html
+FROM python:3.9.0a4-buster
+WORKDIR /app
+ENV SITE_ROOT ./static
+ENV SITE_PORT 80
+RUN pip install cherrypy
+COPY ./server/src /app
+COPY --from=build /app/build /app/static
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["python3", "/app/main.py"]
