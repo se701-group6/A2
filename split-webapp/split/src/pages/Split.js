@@ -90,12 +90,19 @@ class Split extends Component {
 
     this.createBill(bill);
 
-    if (transaction.users.length < 2) {
+    if (!title) {
+      alert("Please enter a title description for this bill.");
+      return;
+    } if (!cost) {
+      alert("Please enter an amount for this bill.");
+      return;
+    } if (transaction.users.length < 2) {
       alert(
         "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
       );
       return;
-    } if (!transaction.payed) {
+    }
+    if (!transaction.payed) {
       alert("Please choose a payee for this bill.");
       return;
     }
