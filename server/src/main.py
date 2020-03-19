@@ -11,7 +11,9 @@ DB_NAME = "webapp_data.db"
 CREATE_TEST_DATA = True
 
 LISTEN_IP = "0.0.0.0"
-LISTEN_PORT = 1234
+LISTEN_PORT = int(os.getenv("SITE_PORT"))
+if LISTEN_PORT is None:
+    LISTEN_PORT = 1234
 SITE_ROOT = os.getenv("SITE_ROOT")
 if SITE_ROOT is None:
     # if no environment variable has been set, we will assume the server is being used in development
