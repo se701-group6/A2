@@ -68,7 +68,7 @@
   color: #79a2f4;
 }
 
-.TransactionsText {
+.CardTitle {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
   color: #e071ae;
@@ -189,9 +189,13 @@
 }
 
 .AddButton {
-  border-radius: 50% !important;
+  border-radius: 3% !important;
   min-width: 0px !important;
-  margin: 10px auto !important;
+  background-color: #6fa2fb !important;
+  color: white !important;
+  height: 80%;
+  justify-self: center;
+  align-self: center;
 }
 
 #name {
@@ -200,16 +204,21 @@
 }
 
 .splitButton {
-  bottom: 40px;
-  right: 40px;
-  position: fixed !important;
+  background-color: #e071ae !important;
+  padding: 15px !important;
+  border-radius: 2px !important;
+  width: 100%;
+  align-self: center;
+  margin-top: 50px;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .CreateBillHeader {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 50px 100px 20px 50px;
+  padding: 10px 100px 20px 0px;
 }
 
 .CreateBillTitle {
@@ -286,4 +295,29 @@
 
 .margin {
   margin: 5px !important;
+}
+
+.SplitLabels {
+  display: flex;
+  flex-direction: row;
+}
+
+.DollarLabel {
+  font-size: 16px;
+  margin-top: 22px;
+  padding-right: 2px;
+  color: #3e8ef6;
+}
+
+.BillPayers {
+  justify-content: space-between;
+  padding: 0 10px 0 10px;
+  flex-direction: row;
+  display: flex;
+}
+
+.NoEffects {
+  text-decoration: none !important;
+  border: none !important;
+  width: 90%;
 }

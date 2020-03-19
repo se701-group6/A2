@@ -105,7 +105,7 @@ class Split extends Component {
         <div className="Transactions">
           <form>
             <div className="CreateBillHeader">
-              <h1 className="CreateBillTitle">Create a New Payment </h1>
+              <h1 className="CardTitle">Create a New Payment </h1>
 
               <TextField
                 required
@@ -113,12 +113,16 @@ class Split extends Component {
                 placeholder="Title"
                 label="Transaction Title"
               />
-              <TextField
-                required
-                id="cost"
-                placeholder="$45"
-                label="Amount Paid"
-              />
+              <div className="SplitLabels">
+                <div className="DollarLabel">$</div>
+                <TextField
+                  required
+                  type="number"
+                  id="cost"
+                  placeholder="45"
+                  label="Amount Paid"
+                />
+              </div>
             </div>
             <Divider />
           </form>
@@ -142,33 +146,37 @@ class Split extends Component {
             </RadioGroup>
           </FormGroup>
           <Divider />
-          <TextField
-            id="name"
-            placeholder="Name"
-            type="text"
-            onKeyUp={event => {
-              if (event.key === "Enter") {
-                this.addUser();
-              }
-            }}
-          />
+          <div className="BillPayers">
+            <TextField
+              id="name"
+              className="NoEffects"
+              placeholder="Name"
+              type="text"
+              disableUnderline="true"
+              onKeyUp={event => {
+                if (event.key === "Enter") {
+                  this.addUser();
+                }
+              }}
+            />
+            <Button
+              className="AddButton"
+              onClick={() => this.addUser()}
+              variant="contained"
+            >
+              + Add
+            </Button>
+          </div>
+
           <Button
-            className="AddButton"
-            onClick={() => this.addUser()}
+            className="splitButton"
             variant="contained"
+            color="primary"
+            onClick={() => this.split()}
           >
-            +
+            Split bill
           </Button>
         </div>
-
-        <Button
-          className="splitButton"
-          variant="contained"
-          color="primary"
-          onClick={() => this.split()}
-        >
-          Split
-        </Button>
       </div>
     );
   }
