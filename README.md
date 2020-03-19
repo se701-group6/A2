@@ -1,5 +1,6 @@
 # Split
-![Split Logo](https://i.imgur.com/qXONyae.jpg)
+![split](https://user-images.githubusercontent.com/8885794/77110524-91a8a080-6a8a-11ea-9ad0-950b17ac6c93.png)
+
 When on a trip or vacation, or even just going to a restaurant, it's very likely that one person will front the bill for the group.
 
 It is an impossible task to keep all expenses accounted for. Hence, our team decided to make a web application which keeps track of all payments. In the end, the aim is to calculate and display what each member owes based on how much they have spent during the trip and on what things.
