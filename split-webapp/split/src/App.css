@@ -205,7 +205,6 @@
   position: fixed !important;
 }
 
-
 .CreateBillHeader {
   display: flex;
   flex-direction: row;
@@ -278,7 +277,6 @@
   font-size: 13px;
   padding: 10px;
 }
-<<<<<<< HEAD
 
 .MuiTextField-root {
   margin: 5px !important;
@@ -288,8 +286,8 @@
 
 .margin {
   margin: 5px !important;
-=======
-.navLink {
+}
+
+.SignUpLink {
   color: white;
->>>>>>> Changed css file to make sign up link white
 }

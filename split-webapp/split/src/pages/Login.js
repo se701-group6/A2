@@ -96,7 +96,7 @@ function Login() {
                     </NavLink>
                     <div>
 
-                    <NavLink to="/SignUp" className="navLink">
+                    <NavLink to="/SignUp" className="SignUpLink">
                     If you dont have an account, sign up here
                     </NavLink>
                     </div>
@@ -110,7 +110,5 @@ function Login() {
     </React.Fragment>
   );
 }
-
-
 
 export default Login;
