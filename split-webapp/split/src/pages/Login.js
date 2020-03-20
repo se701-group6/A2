@@ -22,24 +22,27 @@ class Login extends Component {
   }
 
   handleOnChangeUser = event => {
-    this.state.username = event.target.value;
+    this.setState({ username: event.target.value });
   };
 
   handleOnChangePassword = event => {
-    this.state.password = event.target.value;
+    this.setState({ password: event.target.value });
   };
 
   handleAuth = () => {
     this.setState({ failedAuth: true });
   };
 
-  // creates user and passes it to the api call.
   createDetails() {
-    const user = this.state;
+    const { username, password, failedAuth } = this.state;
+    const user = {
+      username,
+      password,
+      failedAuth
+    };
     this.authenticate(user);
   }
 
-  // api call to the back-end
   authenticate(user) {
     const { history } = this.props;
     fetch("/api/account/login", {

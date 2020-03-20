@@ -17,10 +17,6 @@ function Home() {
             <button type="button">Sign Out</button>
           </NavLink>
           <NavList />
-          {/* <ul className="">
-        <NavLink className="NavText" to="/home/transactions"><button className="NavOptions">Transactions</button></NavLink>
-        <NavLink className="NavText" to="/home/split"><button className="NavOptions">Split</button></NavLink>
-        </ul> */}
         </div>
         <div className="HomeScreen">
           <Route path="/home/transactions" component={Transactions} />
