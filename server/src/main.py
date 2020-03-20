@@ -53,9 +53,9 @@ def run_main_app():
                             'engine.autoreload.on': True,
                            })
 
-    print("========================================")
-    print("           Softeng 701 Server")
-    print("========================================")
+    print("======================================")
+    print("         Softeng 701 Server")
+    print("======================================")
 
     cherrypy.engine.start()
 
