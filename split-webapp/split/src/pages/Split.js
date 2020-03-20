@@ -13,6 +13,20 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 
+const createBill = data => {
+  fetch("/api/bill_exec/create_bill", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(err => console.log(err));
+};
+
 class Split extends Component {
   constructor(props) {
     super(props);
@@ -88,15 +102,17 @@ class Split extends Component {
       outstanding_payments: paymentArray
     };
 
-    this.createBill(bill);
+    createBill(bill);
 
     if (!title) {
       alert("Please enter a title description for this bill.");
       return;
-    } if (!cost) {
+    }
+    if (!cost) {
       alert("Please enter an amount for this bill.");
       return;
-    } if (transaction.users.length < 2) {
+    }
+    if (transaction.users.length < 2) {
       alert(
         "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
       );
@@ -108,22 +124,6 @@ class Split extends Component {
     }
 
     history.push("/home/transactions");
-  }
-
-  createBill(data) {
-    fetch("/api/bill_exec/create_bill", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => {
-        // If "this" is not called in the createBill method, you may have to create the function outside of the class (es-lint rule)
-        this.setState({});
-        return res;
-      })
-      .catch(err => console.log(err));
   }
 
   render() {

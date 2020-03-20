@@ -39,7 +39,7 @@ class TransactionList extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/bill_data/get_bills") // temp
+    fetch("/api/bill_data/get_bills")
       .then(res => {
         return res.json();
       })
@@ -79,7 +79,7 @@ class TransactionList extends React.Component {
         <ExpansionPanelSummary>
           <div className="BillSummary">
             <div className="BillTitle">{bill.title}</div>
-            <div className="BillAmount">${bill.total.toFixed(2)}</div>
+            <div className="BillAmount">${Number(bill.total).toFixed(2)}</div>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className="Payments">
@@ -101,7 +101,9 @@ class TransactionList extends React.Component {
             </div>
           </div>
           {bill.payments.map(payment => {
-            const label = `${payment.from} owes ${payment.to} $${payment.amount.toFixed(2)}`;
+            const label = `${payment.from} owes ${payment.to} $${Number(
+              payment.amount
+            ).toFixed(2)}`;
             return (
               <div key={payment.id}>
                 <FormControlLabel

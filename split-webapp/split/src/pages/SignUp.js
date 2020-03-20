@@ -31,8 +31,8 @@ class SignUp extends Component {
     this.setState({ user, failed: false });
   };
 
-  // Creates a new user JSON and sends to the create account end point. On success routes
-  // user to the create a bill page. User should get logged in as well as session created.
+  // Creates a new user JSON and sends to the create account end point.
+  // User should get logged in as well as session created.
 
   createUser() {
     const { user } = this.state;
@@ -58,8 +58,6 @@ class SignUp extends Component {
         })
         .then(data => {
           if (data.success === true) {
-            // If the POST returns success, route user to the split page
-            // eslint-ignore
             history.push("/home/split");
           } else {
             this.setState({
@@ -72,14 +70,10 @@ class SignUp extends Component {
     }
   }
 
-  // Checks that the two passwords match
-
   validatePassword() {
     const { user } = this.state;
     return user.password === user.confPassword;
   }
-
-  // Check the username is non empty
 
   validateUsername() {
     const { user } = this.state;
