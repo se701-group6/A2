@@ -53,12 +53,35 @@ class BillExecApi(object):
         
         try:
             username = cherrypy.session["username"]
+            #Bill has a title
+            if ((len(title) < 1)):
+                raise ValueError("no title","title")
+            #Bill has a payer
+            if ((len(payer) < 1)):
+                raise ValueError("no payer","payer")
+            #Bill has a total greater than 0
+            if (float(total)<=0):
+                raise ValueError("bad total","total")
+            #Bill has someone who needs to pay their share
+            if (len(payment_objects) < 1):
+                raise ValueError("bill only has one person","split")
+            
             success = self.database.add_bill(payer,username,title,total,payment_objects)
         except KeyError as e:
             error_msg = "User not logged in"
         except Exception as e:
-            print(e)
-            error_msg = "Unknown error occured"
+            #add the appropriate message to return
+            if(e.args[1]=="title"):
+                error_msg = "Title required "
+            elif(e.args[1]=="payer"):
+                error_msg = "No payer for bill "
+            elif(e.args[1]=="total"):
+                error_msg = "Incorrect total, total must be greater than 0 "
+            elif(e.args[1]=="split"):
+                error_msg = "Cannot split a bill with one person "
+            else:
+                print(e)
+                error_msg = "Unknown error occured"
             success = False
         finally:
             response = {
