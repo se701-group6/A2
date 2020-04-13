@@ -10,6 +10,8 @@ import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
+import { getCookie } from "../utils/helpers";
+import { UserContext } from "../context/UserContext";
 
 class Login extends Component {
   constructor(props) {
@@ -33,36 +35,40 @@ class Login extends Component {
     this.setState({ failedAuth: true });
   };
 
-  createDetails() {
+  createDetails(setUsername) {
     const { username, password, failedAuth } = this.state;
     const user = {
       username,
       password,
       failedAuth
     };
-    this.authenticate(user);
+    this.authenticate(user, setUsername);
   }
 
-  authenticate(user) {
+  authenticate(user, setUsername) {
     const { history } = this.props;
     fetch("/api/account/login", {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      credentials: "same-origin"
     })
       .then(res => {
         return res.json();
       })
       .then(data => {
+        const username = getCookie("username");
+        setUsername(username);
+
         if (data.success === true) {
           history.push("/home/transactions");
         } else {
           this.handleAuth();
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {});
   }
 
   render() {
@@ -126,17 +132,24 @@ class Login extends Component {
                     />
 
                     <Typography component="h3" className="LogIn">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        borderRadius={30}
-                        className="margin"
-                        onClick={() => {
-                          this.createDetails();
+                      <UserContext.Consumer>
+                        {({ setUsername }) => {
+                          return (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              borderRadius={30}
+                              className="margin"
+                              onClick={() => {
+                                this.createDetails(setUsername);
+                              }}
+                            >
+                              Log In
+                            </Button>
+                          );
                         }}
-                      >
-                        Log In
-                      </Button>
+                      </UserContext.Consumer>
+
                       <div>
                         <NavLink to="/SignUp" className="SignUpLink">
                           If you dont have an account, sign up here

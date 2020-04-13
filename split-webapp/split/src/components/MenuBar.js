@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { UserContext } from "../context/UserContext";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,52 +39,58 @@ export default function MenuBar() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" className="AppBar" color="white">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="pink"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title} />
-          {auth && (
-            <div className="MenuBar">
-              <h3 className="ProfileName">David Dollar</h3>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="pink"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+    <UserContext.Consumer>
+      {({ username }) => {
+        return (
+          <div className={classes.root}>
+            <AppBar position="static" className="AppBar" color="white">
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  className={classes.menuButton}
+                  color="pink"
+                  aria-label="menu"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" className={classes.title} />
+                {auth && (
+                  <div className="MenuBar">
+                    <h3 className="ProfileName">{username}</h3>
+                    <IconButton
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="pink"
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right"
+                      }}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleClose}>My account</MenuItem>
+                    </Menu>
+                  </div>
+                )}
+              </Toolbar>
+            </AppBar>
+          </div>
+        );
+      }}
+    </UserContext.Consumer>
   );
 }
