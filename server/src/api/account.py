@@ -63,6 +63,10 @@ class AccountApi(object):
             isLoggedIn = self.database.get_password(username) == password
             cherrypy.session["username"] = username
             cherrypy.session["password"] = password
+
+            cookie = cherrypy.response.cookie
+            cookie["username"] = username
+            cookie["username"]["max-age"] = 3600
         except Exception as e:
             isLoggedIn = False
             print(e)
