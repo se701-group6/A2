@@ -63,12 +63,20 @@ class BillExecApi(object):
             #Bill has a title
             if ((len(title) < 1)):
                 raise InvalidDataException("title")
+
             #Bill has a payer
             if ((len(payer) < 1)):
                 raise InvalidDataException("payer")
+
             #Bill has a total greater than 0
-            if (double(total) <= 0): #len(total)==0 or 
+            try: 
+                float(total)
+            except ValueError as e:
                 raise InvalidDataException("total")
+
+            if (float(total) <= 0):
+                raise InvalidDataException("total")
+
             #Bill has someone who needs to pay their share
             if (len(payment_objects) < 1):
                 raise InvalidDataException("split")
@@ -76,7 +84,6 @@ class BillExecApi(object):
             success = self.database.add_bill(payer,username,title,total,payment_objects)
         except InvalidDataException as e:
             #add the appropriate message to return
-            print(e)
             if(e.args[0]=="title"):
                 error_msg = "Title required "
             elif(e.args[0]=="payer"):
@@ -90,6 +97,10 @@ class BillExecApi(object):
             else:
                 print(e)
                 error_msg = "Unknown error occured"
+            success = False
+        except Exception as e:
+            print(e)
+            error_msg = "Unknown error occured"
             success = False
         finally:
             response = {
