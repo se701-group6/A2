@@ -21,14 +21,15 @@ class SignUp extends Component {
         password: "",
         confPassword: ""
       },
-      failed: false
+      failed: false,
+      badpwd: false
     };
   }
 
   handleTextChange = event => {
     const { user } = this.state;
     user[event.target.name] = event.target.value;
-    this.setState({ user, failed: false });
+    this.setState({ user, failed: false, badpwd: false });
   };
 
   // Creates a new user JSON and sends to the create account end point.
@@ -38,11 +39,23 @@ class SignUp extends Component {
     const { user } = this.state;
     const { history } = this.props;
 
-    if (!(this.validateUsername() && this.validatePassword())) {
+    if (!this.validateUsername()) {
       this.setState({
         failed: true
       });
-    } else {
+    }
+
+    if (user.password.length === 0) {
+      this.setState({
+        badpwd: true
+      });
+    }
+
+    if (
+      this.validatePassword &&
+      !user.password.length === 0 &&
+      this.validatePassword()
+    ) {
       fetch("api/account/register", {
         method: "POST",
         body: JSON.stringify({
@@ -81,7 +94,7 @@ class SignUp extends Component {
   }
 
   render() {
-    const { failed, user } = this.state;
+    const { failed, user, badpwd } = this.state;
     return (
       <React.Fragment key="SignUpKey">
         <CssBaseline />
@@ -116,10 +129,10 @@ class SignUp extends Component {
                         label="Username"
                         name="username"
                         variant="filled"
-                        error={failed || !this.validatePassword()}
+                        error={failed}
                         helperText={
-                          failed || !this.validatePassword()
-                            ? "Invalid Username or Password. Cannot be empty or in use. Passwords must match"
+                          failed
+                            ? "Invalid Username. Cannot be empty or in use."
                             : ""
                         }
                         onChange={this.handleTextChange}
@@ -133,6 +146,9 @@ class SignUp extends Component {
                       />
 
                       <TextField
+                        required
+                        error={badpwd}
+                        helperText={badpwd ? "Password required" : ""}
                         id="outlined-password-input"
                         name="password"
                         type="password"
@@ -149,6 +165,13 @@ class SignUp extends Component {
                         }}
                       />
                       <TextField
+                        required
+                        error={!this.validatePassword()}
+                        helperText={
+                          !this.validatePassword()
+                            ? "Passwords do not match"
+                            : ""
+                        }
                         id="outlined-password-input-confirm"
                         name="confPassword"
                         type="password"
