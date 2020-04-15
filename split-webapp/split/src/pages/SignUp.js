@@ -22,21 +22,32 @@ class SignUp extends Component {
         confPassword: ""
       },
       failed: false,
-      badpwd: false
+      validation: {
+        validPassword: true,
+        matchPassword: true
+      }
     };
   }
 
   handleTextChange = event => {
-    const { user } = this.state;
+    const { user, validation } = this.state;
     user[event.target.name] = event.target.value;
-    this.setState({ user, failed: false, badpwd: false });
+    validation.validPassword = true;
+    this.setState({ user, failed: false, validation });
+  };
+
+  handleBlurChange = () => {
+    const { validation } = this.state;
+    validation.matchPassword = this.validatePassword();
+    validation.validPassword = !this.emptyPassword();
+    this.setState({ validation });
   };
 
   // Creates a new user JSON and sends to the create account end point.
   // User should get logged in as well as session created.
 
   createUser() {
-    const { user } = this.state;
+    const { user, validation } = this.state;
     const { history } = this.props;
 
     if (!this.validateUsername()) {
@@ -45,15 +56,16 @@ class SignUp extends Component {
       });
     }
 
-    if (user.password.length === 0) {
+    if (this.emptyPassword()) {
+      validation.validPassword = false;
       this.setState({
-        badpwd: true
+        validation
       });
     }
 
     if (
-      this.validatePassword &&
-      !user.password.length === 0 &&
+      this.validateUsername &&
+      !this.emptyPassword &&
       this.validatePassword()
     ) {
       fetch("api/account/register", {
@@ -88,13 +100,18 @@ class SignUp extends Component {
     return user.password === user.confPassword;
   }
 
+  emptyPassword() {
+    const { user } = this.state;
+    return user.password.length === 0;
+  }
+
   validateUsername() {
     const { user } = this.state;
     return user.username !== "";
   }
 
   render() {
-    const { failed, user, badpwd } = this.state;
+    const { failed, user, validation } = this.state;
     return (
       <React.Fragment key="SignUpKey">
         <CssBaseline />
@@ -147,8 +164,11 @@ class SignUp extends Component {
 
                       <TextField
                         required
-                        error={badpwd}
-                        helperText={badpwd ? "Password required" : ""}
+                        error={!validation.validPassword}
+                        helperText={
+                          !validation.validPassword ? "Password required" : ""
+                        }
+                        onBlur={this.handleBlurChange}
                         id="outlined-password-input"
                         name="password"
                         type="password"
@@ -166,12 +186,13 @@ class SignUp extends Component {
                       />
                       <TextField
                         required
-                        error={!this.validatePassword()}
+                        error={!validation.matchPassword}
                         helperText={
-                          !this.validatePassword()
+                          !validation.matchPassword
                             ? "Passwords do not match"
                             : ""
                         }
+                        onBlur={this.handleBlurChange}
                         id="outlined-password-input-confirm"
                         name="confPassword"
                         type="password"
