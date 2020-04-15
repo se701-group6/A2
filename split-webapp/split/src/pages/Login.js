@@ -69,94 +69,94 @@ class Login extends Component {
     const { failedAuth } = this.state;
     return (
       <React.Fragment key="LoginKey">
-        <CssBaseline />
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100vh" }}
-        >
-          <Grid item xs={0}>
-            <Container fixed justifyContent="center">
-              <Container fixed>
-                <Box
-                  component="div"
-                  borderRadius={12}
-                  className="SignInContainer"
-                >
-                  <img
-                    src={mainLogo}
-                    style={{ width: "50%", marginTop: "10%" }}
-                    alt="Main logo for login"
-                  />
-                  <Box component="div" className="InnerContainer">
-                    <Typography component="h3" className="SignIn">
-                      Sign In
-                    </Typography>
-
-                    <TextField
-                      id="outlined-basic"
-                      label="Username"
-                      variant="filled"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <AccountCircle />
-                          </InputAdornment>
-                        )
-                      }}
-                      onChange={this.handleOnChangeUser}
+        <form onSubmit={this.createDetails()}>
+          <CssBaseline />
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <Grid item xs={0}>
+              <Container fixed justifyContent="center">
+                <Container fixed>
+                  <Box
+                    component="div"
+                    borderRadius={12}
+                    className="SignInContainer"
+                  >
+                    <img
+                      src={mainLogo}
+                      style={{ width: "50%", marginTop: "10%" }}
+                      alt="Main logo for login"
                     />
+                    <Box component="div" className="InnerContainer">
+                      <Typography component="h3" className="SignIn">
+                        Sign In
+                      </Typography>
 
-                    <TextField
-                      id="outlined-password-input"
-                      type="password"
-                      label="Password"
-                      variant="filled"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <VpnKey />
-                          </InputAdornment>
-                        )
-                      }}
-                      onChange={this.handleOnChangePassword}
-                    />
-
-                    <Typography component="h3" className="LogIn">
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        borderRadius={30}
-                        className="margin"
-                        onClick={() => {
-                          this.createDetails();
+                      <TextField
+                        id="outlined-basic"
+                        label="Username"
+                        variant="filled"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <AccountCircle />
+                            </InputAdornment>
+                          )
                         }}
-                      >
-                        Log In
-                      </Button>
-                      <div>
-                        <NavLink to="/SignUp" className="SignUpLink">
-                          If you dont have an account, sign up here
-                        </NavLink>
-                      </div>
-                      <Box
-                        component="div"
-                        visibility={failedAuth ? "visible" : "hidden"}
-                        marginTop="50px"
-                        color="white"
-                      >
-                        Incorrect Username or Password
-                      </Box>
-                    </Typography>
+                        onChange={this.handleOnChangeUser}
+                      />
+
+                      <TextField
+                        id="outlined-password-input"
+                        type="password"
+                        label="Password"
+                        variant="filled"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <VpnKey />
+                            </InputAdornment>
+                          )
+                        }}
+                        onChange={this.handleOnChangePassword}
+                      />
+
+                      <Typography component="h3" className="LogIn">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          borderRadius={30}
+                          className="margin"
+                        >
+                          Log In
+                        </Button>
+                        <div>
+                          <NavLink to="/SignUp" className="SignUpLink">
+                            If you dont have an account, sign up here
+                          </NavLink>
+                        </div>
+                        <Box
+                          component="div"
+                          visibility={failedAuth ? "visible" : "hidden"}
+                          marginTop="50px"
+                          color="white"
+                        >
+                          Incorrect Username or Password
+                        </Box>
+                      </Typography>
+                    </Box>
                   </Box>
-                </Box>
+                </Container>
               </Container>
-            </Container>
+            </Grid>
           </Grid>
-        </Grid>
+        </form>
       </React.Fragment>
     );
   }
