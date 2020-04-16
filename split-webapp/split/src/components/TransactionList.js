@@ -4,8 +4,10 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Link
 } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import PaymentIcon from "@material-ui/icons/Payment";
 import styles from "./TransactionList.module.css";
 
@@ -86,7 +88,10 @@ class TransactionList extends React.Component {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={styles.payments}>
           <div className={styles.paymentsTitle}>
-            <PaymentIcon className={styles.paymentHeaders} />
+            <div className={styles.paymentHeaders}>
+              <Link href="#/home/split"><EditIcon /></Link>
+              <PaymentIcon />
+            </div>
             <div className={styles.runningTotal}>
               <div className={`${styles.billTitle} ${styles.percentage}`}>
                 (
