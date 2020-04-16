@@ -64,9 +64,9 @@ class SignUp extends Component {
     }
 
     if (
-      this.validateUsername &&
-      !this.emptyPassword &&
-      this.validatePassword()
+      this.validateUsername() === true &&
+      this.emptyPassword() === false &&
+      this.validatePassword() === true
     ) {
       fetch("api/account/register", {
         method: "POST",
