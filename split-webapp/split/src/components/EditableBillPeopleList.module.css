@@ -6,3 +6,11 @@
 .personRow {
   display: flex;
 }
+
+.peopleListDragHelper {
+  list-style: none;
+}
+
+.dragHandle {
+  cursor: grab;
+}

@@ -47,7 +47,7 @@ const PersonRow = SortableElement(
     /* eslint-disable react/jsx-props-no-spreading */
     <li {...other}>
       <div className={styles.personRow}>
-        <DragHandle />
+        <DragHandle className={styles.dragHandle} />
 
         <TextField value={person.name} onChange={onNameChange} fullWidth />
 
