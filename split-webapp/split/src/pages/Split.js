@@ -141,7 +141,7 @@ class Split extends Component {
 
     const uniqueNameSet = new Set();
     for (const userId of users.allIds) {
-      const name = users.byId[userId].name;
+      const { name } = users.byId[userId];
       if (!name) {
         alert("Please enter a name for each person");
         return;
