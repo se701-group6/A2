@@ -27,7 +27,6 @@ class AccountApi(object):
         cookie["username"] = username
         cookie["username"]["path"] = "/"
         cookie["username"]["max-age"] = 3600
-    setUsernameCookie.exposed = True
 
     @cherrypy.expose
     def register(self):
