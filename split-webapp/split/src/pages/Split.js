@@ -94,6 +94,24 @@ class Split extends Component {
     }
   };
 
+  handlePeopleSwapOrder = (oldIndex, newIndex) => {
+    const { transaction } = this.state;
+
+    const newOrder = transaction.users.allIds.slice();
+    const item = newOrder.splice(oldIndex, 1)[0];
+    newOrder.splice(newIndex, 0, item);
+
+    this.setState({
+      transaction: {
+        ...transaction,
+        users: {
+          ...transaction.users,
+          allIds: newOrder
+        }
+      }
+    });
+  };
+
   handleNameChange = (userId, newName) => {
     const { transaction } = this.state;
 
@@ -220,6 +238,7 @@ class Split extends Component {
             onPayeeChange={this.handlePayeeChange}
             onNameChange={this.handleNameChange}
             onRemovePerson={this.removeUser}
+            onSwapOrder={this.handlePeopleSwapOrder}
           />
 
           <Button onClick={this.addUser} fullWidth startIcon={<AddIcon />}>

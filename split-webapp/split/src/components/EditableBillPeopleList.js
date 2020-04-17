@@ -7,35 +7,67 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
 import ClearIcon from "@material-ui/icons/Clear";
+import DragHandleIcon from "@material-ui/icons/DragHandle";
+
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle
+} from "react-sortable-hoc";
 
 import styles from "./EditableBillPeopleList.module.css";
 
-const PersonRow = ({
-  person,
-  hasPaid,
-  onTogglePaid,
-  onNameChange,
-  onRemove
-}) => (
-  <li>
-    <div className={styles.personRow}>
-      <TextField value={person.name} onChange={onNameChange} fullWidth />
+const DragHandle = SortableHandle(props => (
+  // Wrapper span element to provide a
+  // nice comfortable square area that can
+  // accept drag events, and to center the icon.
+  //
+  // react-sortable-hoc need to pass in some
+  // props to the span, so we spread it here.
+  /* eslint-disable react/jsx-props-no-spreading */
+  //
+  // We provide a zero tab index so that the span
+  // can be tabbed into and be used with the keyboard
+  // shortcuts to sort the list:
+  //   space = pick up / drop
+  //   arrows = move up / down
+  //   escape = cancel
+  /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+  <span {...props} tabIndex={0}>
+    <DragHandleIcon />
+  </span>
+  /* eslint-enable react/jsx-props-no-spreading */
+  /* eslint-enable jsx-a11y/no-noninteractive-tabindex */
+));
 
-      <ToggleButtonGroup
-        value={hasPaid ? "payee" : "payer"}
-        size="small"
-        exclusive
-        onChange={onTogglePaid}
-      >
-        <ToggleButton value="payer">Payer</ToggleButton>
-        <ToggleButton value="payee">Payee</ToggleButton>
-      </ToggleButtonGroup>
+const PersonRow = SortableElement(
+  ({ person, hasPaid, onTogglePaid, onNameChange, onRemove, ...other }) => (
+    // react-sortable-hoc needs to pass in some
+    // props to the <li>, so we spread it here.
+    /* eslint-disable react/jsx-props-no-spreading */
+    <li {...other}>
+      <div className={styles.personRow}>
+        <DragHandle />
 
-      <Button onClick={onRemove}>
-        <ClearIcon />
-      </Button>
-    </div>
-  </li>
+        <TextField value={person.name} onChange={onNameChange} fullWidth />
+
+        <ToggleButtonGroup
+          value={hasPaid ? "payee" : "payer"}
+          size="small"
+          exclusive
+          onChange={onTogglePaid}
+        >
+          <ToggleButton value="payer">Payer</ToggleButton>
+          <ToggleButton value="payee">Payee</ToggleButton>
+        </ToggleButtonGroup>
+
+        <Button onClick={onRemove}>
+          <ClearIcon />
+        </Button>
+      </div>
+    </li>
+    /* eslint-enable react/jsx-props-no-spreading */
+  )
 );
 
 PersonRow.propTypes = {
@@ -48,26 +80,66 @@ PersonRow.propTypes = {
   onRemove: PropTypes.func.isRequired
 };
 
+const PeopleList = SortableContainer(
+  ({ people, paidPersonId, onPayeeChange, onNameChange, onRemovePerson }) => {
+    return (
+      <ul className={styles.peopleList}>
+        {people.allIds.map((id, i) => (
+          <PersonRow
+            index={i}
+            key={id}
+            person={people.byId[id]}
+            hasPaid={id === paidPersonId}
+            onTogglePaid={() => onPayeeChange(id === paidPersonId ? null : id)}
+            onNameChange={event => onNameChange(id, event.target.value)}
+            onRemove={() => onRemovePerson(id)}
+          />
+        ))}
+      </ul>
+    );
+  }
+);
+
 const EditableBillPeopleList = ({
   people,
   paidPersonId,
   onPayeeChange,
   onNameChange,
-  onRemovePerson
+  onRemovePerson,
+  onSwapOrder
 }) => {
+  const handleSortStart = () => {
+    // Dragging has started. Show a grabbing cursor.
+    // This is done globally rather than applying
+    // CSS local to the element, because we want the
+    // cursor to stay "grabbing" even when the cursor
+    // leaves the bounding box of the person row to be
+    // dragged.
+    document.body.style.cursor = "grabbing";
+  };
+
+  const handleSortEnd = ({ oldIndex, newIndex }) => {
+    // Dragging is over. Don't show the grabbing cursor.
+    document.body.style.cursor = "";
+
+    onSwapOrder(oldIndex, newIndex);
+  };
+
   return (
-    <ul className={styles.peopleList}>
-      {people.allIds.map(id => (
-        <PersonRow
-          key={id}
-          person={people.byId[id]}
-          hasPaid={id === paidPersonId}
-          onTogglePaid={() => onPayeeChange(id === paidPersonId ? null : id)}
-          onNameChange={event => onNameChange(id, event.target.value)}
-          onRemove={() => onRemovePerson(id)}
-        />
-      ))}
-    </ul>
+    <PeopleList
+      lockAxis="y"
+      lockToContainerEdges
+      lockOffset={["0%", "0%"]}
+      useDragHandle
+      onSortStart={handleSortStart}
+      onSortEnd={handleSortEnd}
+      people={people}
+      paidPersonId={paidPersonId}
+      helperClass={styles.peopleListDragHelper}
+      onPayeeChange={onPayeeChange}
+      onNameChange={onNameChange}
+      onRemovePerson={onRemovePerson}
+    />
   );
 };
 
@@ -83,7 +155,8 @@ EditableBillPeopleList.propTypes = {
   paidPersonId: PropTypes.string,
   onPayeeChange: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
-  onRemovePerson: PropTypes.func.isRequired
+  onRemovePerson: PropTypes.func.isRequired,
+  onSwapOrder: PropTypes.func.isRequired
 };
 
 EditableBillPeopleList.defaultProps = {
