@@ -25,6 +25,22 @@ const createBill = data => {
     .catch(err => console.log(err));
 };
 
+const addUserTo = transaction => {
+  const newId = uuidv4();
+  return {
+    ...transaction,
+    users: {
+      allIds: [...transaction.users.allIds, newId],
+      byId: {
+        ...transaction.users.byId,
+        [newId]: {
+          name: ""
+        }
+      }
+    }
+  };
+};
+
 class Split extends Component {
   constructor(props) {
     super(props);
@@ -49,22 +65,33 @@ class Split extends Component {
   addUser = () => {
     const { transaction } = this.state;
 
-    const newId = uuidv4();
-
     this.setState({
-      transaction: {
-        ...transaction,
-        users: {
-          allIds: [...transaction.users.allIds, newId],
-          byId: {
-            ...transaction.users.byId,
-            [newId]: {
-              name: ""
-            }
-          }
-        }
-      }
+      transaction: addUserTo(transaction)
     });
+  };
+
+  removeUser = userId => {
+    const { transaction } = this.state;
+
+    const updatedTransaction = {
+      ...transaction,
+      users: {
+        ...transaction.users,
+        allIds: transaction.users.allIds.filter(id => id !== userId)
+      }
+    };
+
+    delete updatedTransaction.users.byId[userId];
+
+    if (updatedTransaction.users.allIds.length) {
+      this.setState({
+        transaction: updatedTransaction
+      });
+    } else {
+      this.setState({
+        transaction: addUserTo(updatedTransaction)
+      });
+    }
   };
 
   handleNameChange = (userId, newName) => {
