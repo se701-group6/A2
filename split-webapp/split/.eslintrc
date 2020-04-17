@@ -13,6 +13,7 @@
     "prettier/prettier": 0,
     "jsx-a11y/label-has-associated-control": ["error", {
       controlComponents: ["TextField", "CurrencyTextField"],
-    }]
+    }],
+    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
   }
 }
