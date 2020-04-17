@@ -1,13 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
+import ClearIcon from "@material-ui/icons/Clear";
+
 import styles from "./EditableBillPeopleList.module.css";
 
-const PersonRow = ({ person, hasPaid, onTogglePaid, onNameChange }) => (
+const PersonRow = ({
+  person,
+  hasPaid,
+  onTogglePaid,
+  onNameChange,
+  onRemove
+}) => (
   <li>
     <div className={styles.personRow}>
       <TextField value={person.name} onChange={onNameChange} fullWidth />
@@ -21,6 +30,10 @@ const PersonRow = ({ person, hasPaid, onTogglePaid, onNameChange }) => (
         <ToggleButton value="payer">Payer</ToggleButton>
         <ToggleButton value="payee">Payee</ToggleButton>
       </ToggleButtonGroup>
+
+      <Button onClick={onRemove}>
+        <ClearIcon />
+      </Button>
     </div>
   </li>
 );
@@ -31,14 +44,16 @@ PersonRow.propTypes = {
   }).isRequired,
   hasPaid: PropTypes.bool.isRequired,
   onTogglePaid: PropTypes.func.isRequired,
-  onNameChange: PropTypes.func.isRequired
+  onNameChange: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
 };
 
 const EditableBillPeopleList = ({
   people,
   paidPersonId,
   onPayeeChange,
-  onNameChange
+  onNameChange,
+  onRemovePerson
 }) => {
   return (
     <ul className={styles.peopleList}>
@@ -49,6 +64,7 @@ const EditableBillPeopleList = ({
           hasPaid={id === paidPersonId}
           onTogglePaid={() => onPayeeChange(id === paidPersonId ? null : id)}
           onNameChange={event => onNameChange(id, event.target.value)}
+          onRemove={() => onRemovePerson(id)}
         />
       ))}
     </ul>
@@ -66,7 +82,8 @@ EditableBillPeopleList.propTypes = {
   }).isRequired,
   paidPersonId: PropTypes.string,
   onPayeeChange: PropTypes.func.isRequired,
-  onNameChange: PropTypes.func.isRequired
+  onNameChange: PropTypes.func.isRequired,
+  onRemovePerson: PropTypes.func.isRequired
 };
 
 EditableBillPeopleList.defaultProps = {

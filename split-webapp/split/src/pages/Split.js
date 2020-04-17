@@ -219,6 +219,7 @@ class Split extends Component {
             paidPersonId={transaction.payed}
             onPayeeChange={this.handlePayeeChange}
             onNameChange={this.handleNameChange}
+            onRemovePerson={this.removeUser}
           />
 
           <Button onClick={this.addUser} fullWidth startIcon={<AddIcon />}>
