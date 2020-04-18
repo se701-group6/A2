@@ -4,12 +4,12 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Checkbox,
-  FormControlLabel,
-  Link
+  FormControlLabel
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PaymentIcon from "@material-ui/icons/Payment";
 import styles from "./TransactionList.module.css";
+import { Link } from "react-router-dom";
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
@@ -89,7 +89,11 @@ class TransactionList extends React.Component {
         <ExpansionPanelDetails className={styles.payments}>
           <div className={styles.paymentsTitle}>
             <div className={styles.paymentHeaders}>
-              <Link href="#/home/split"><EditIcon /></Link>
+              <Link
+                to={{
+                  pathname: "split",
+                  bill: bill
+                }}><EditIcon /></Link>
               <PaymentIcon />
             </div>
             <div className={styles.runningTotal}>
