@@ -16,6 +16,8 @@ from db_manager import Payment
         #send
         return json.dumps(response)
 """
+class InvalidDataException(ValueError):
+    pass
 
 class BillExecApi(object):
     def __init__(self, database):
@@ -52,10 +54,50 @@ class BillExecApi(object):
         success = False
         
         try:
-            username = cherrypy.session["username"]
+            #Check login
+            try:
+                username = cherrypy.session["username"]
+            except KeyError as e:
+                raise InvalidDataException("login")
+
+            #Bill has a title
+            if ((len(title) < 1)):
+                raise InvalidDataException("title")
+
+            #Bill has a payer
+            if ((len(payer) < 1)):
+                raise InvalidDataException("payer")
+
+            #Bill has a total greater than 0
+            try: 
+                float(total)
+            except ValueError as e:
+                raise InvalidDataException("total")
+
+            if (float(total) <= 0):
+                raise InvalidDataException("total")
+
+            #Bill has someone who needs to pay their share
+            if (len(payment_objects) < 1):
+                raise InvalidDataException("split")
+            
             success = self.database.add_bill(payer,username,title,total,payment_objects)
-        except KeyError as e:
-            error_msg = "User not logged in"
+        except InvalidDataException as e:
+            #add the appropriate message to return
+            if(e.args[0]=="title"):
+                error_msg = "Title required "
+            elif(e.args[0]=="payer"):
+                error_msg = "No payer for bill "
+            elif(e.args[0]=="total"):
+                error_msg = "Incorrect total, total must be greater than 0 "
+            elif(e.args[0]=="split"):
+                error_msg = "Cannot split a bill with one person "
+            elif(e.args[0]=="login"):
+                error_msg = "User not logged in"
+            else:
+                print(e)
+                error_msg = "Unknown error occured"
+            success = False
         except Exception as e:
             print(e)
             error_msg = "Unknown error occured"

@@ -10,6 +10,8 @@ import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
+import { UserContext } from "../context/UserContext";
+import { getCookie } from "../utils/helpers";
 
 class SignUp extends Component {
   constructor(props) {
@@ -46,7 +48,7 @@ class SignUp extends Component {
   // Creates a new user JSON and sends to the create account end point.
   // User should get logged in as well as session created.
 
-  createUser() {
+  createUser(setUsername) {
     const { user, validation } = this.state;
     const { history } = this.props;
 
@@ -82,6 +84,7 @@ class SignUp extends Component {
           return res.json();
         })
         .then(data => {
+          setUsername(getCookie("username"));
           if (data.success === true) {
             history.push("/home/split");
           } else {
@@ -222,15 +225,21 @@ class SignUp extends Component {
                       </NavLink>
 
                       <NavLink to="/SignUp">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className="margin"
-                          onClick={() => this.createUser()}
-                        >
-                          Sign up
-                        </Button>
+                        <UserContext.Consumer>
+                          {({ setUsername }) => {
+                            return (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                borderRadius={30}
+                                className="margin"
+                                onClick={() => this.createUser(setUsername)}
+                              >
+                                Sign up
+                              </Button>
+                            );
+                          }}
+                        </UserContext.Consumer>
                       </NavLink>
                     </Typography>
                   </Box>
