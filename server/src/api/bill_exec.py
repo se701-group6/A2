@@ -149,7 +149,7 @@ class BillExecApi(object):
             the database accordingly
         
         JSON Arguments:
-            id -- id of the bill that is being edited
+            bill_id -- id of the bill that is being edited
             title -- user defined name of bill
             payer -- name of person who fronted bill
             total -- total bill amount
@@ -161,7 +161,7 @@ class BillExecApi(object):
             message (optional) - error message if applicable
         """
         JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
-        id = JSON_object.get("id")
+        bill_id = JSON_object.get("bill_id")
         title = JSON_object.get("title")
         payer = JSON_object.get("payer")
         total = JSON_object.get("total")
@@ -203,7 +203,9 @@ class BillExecApi(object):
             if (len(payment_objects) < 1):
                 raise InvalidDataException("split")
             
-            success = self.database.edit_bill(payer,username,title,total,payment_objects)
+            success = self.database.edit_bill(bill_id,payer,username,title,total,payment_objects)
+            if(success == False):
+                error_msg = "Error adding data to database"
         except InvalidDataException as e:
             #add the appropriate message to return
             if(e.args[0]=="title"):

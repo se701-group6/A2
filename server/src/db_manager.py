@@ -281,13 +281,13 @@ class DatabaseManager(object):
 
 
     
-    def edit_bill(self, id : float, payer : str, creator_username : str, title : str, total : float, payments: List[Payment]):
+    def edit_bill(self, bill_id : float, payer : str, creator_username : str, title : str, total : float, payments: List[Payment]):
         """
         Arguments:
-            id {Integer}
+            bill_id {Integer}
             username {String}
             bill_name {String}
-            total {Integer}
+            total {Integer} 
             payments {List of tuple} -- (bill_id, payee_name, amount_owed, is_paid)
         
         Returns:
@@ -297,21 +297,22 @@ class DatabaseManager(object):
         c = conn.cursor()
         try:
             c.execute("""UPDATE bills
-                    (title, creator_username, total, payer) 
-                    values 
-                    (?, ?, ?, ?)
-                    WHERE id=?""", (title, creator_username, total, payer, id))
+                    SET title=?, creator_username=?, total=?, payer=?
+                    WHERE bill_id=?""", (title, creator_username, total, payer, bill_id))
             conn.commit()
 
+            payment_details = self.get_payments_from_bill_id(bill_id)
+            x=0
+            
             for payment in payments:
-                c.execute("""insert into payments
-                    (bill_id, payee_name, amount_owed, is_paid) 
-                    values 
-                    (?, ?, ?, ?)""", (id, payment.payee_name, payment.amount_owed, payment.is_paid))
+                c.execute("""UPDATE payments
+                    SET bill_id=?, payee_name=?, amount_owed=?, is_paid=?
+                    WHERE payment_id=?""", (bill_id,payment.payee_name, payment.amount_owed, payment.is_paid,payment_details[x].payment_id))
                 conn.commit()
+                x=x+1
             return True
         except Exception as e:
-            print(e)
+            print("Error:",e)
             return False
         finally:
             try:
