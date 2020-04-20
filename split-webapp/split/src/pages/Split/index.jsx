@@ -306,6 +306,9 @@ class Split extends Component {
       total: cost,
       outstanding_payments: paymentArray
     };
+    if (this.editBill) {
+      bill.bill_id = this.editBill.bill_id;
+    }
 
     billAction(bill);
 
