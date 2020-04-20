@@ -143,6 +143,7 @@ class BillExecApi(object):
             }
             return json.dumps(response)
         
+    @cherrypy.expose    
     def edit_bill(self):
         """edits a bill and adds to 
             the database accordingly
