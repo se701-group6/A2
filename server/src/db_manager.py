@@ -254,7 +254,7 @@ class DatabaseManager(object):
         """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        try:
+        try:  
             c.execute("""insert into bills
                     (title, creator_username, total, payer) 
                     values 
@@ -278,6 +278,47 @@ class DatabaseManager(object):
                 conn.close()
             except UnboundLocalError:
                 pass
+
+
+    
+    def edit_bill(self, id : float, payer : str, creator_username : str, title : str, total : float, payments: List[Payment]):
+        """
+        Arguments:
+            id {Integer}
+            username {String}
+            bill_name {String}
+            total {Integer}
+            payments {List of tuple} -- (bill_id, payee_name, amount_owed, is_paid)
+        
+        Returns:
+            boolean -- success or fail
+        """        
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        try:
+            c.execute("""UPDATE bills
+                    (title, creator_username, total, payer) 
+                    values 
+                    (?, ?, ?, ?)
+                    WHERE id=?""", (title, creator_username, total, payer, id))
+            conn.commit()
+
+            for payment in payments:
+                c.execute("""insert into payments
+                    (bill_id, payee_name, amount_owed, is_paid) 
+                    values 
+                    (?, ?, ?, ?)""", (id, payment.payee_name, payment.amount_owed, payment.is_paid))
+                conn.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+        finally:
+            try:
+                conn.close()
+            except UnboundLocalError:
+                pass
+    
 
 
     def make_payment(self, payment_id : int, done : bool):
