@@ -296,20 +296,31 @@ class DatabaseManager(object):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
+            ''' Update bill details '''
             c.execute("""UPDATE bills
                     SET title=?, creator_username=?, total=?, payer=?
                     WHERE bill_id=?""", (title, creator_username, total, payer, bill_id))
             conn.commit()
 
+            ''' Update existing payment details '''
             payment_details = self.get_payments_from_bill_id(bill_id)
-            x=0
-            
-            for payment in payments:
+            for i in range(len(payment_details)):
+                payment = payments[i]
                 c.execute("""UPDATE payments
                     SET bill_id=?, payee_name=?, amount_owed=?, is_paid=?
-                    WHERE payment_id=?""", (bill_id,payment.payee_name, payment.amount_owed, payment.is_paid,payment_details[x].payment_id))
+                    WHERE payment_id=?""", (bill_id,payment.payee_name, payment.amount_owed, payment.is_paid,payment_details[i].payment_id))
                 conn.commit()
-                x=x+1
+                
+            ''' Add any new payments ''' 
+            if (len(payments)>len(payment_details)):
+                indicies = range(len(payment_details), len(payments))
+                for i in indicies:
+                    payment = payments[i]
+                    c.execute("""insert into payments
+                        (bill_id, payee_name, amount_owed, is_paid) 
+                        values 
+                        (?, ?, ?, ?)""", (bill_id, payment.payee_name, payment.amount_owed, payment.is_paid))
+                    conn.commit()       
             return True
         except Exception as e:
             print("Error:",e)
