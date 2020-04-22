@@ -42,7 +42,15 @@ const DragHandle = SortableHandle(props => (
 ));
 
 const PersonRow = SortableElement(
-  ({ person, hasPaid, onTogglePaid, onNameChange, onRemove, ...other }) => (
+  ({
+    person,
+    hasPaid,
+    onSetPayer,
+    onSetPayee,
+    onNameChange,
+    onRemove,
+    ...other
+  }) => (
     // react-sortable-hoc needs to pass in some
     // props to the <li>, so we spread it here.
     /* eslint-disable react/jsx-props-no-spreading */
@@ -71,11 +79,11 @@ const PersonRow = SortableElement(
           value={hasPaid ? "payee" : "payer"}
           size="small"
           exclusive
-          onChange={onTogglePaid}
           className={styles.personPayeeToggleGroup}
         >
           <ToggleButton
             value="payer"
+            onClick={onSetPayer}
             classes={{
               root: styles.personIsPayerButton,
               selected: styles.personIsPayerButtonSelected
@@ -85,6 +93,7 @@ const PersonRow = SortableElement(
           </ToggleButton>
           <ToggleButton
             value="payee"
+            onClick={onSetPayee}
             classes={{
               root: styles.personIsPayeeButton,
               selected: styles.personIsPayeeButtonSelected
@@ -108,7 +117,8 @@ PersonRow.propTypes = {
     name: PropTypes.string.isRequired
   }).isRequired,
   hasPaid: PropTypes.bool.isRequired,
-  onTogglePaid: PropTypes.func.isRequired,
+  onSetPayer: PropTypes.func.isRequired,
+  onSetPayee: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired
 };
@@ -156,9 +166,8 @@ const PeopleList = SortableContainer(
               index={i}
               person={people.byId[id]}
               hasPaid={id === paidPersonId}
-              onTogglePaid={() =>
-                onPayeeChange(id === paidPersonId ? null : id)
-              }
+              onSetPayer={() => onPayeeChange(null)}
+              onSetPayee={() => onPayeeChange(id)}
               onNameChange={event => onNameChange(id, event.target.value)}
               onRemove={() => onRemovePerson(id)}
             />
