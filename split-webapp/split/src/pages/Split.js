@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 
+import { Flipper, Flipped } from "react-flip-toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 import EditableBillHeader from "../components/EditableBillHeader";
@@ -225,45 +226,62 @@ class Split extends Component {
   render() {
     const { transaction } = this.state;
 
+    // We want the Flip toolkit to animate whenever the
+    // list of people changes, either by deletion, addition,
+    // or re-ordering.
+    const flipKey = transaction.users.allIds.join(" ");
+
     return (
-      <div className={styles.page}>
-        <div className={styles.card}>
-          <EditableBillHeader
-            title={transaction.title}
-            titlePlaceholder={DEFAULT_BILL_TITLE}
-            cost={transaction.cost}
-            onTitleChange={this.handleTitleChange}
-            onCostChange={this.handleTotalChange}
-          />
+      <Flipper flipKey={flipKey}>
+        <div className={styles.page}>
+          <Flipped flipId="Split-card">
+            <div className={styles.card}>
+              <Flipped inverseFlipId="Split-card">
+                <div>
+                  <EditableBillHeader
+                    title={transaction.title}
+                    titlePlaceholder={DEFAULT_BILL_TITLE}
+                    cost={transaction.cost}
+                    onTitleChange={this.handleTitleChange}
+                    onCostChange={this.handleTotalChange}
+                  />
 
-          <EditableBillPeopleList
-            people={transaction.users}
-            paidPersonId={transaction.payed}
-            onPayeeChange={this.handlePayeeChange}
-            onNameChange={this.handleNameChange}
-            onRemovePerson={this.removeUser}
-            onSwapOrder={this.handlePeopleSwapOrder}
-          />
+                  <EditableBillPeopleList
+                    people={transaction.users}
+                    paidPersonId={transaction.payed}
+                    onPayeeChange={this.handlePayeeChange}
+                    onNameChange={this.handleNameChange}
+                    onRemovePerson={this.removeUser}
+                    onSwapOrder={this.handlePeopleSwapOrder}
+                  />
 
-          <Button
-            onClick={this.addUser}
-            fullWidth
-            className={styles.addPersonButton}
-            startIcon={<AddIcon />}
-          >
-            Add Person
-          </Button>
+                  <Flipped flipId="Split-addPerson" translation>
+                    <Button
+                      onClick={this.addUser}
+                      fullWidth
+                      className={styles.addPersonButton}
+                      startIcon={<AddIcon />}
+                    >
+                      Add Person
+                    </Button>
+                  </Flipped>
+                </div>
+              </Flipped>
+            </div>
+          </Flipped>
+
+          <Flipped flipId="Split-splitButton" translation>
+            <Button
+              className={styles.splitButton}
+              variant="contained"
+              fullWidth
+              onClick={this.split}
+            >
+              Split This Bill
+            </Button>
+          </Flipped>
         </div>
-
-        <Button
-          className={styles.splitButton}
-          variant="contained"
-          fullWidth
-          onClick={this.split}
-        >
-          Split This Bill
-        </Button>
-      </div>
+      </Flipper>
     );
   }
 }

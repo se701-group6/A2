@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,7 @@ import {
   SortableElement,
   SortableHandle
 } from "react-sortable-hoc";
+import { Flipped, spring } from "react-flip-toolkit";
 
 import styles from "./EditableBillPeopleList.module.css";
 
@@ -113,19 +114,55 @@ PersonRow.propTypes = {
 };
 
 const PeopleList = SortableContainer(
-  ({ people, paidPersonId, onPayeeChange, onNameChange, onRemovePerson }) => {
+  ({
+    people,
+    paidPersonId,
+    isSorting,
+    onPayeeChange,
+    onNameChange,
+    onRemovePerson
+  }) => {
+    // Animate new row entries: pop out and fade in.
+    // They start at {START_SCALE} of the full size.
+    const START_SCALE = 0.9;
+    const handleAppear = el => {
+      spring({
+        onUpdate: val => {
+          // eslint-disable-next-line no-param-reassign
+          el.style.opacity = val;
+
+          const scale = val * (1 - START_SCALE) + START_SCALE;
+          // eslint-disable-next-line no-param-reassign
+          el.style.transform = `scale(${scale})`;
+        }
+      });
+    };
+
+    // When the user drag-and-drops a row to swap their order,
+    // we do not want the row to snap back to its original position
+    // and re-animated to the new position.
+    const shouldFlip = () => !isSorting;
+
     return (
       <ul className={styles.peopleList}>
         {people.allIds.map((id, i) => (
-          <PersonRow
-            index={i}
+          <Flipped
+            flipId={id}
             key={id}
-            person={people.byId[id]}
-            hasPaid={id === paidPersonId}
-            onTogglePaid={() => onPayeeChange(id === paidPersonId ? null : id)}
-            onNameChange={event => onNameChange(id, event.target.value)}
-            onRemove={() => onRemovePerson(id)}
-          />
+            onAppear={handleAppear}
+            shouldFlip={shouldFlip}
+          >
+            <PersonRow
+              index={i}
+              person={people.byId[id]}
+              hasPaid={id === paidPersonId}
+              onTogglePaid={() =>
+                onPayeeChange(id === paidPersonId ? null : id)
+              }
+              onNameChange={event => onNameChange(id, event.target.value)}
+              onRemove={() => onRemovePerson(id)}
+            />
+          </Flipped>
         ))}
       </ul>
     );
@@ -140,6 +177,8 @@ const EditableBillPeopleList = ({
   onRemovePerson,
   onSwapOrder
 }) => {
+  const [isSorting, setIsSorting] = useState(false);
+
   const handleSortStart = () => {
     // Dragging has started. Show a grabbing cursor.
     // This is done globally rather than applying
@@ -148,6 +187,10 @@ const EditableBillPeopleList = ({
     // leaves the bounding box of the person row to be
     // dragged.
     document.body.style.cursor = "grabbing";
+
+    // Disable animations temporarily so we don't reanimate
+    // the reordering of rows.
+    setIsSorting(true);
   };
 
   const handleSortEnd = ({ oldIndex, newIndex }) => {
@@ -155,6 +198,9 @@ const EditableBillPeopleList = ({
     document.body.style.cursor = "";
 
     onSwapOrder(oldIndex, newIndex);
+
+    // Re-enable animations after resorting.
+    setIsSorting(false);
   };
 
   return (
@@ -167,6 +213,7 @@ const EditableBillPeopleList = ({
       onSortEnd={handleSortEnd}
       people={people}
       paidPersonId={paidPersonId}
+      isSorting={isSorting}
       helperClass={styles.peopleListDragHelper}
       onPayeeChange={onPayeeChange}
       onNameChange={onNameChange}
