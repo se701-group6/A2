@@ -19,7 +19,21 @@ const EditableBillHeader = ({ title, cost, onTitleChange, onCostChange }) => (
         className={styles.titleTextField}
         placeholder="Untitled Bill"
         InputProps={{
-          inputComponent: FluidInput
+          // Note: We need this InputBase component to be
+          // styled with the same font settings as the actual
+          // inner <input> element in order to get the
+          // alignment settings correct.
+          className: styles.titleInputBase,
+
+          inputComponent: FluidInput,
+
+          // We don't want their fancy rippled underline as
+          // it is hard to customize.
+          disableUnderline: true,
+
+          inputProps: {
+            className: styles.titleInput
+          }
         }}
         value={title}
         onChange={onTitleChange}
@@ -38,10 +52,24 @@ const EditableBillHeader = ({ title, cost, onTitleChange, onCostChange }) => (
         onChange={onCostChange}
         currencySymbol=""
         InputProps={{
+          // Note: We need this InputBase component to be
+          // styled with the same font settings as the actual
+          // inner <input> element in order to get the
+          // alignment settings correct.
+          className: styles.totalInputBase,
+
           inputComponent: FluidInput,
 
           // We're putting the '$' outside, not inside the textfield.
-          startAdornment: undefined
+          startAdornment: undefined,
+
+          // We don't want their fancy rippled underline as
+          // it is hard to customize.
+          disableUnderline: true,
+
+          inputProps: {
+            className: styles.totalInput
+          }
         }}
         className={styles.totalTextField}
       />

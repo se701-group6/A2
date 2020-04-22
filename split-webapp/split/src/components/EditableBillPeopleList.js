@@ -49,19 +49,51 @@ const PersonRow = SortableElement(
       <div className={styles.personRow}>
         <DragHandle className={styles.dragHandle} />
 
-        <TextField value={person.name} onChange={onNameChange} fullWidth />
+        <TextField
+          value={person.name}
+          onChange={onNameChange}
+          placeholder="Enter person’s name..."
+          fullWidth
+          className={styles.personNameTextField}
+          InputProps={{
+            inputProps: {
+              className: styles.personNameInput
+            },
+
+            // We don't want their fancy rippled underline as
+            // it is hard to customize.
+            disableUnderline: true
+          }}
+        />
 
         <ToggleButtonGroup
           value={hasPaid ? "payee" : "payer"}
           size="small"
           exclusive
           onChange={onTogglePaid}
+          className={styles.personPayeeToggleGroup}
         >
-          <ToggleButton value="payer">Payer</ToggleButton>
-          <ToggleButton value="payee">Payee</ToggleButton>
+          <ToggleButton
+            value="payer"
+            classes={{
+              root: styles.personIsPayerButton,
+              selected: styles.personIsPayerButtonSelected
+            }}
+          >
+            Payer
+          </ToggleButton>
+          <ToggleButton
+            value="payee"
+            classes={{
+              root: styles.personIsPayeeButton,
+              selected: styles.personIsPayeeButtonSelected
+            }}
+          >
+            Payee
+          </ToggleButton>
         </ToggleButtonGroup>
 
-        <Button onClick={onRemove}>
+        <Button onClick={onRemove} className={styles.personRemoveButton}>
           <ClearIcon />
         </Button>
       </div>

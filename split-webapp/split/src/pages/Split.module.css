@@ -14,3 +14,24 @@
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
   background-color: white;
 }
+
+.addPersonButton,
+.splitButton {
+  height: 44px;
+  font-family: "Open Sans", sans-serif !important;
+  text-transform: none !important;
+}
+
+.addPersonButton {
+  border-radius: 0 0 6px 6px !important;
+
+  /* Ensure it is not see-through - for later when FLIP animations are added */
+  background-color: white !important;
+
+  color: #777 !important;
+}
+
+.splitButton {
+  background-color: #2977ff !important;
+  color: white !important;
+}

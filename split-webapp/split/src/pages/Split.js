@@ -241,12 +241,22 @@ class Split extends Component {
             onSwapOrder={this.handlePeopleSwapOrder}
           />
 
-          <Button onClick={this.addUser} fullWidth startIcon={<AddIcon />}>
+          <Button
+            onClick={this.addUser}
+            fullWidth
+            className={styles.addPersonButton}
+            startIcon={<AddIcon />}
+          >
             Add Person
           </Button>
         </div>
 
-        <Button variant="contained" fullWidth onClick={this.split}>
+        <Button
+          className={styles.splitButton}
+          variant="contained"
+          fullWidth
+          onClick={this.split}
+        >
           Split This Bill
         </Button>
       </div>
