@@ -127,7 +127,7 @@ class BillExecApi(object):
 
         try:
             username = cherrypy.session["username"]
-            valid_user = self.database.check_valid_user(username, bill_id)
+            valid_user = self.database.check_if_user_owns_bill(username, bill_id)
 
             if (valid_user == True):
                 self.database.delete_bill(bill_id)
