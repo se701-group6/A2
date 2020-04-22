@@ -22,7 +22,6 @@ const EditableBillHeader = ({
     <div className={styles.header}>
       <label className={styles.titleLabel} htmlFor="title">
         <TextField
-          required
           id="title"
           className={styles.titleTextField}
           placeholder={titlePlaceholder}

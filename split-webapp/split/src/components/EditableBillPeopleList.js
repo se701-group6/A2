@@ -59,6 +59,7 @@ const PersonRow = SortableElement(
         <DragHandle className={styles.dragHandle} />
 
         <TextField
+          required
           value={person.name}
           onChange={onNameChange}
           placeholder="Enter person’s name..."
