@@ -10,14 +10,20 @@ import FluidInput from "./FluidInput";
 
 import styles from "./EditableBillHeader.module.css";
 
-const EditableBillHeader = ({ title, cost, onTitleChange, onCostChange }) => (
+const EditableBillHeader = ({
+  title,
+  titlePlaceholder,
+  cost,
+  onTitleChange,
+  onCostChange
+}) => (
   <div className={styles.header}>
     <label className={styles.titleLabel} htmlFor="title">
       <TextField
         required
         id="title"
         className={styles.titleTextField}
-        placeholder="Untitled Bill"
+        placeholder={titlePlaceholder}
         InputProps={{
           // Note: We need this InputBase component to be
           // styled with the same font settings as the actual
@@ -80,6 +86,7 @@ const EditableBillHeader = ({ title, cost, onTitleChange, onCostChange }) => (
 
 EditableBillHeader.propTypes = {
   title: PropTypes.string.isRequired,
+  titlePlaceholder: PropTypes.string.isRequired,
   cost: PropTypes.number.isRequired,
   onTitleChange: PropTypes.func.isRequired,
   onCostChange: PropTypes.func.isRequired

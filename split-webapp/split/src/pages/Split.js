@@ -11,6 +11,8 @@ import EditableBillPeopleList from "../components/EditableBillPeopleList";
 
 import styles from "./Split.module.css";
 
+const DEFAULT_BILL_TITLE = "Untitled Bill";
+
 const createBill = data => {
   fetch("/api/bill_exec/create_bill", {
     method: "POST",
@@ -160,8 +162,9 @@ class Split extends Component {
   split = () => {
     const { transaction } = this.state;
     const { history } = this.props;
-    const { users, cost, title } = transaction;
+    const { users, cost } = transaction;
     const perPersonCost = cost / users.allIds.length;
+    const title = transaction.title || DEFAULT_BILL_TITLE;
 
     const paymentArray = [];
 
@@ -227,6 +230,7 @@ class Split extends Component {
         <div className={styles.card}>
           <EditableBillHeader
             title={transaction.title}
+            titlePlaceholder={DEFAULT_BILL_TITLE}
             cost={transaction.cost}
             onTitleChange={this.handleTitleChange}
             onCostChange={this.handleTotalChange}
