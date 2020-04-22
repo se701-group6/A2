@@ -350,7 +350,7 @@ class DatabaseManager(object):
             except UnboundLocalError:
                 pass
 
-    def check_valid_user(self, username : str, bill_id : int):
+    def check_if_user_owns_bill(self, username : str, bill_id : int):
         """
         Arguments:
             username {String}
