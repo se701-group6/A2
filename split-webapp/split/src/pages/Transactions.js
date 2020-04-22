@@ -1,7 +1,6 @@
 import React from "react";
 import TollIcon from "@material-ui/icons/Toll";
 import { Divider } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
 import TransactionList from "../components/TransactionList";
 import "../App.css";
 
@@ -14,7 +13,6 @@ function Transactions() {
       </div>
       <Divider />
       <TransactionList />
-      <Pagination count={10} color="primary" />
     </div>
   );
 }
