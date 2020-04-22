@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { UserProvider } from "./context/UserContext";
+import AuthorizedRoute from "./components/AuthorizedRoute";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <header className="App-header">
             <div>
               <Route exact path="/" component={Login} />
-              <Route path="/home" component={Home} />
+              <AuthorizedRoute path="/home" component={Home} />
               <Route path="/SignUp" component={SignUp} />
             </div>
           </header>
