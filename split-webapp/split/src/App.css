@@ -34,28 +34,6 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.Sidebar {
-  background-color: #79a2f4;
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  width: 17%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-
-.AppBar {
-  outline-color: pink;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  width: 17%;
-  height: 100%;
-  left: 0;
-  top: 0;
-}
-
 .MenuBar {
   display: flex;
   flex-direction: row;
@@ -116,12 +94,6 @@
   color: #3e8ef6;
 }
 
-.HomeScreen {
-  justify-content: center;
-  align-items: center;
-  left: 100px;
-}
-
 .NavOptions {
   background-color: white;
   color: white;
@@ -140,32 +112,12 @@
 
 /* Sign In */
 
-.SignInContainer {
-  background-color: #6fa2fb;
-  height: 75vh;
-  width: 50vh;
-  text-align: center;
-}
-.SignInContainer .InnerContainer {
-  height: 65%;
-  width: 90%;
-  text-align: center;
-  margin-top: 10%;
-  margin-left: 5%;
-}
-
 .SignInContainer .InnerContainer .TextField {
   margin-top: 2em;
 }
 
 .SignInContainer .InnerContainer button {
   margin-top: 2.5em;
-}
-
-.SignIn {
-  font-size: 10%;
-  color: white;
-  margin-left: 5%;
 }
 
 .AddButton {
