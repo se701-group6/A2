@@ -35,17 +35,33 @@
 .totalInput {
   /* Fix minor clipping of descenders like 'g' */
   padding: 0.1em !important;
+
+  text-overflow: ellipsis;
 }
 
 .titleLabel,
 .totalLabel {
   cursor: pointer;
+
+  /* Prevent fluid input fake span from growing out of bounds */
+  /* Note: Do not apply overflow: hidden to children, as it
+   * will force the browser to create a new block formatting context
+   * that will cause the text's vertical alignment to be broken
+   * in Firefox */
+  overflow: hidden;
 }
 
 .titleLabel {
+  display: flex;
   flex-grow: 1;
   margin-right: 30px;
+  min-width: 0;
   text-align: left;
+  align-items: baseline;
+}
+
+.totalLabel {
+  flex-shrink: 0;
 }
 
 /**

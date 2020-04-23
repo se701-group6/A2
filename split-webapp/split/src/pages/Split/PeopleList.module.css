@@ -84,6 +84,7 @@
   transition: border 0.3s;
   color: #2d4583 !important;
   font-size: 14px !important;
+  text-overflow: ellipsis;
 }
 
 .personNameInput::placeholder {

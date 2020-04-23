@@ -205,7 +205,24 @@ class Split extends Component {
     });
   };
 
-  normalizeInput = () => {
+  handleInputBlur = event => {
+    // Workaround for Firefox:
+    //
+    // When text-overflow: ellipsis is set in Chrome, Chrome
+    // rewinds the input to the start when the input is blurred,
+    // so that the ellipsis can be shown.
+    // Firefox does not rewind to the start on blur, and so no
+    // ellipsis is shown even though the value is overflowing.
+    // Firefox supports two-value text-overflow syntax to
+    // work around this, but Chrome and other browsers don't support
+    // it yet.
+    //
+    // The solution is to emulate Chrome's rewinding behaviour on
+    // all browsers and use the single value syntax for text-overflow.
+    if (event.target.setSelectionRange) {
+      event.target.setSelectionRange(0, 0);
+    }
+
     this.setState({
       transaction: this.getNormalizedTransaction()
     });
@@ -328,7 +345,7 @@ class Split extends Component {
                     showErrors={showErrors}
                     onTitleChange={this.handleTitleChange}
                     onCostChange={this.handleTotalChange}
-                    onInputBlur={this.normalizeInput}
+                    onInputBlur={this.handleInputBlur}
                   />
 
                   <PeopleList
@@ -342,7 +359,7 @@ class Split extends Component {
                     onNameChange={this.handleNameChange}
                     onRemovePerson={this.removeUser}
                     onSwapOrder={this.handlePeopleSwapOrder}
-                    onInputBlur={this.normalizeInput}
+                    onInputBlur={this.handleInputBlur}
                   />
 
                   <Flipped flipId="Split-addPerson" translation>
