@@ -4,7 +4,6 @@ import { Grid, Box, TextField, Button } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import { NavLink } from "react-router-dom";
-import "../App.css";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -12,6 +11,7 @@ import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
 import { UserContext } from "../context/UserContext";
 import { getCookie } from "../utils/helpers";
+import styles from "./SignUp.module.css";
 
 class SignUp extends Component {
   constructor(props) {
@@ -132,15 +132,15 @@ class SignUp extends Component {
                 <Box
                   component="div"
                   borderRadius={12}
-                  className="SignInContainer"
+                  className={styles.signInContainer}
                 >
                   <img
                     src={mainLogo}
                     style={{ width: "50%", marginTop: "10%" }}
                     alt="main logo for sign up"
                   />
-                  <Box component="div" className="InnerContainer">
-                    <Typography component="h3" className="SignIn">
+                  <Box component="div" className={styles.innerContainer}>
+                    <Typography component="h3" className={styles.signIn}>
                       Sign Up
                     </Typography>
                     <form className="root" noValidate autoComplete="off">

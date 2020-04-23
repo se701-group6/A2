@@ -1,0 +1,20 @@
+.signInContainer {
+  background-color: #6fa2fb;
+  height: 75vh;
+  width: 50vh;
+  text-align: center;
+}
+
+.signInContainer .innerContainer {
+  height: 65%;
+  width: 90%;
+  text-align: center;
+  margin-top: 10%;
+  margin-left: 5%;
+}
+
+.signIn {
+  font-size: 10%;
+  color: white;
+  margin-left: 5%;
+}
