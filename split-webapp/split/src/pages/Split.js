@@ -29,12 +29,16 @@ const createBill = data => {
     .catch(err => console.log(err));
 };
 
-const addUserTo = transaction => {
+const addUserTo = (transaction, insertionIndex) => {
   const newId = uuidv4();
   return {
     ...transaction,
     users: {
-      allIds: [...transaction.users.allIds, newId],
+      allIds: [
+        ...transaction.users.allIds.slice(0, insertionIndex),
+        newId,
+        ...transaction.users.allIds.slice(insertionIndex)
+      ],
       byId: {
         ...transaction.users.byId,
         [newId]: {
@@ -81,12 +85,14 @@ class Split extends Component {
     const { transaction } = this.state;
 
     this.setState({
-      transaction: addUserTo(transaction)
+      transaction: addUserTo(transaction, transaction.users.allIds.length)
     });
   };
 
   removeUser = userId => {
     const { transaction } = this.state;
+
+    const deleteIndex = transaction.users.allIds.indexOf(userId);
 
     const updatedTransaction = {
       ...transaction,
@@ -109,7 +115,7 @@ class Split extends Component {
       });
     } else {
       this.setState({
-        transaction: addUserTo(updatedTransaction)
+        transaction: addUserTo(updatedTransaction, deleteIndex)
       });
     }
   };
