@@ -134,7 +134,7 @@ class Login extends Component {
                       onChange={this.handleOnChangePassword}
                     />
 
-                    <Typography component="h3" className="LogIn">
+                    <Typography component="h3">
                       <UserContext.Consumer>
                         {({ setUsername }) => {
                           return (
