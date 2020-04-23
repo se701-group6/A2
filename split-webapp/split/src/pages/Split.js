@@ -66,7 +66,14 @@ class Split extends Component {
         users: initialUsers,
         cost: 0,
         payed: null
-      }
+      },
+
+      // Do not start validating until after the first submission attempt.
+      showErrors: false,
+
+      // Delay submission by 200ms to give user a visual response.
+      // During this fake "processing" time, this flag is set.
+      submitAcknowledged: false
     };
   }
 
@@ -165,7 +172,7 @@ class Split extends Component {
     });
   };
 
-  split = () => {
+  split = async () => {
     const { transaction } = this.state;
     const { history } = this.props;
     const { users, cost } = transaction;
@@ -174,37 +181,21 @@ class Split extends Component {
 
     const paymentArray = [];
 
-    if (!title) {
-      alert("Please enter a title description for this bill.");
-      return;
-    }
-    if (!cost) {
-      alert("Please enter an amount for this bill.");
-      return;
-    }
-    if (transaction.users.allIds.length < 2) {
-      alert(
-        "There is not enough people to split a bill. Please make sure at least 2 people are on the list."
-      );
-      return;
-    }
-    if (!transaction.payed) {
-      alert("Please choose a payee for this bill.");
-      return;
-    }
+    // Show visual feedback that the user's intention of submitting
+    // the form has been acknowledged.
+    this.setState({
+      showErrors: false,
+      submitAcknowledged: true
+    });
+    await new Promise(resolve => setTimeout(resolve, 200));
 
-    const uniqueNameSet = new Set();
-    for (const userId of users.allIds) {
-      const { name } = users.byId[userId];
-      if (!name) {
-        alert("Please enter a name for each person");
-        return;
-      }
-      if (uniqueNameSet.has(name)) {
-        alert("Please enter a different name for each person");
-        return;
-      }
-      uniqueNameSet.add(name);
+    if (this.validate().hasError) {
+      // Begin live-validations after first failed submission.
+      this.setState({
+        showErrors: true,
+        submitAcknowledged: false
+      });
+      return;
     }
 
     for (const userId of users.allIds) {
@@ -228,13 +219,59 @@ class Split extends Component {
     history.push("/home/transactions");
   };
 
-  render() {
+  validate() {
     const { transaction } = this.state;
+
+    const errors = {};
+
+    if (transaction.cost === 0) {
+      errors.cost = "Cannot split a zero amount";
+      errors.hasError = true;
+    }
+
+    if (transaction.cost < 0) {
+      errors.cost = "Cannot split a negative amount";
+      errors.hasError = true;
+    }
+
+    if (!transaction.payed) {
+      errors.payed = "Please choose a payee for this bill";
+      errors.hasError = true;
+    }
+
+    errors.users = {};
+    const uniqueNameSet = new Set();
+    for (const userId of transaction.users.allIds) {
+      const { name } = transaction.users.byId[userId];
+      if (!name) {
+        errors.users[userId] = "Please enter a name";
+        errors.hasError = true;
+      } else if (uniqueNameSet.has(name)) {
+        errors.users[userId] = "Same name can’t appear twice";
+        errors.hasError = true;
+      }
+      uniqueNameSet.add(name);
+    }
+
+    return errors;
+  }
+
+  render() {
+    const { transaction, showErrors, submitAcknowledged } = this.state;
+    const errors = this.validate();
+    const submissionFailed = showErrors && errors.hasError;
 
     // We want the Flip toolkit to animate whenever the
     // list of people changes, either by deletion, addition,
     // or re-ordering.
     const flipKey = transaction.users.allIds.join(" ");
+
+    let submitButtonText = "Split This Bill";
+    if (submissionFailed) {
+      submitButtonText = "We found some things to fix";
+    } else if (submitAcknowledged) {
+      submitButtonText = "Splitting...";
+    }
 
     return (
       <Flipper flipKey={flipKey}>
@@ -244,16 +281,23 @@ class Split extends Component {
               <Flipped inverseFlipId="Split-card">
                 <div>
                   <EditableBillHeader
+                    className={styles.header}
                     title={transaction.title}
                     titlePlaceholder={DEFAULT_BILL_TITLE}
                     cost={transaction.cost}
+                    costError={errors.cost}
+                    showErrors={showErrors}
                     onTitleChange={this.handleTitleChange}
                     onCostChange={this.handleTotalChange}
                   />
 
                   <EditableBillPeopleList
+                    className={styles.peopleList}
                     people={transaction.users}
                     paidPersonId={transaction.payed}
+                    peopleError={errors.users}
+                    paidError={errors.payed}
+                    showErrors={showErrors}
                     onPayeeChange={this.handlePayeeChange}
                     onNameChange={this.handleNameChange}
                     onRemovePerson={this.removeUser}
@@ -277,12 +321,17 @@ class Split extends Component {
 
           <Flipped flipId="Split-splitButton" translation>
             <Button
-              className={styles.splitButton}
+              className={[
+                styles.splitButton,
+                submissionFailed ? styles.splitButtonError : "",
+                submitAcknowledged ? styles.splitButtonProgress : ""
+              ].join(" ")}
               variant="contained"
               fullWidth
+              disabled={submitAcknowledged}
               onClick={this.split}
             >
-              Split This Bill
+              {submitButtonText}
             </Button>
           </Flipped>
         </div>

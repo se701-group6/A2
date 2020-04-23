@@ -48,6 +48,7 @@
 
 .peopleListDragHelper {
   list-style: none;
+  z-index: 3;
 }
 
 .peopleListDragHelper > .personRow {
@@ -58,10 +59,19 @@
   cursor: grabbing;
 }
 
+.peopleListDragHelper .errorBubble {
+  opacity: 0;
+}
+
 /**
  * Section:
  * Name input text-field
  */
+
+.personNameWrapper {
+  display: flex;
+  flex-grow: 1;
+}
 
 .personNameInput {
   /* Fix minor clipping of descenders like 'g' */
@@ -96,6 +106,10 @@
   border-bottom-color: #d6e3fe !important;
 }
 
+.personNameWrapper .errorBubble {
+  top: calc(100% - 10px);
+}
+
 /**
  * Section:
  * Toggle buttons
@@ -103,6 +117,7 @@
 
 .personPayeeToggleGroup {
   margin: 0 20px 0 30px;
+  display: flex;
 }
 
 .personPayeeToggleGroup > button {
@@ -134,6 +149,10 @@
   border-color: #e95eb1;
   background-color: #e95eb1 !important;
   color: white !important;
+}
+
+.personPayeeWrapper .errorBubble {
+  top: calc(100% + 10px);
 }
 
 /**

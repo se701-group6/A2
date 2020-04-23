@@ -15,6 +15,20 @@
   background-color: white;
 }
 
+.header {
+  position: relative;
+
+  /* Ensure error bubbles on the header stay above the list */
+  z-index: 2;
+}
+
+.peopleList {
+  position: relative;
+
+  /* Ensure error bubbles on the list stay above the button */
+  z-index: 1;
+}
+
 .addPersonButton,
 .splitButton {
   height: 44px;
@@ -23,6 +37,11 @@
 }
 
 .addPersonButton {
+  position: relative;
+
+  /* Ensure error bubbles on the list stay above the button */
+  z-index: 0;
+
   border-radius: 0 0 6px 6px !important;
 
   /* Ensure it is not see-through - for later when FLIP animations are added */
@@ -34,4 +53,12 @@
 .splitButton {
   background-color: #2977ff !important;
   color: white !important;
+}
+
+.splitButtonError {
+  background-color: #e95eb1 !important;
+}
+
+.splitButtonProgress {
+  background-color: #2d4583 !important;
 }

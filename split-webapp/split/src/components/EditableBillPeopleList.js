@@ -16,6 +16,8 @@ import {
 } from "react-sortable-hoc";
 import { Flipped, spring } from "react-flip-toolkit";
 
+import { ErrorBubble, ErrorBubbleAnchor } from "./ErrorBubble";
+
 import styles from "./EditableBillPeopleList.module.css";
 
 const DragHandle = SortableHandle(props => (
@@ -45,6 +47,9 @@ const PersonRow = SortableElement(
   ({
     person,
     hasPaid,
+    nameError,
+    paidError,
+    showErrors,
     onSetPayer,
     onSetPayee,
     onNameChange,
@@ -58,23 +63,31 @@ const PersonRow = SortableElement(
       <div className={styles.personRow}>
         <DragHandle className={styles.dragHandle} />
 
-        <TextField
-          required
-          value={person.name}
-          onChange={onNameChange}
-          placeholder="Enter person’s name..."
-          fullWidth
-          className={styles.personNameTextField}
-          InputProps={{
-            inputProps: {
-              className: styles.personNameInput
-            },
+        <ErrorBubbleAnchor className={styles.personNameWrapper}>
+          <TextField
+            required
+            value={person.name}
+            onChange={onNameChange}
+            placeholder="Enter person’s name..."
+            fullWidth
+            className={styles.personNameTextField}
+            InputProps={{
+              inputProps: {
+                className: styles.personNameInput
+              },
 
-            // We don't want their fancy rippled underline as
-            // it is hard to customize.
-            disableUnderline: true
-          }}
-        />
+              // We don't want their fancy rippled underline as
+              // it is hard to customize.
+              disableUnderline: true
+            }}
+          />
+          <ErrorBubble
+            className={styles.errorBubble}
+            arrowTop
+            show={showErrors}
+            message={nameError}
+          />
+        </ErrorBubbleAnchor>
 
         <ToggleButtonGroup
           value={hasPaid ? "payee" : "payer"}
@@ -100,7 +113,16 @@ const PersonRow = SortableElement(
               selected: styles.personIsPayeeButtonSelected
             }}
           >
-            Payee
+            <ErrorBubbleAnchor className={styles.personPayeeWrapper}>
+              Payee
+              <ErrorBubble
+                className={styles.errorBubble}
+                center
+                arrowTop
+                show={showErrors}
+                message={paidError}
+              />
+            </ErrorBubbleAnchor>
           </ToggleButton>
         </ToggleButtonGroup>
 
@@ -118,17 +140,29 @@ PersonRow.propTypes = {
     name: PropTypes.string.isRequired
   }).isRequired,
   hasPaid: PropTypes.bool.isRequired,
+  nameError: PropTypes.string,
+  paidError: PropTypes.string,
+  showErrors: PropTypes.bool.isRequired,
   onSetPayer: PropTypes.func.isRequired,
   onSetPayee: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired
 };
 
+PersonRow.defaultProps = {
+  nameError: "",
+  paidError: ""
+};
+
 const PeopleList = SortableContainer(
   ({
+    className,
     people,
     paidPersonId,
     isSorting,
+    peopleError,
+    paidError,
+    showErrors,
     onPayeeChange,
     onNameChange,
     onRemovePerson
@@ -149,24 +183,34 @@ const PeopleList = SortableContainer(
       });
     };
 
+    // Keep track of when it is animating - we don't want to show error bubbles then.
+    const [isAnimating, setIsAnimating] = useState(false);
+    const handleStart = () => setIsAnimating(true);
+    const handleComplete = () => setIsAnimating(false);
+
     // When the user drag-and-drops a row to swap their order,
     // we do not want the row to snap back to its original position
     // and re-animated to the new position.
     const shouldFlip = () => !isSorting;
 
     return (
-      <ul className={styles.peopleList}>
+      <ul className={[styles.peopleList, className].join(" ")}>
         {people.allIds.map((id, i) => (
           <Flipped
             flipId={id}
             key={id}
             onAppear={handleAppear}
+            onStart={handleStart}
+            onComplete={handleComplete}
             shouldFlip={shouldFlip}
           >
             <PersonRow
               index={i}
               person={people.byId[id]}
               hasPaid={id === paidPersonId}
+              nameError={peopleError[id]}
+              paidError={i === people.allIds.length - 1 ? paidError : ""}
+              showErrors={showErrors && !isAnimating}
               onSetPayer={() => onPayeeChange(null)}
               onSetPayee={() => onPayeeChange(id)}
               onNameChange={event => onNameChange(id, event.target.value)}
@@ -180,8 +224,12 @@ const PeopleList = SortableContainer(
 );
 
 const EditableBillPeopleList = ({
+  className,
   people,
   paidPersonId,
+  peopleError,
+  paidError,
+  showErrors,
   onPayeeChange,
   onNameChange,
   onRemovePerson,
@@ -215,6 +263,7 @@ const EditableBillPeopleList = ({
 
   return (
     <PeopleList
+      className={className}
       lockAxis="y"
       lockToContainerEdges
       lockOffset={["0%", "0%"]}
@@ -225,6 +274,9 @@ const EditableBillPeopleList = ({
       paidPersonId={paidPersonId}
       isSorting={isSorting}
       helperClass={styles.peopleListDragHelper}
+      peopleError={peopleError}
+      paidError={paidError}
+      showErrors={showErrors && !isSorting}
       onPayeeChange={onPayeeChange}
       onNameChange={onNameChange}
       onRemovePerson={onRemovePerson}
@@ -233,6 +285,7 @@ const EditableBillPeopleList = ({
 };
 
 EditableBillPeopleList.propTypes = {
+  className: PropTypes.string,
   people: PropTypes.shape({
     allIds: PropTypes.arrayOf(PropTypes.string.isRequired),
     byId: PropTypes.objectOf(
@@ -242,6 +295,9 @@ EditableBillPeopleList.propTypes = {
     ).isRequired
   }).isRequired,
   paidPersonId: PropTypes.string,
+  peopleError: PropTypes.objectOf(PropTypes.string.isRequired),
+  paidError: PropTypes.string,
+  showErrors: PropTypes.bool.isRequired,
   onPayeeChange: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onRemovePerson: PropTypes.func.isRequired,
@@ -249,7 +305,10 @@ EditableBillPeopleList.propTypes = {
 };
 
 EditableBillPeopleList.defaultProps = {
-  paidPersonId: null
+  className: "",
+  paidPersonId: null,
+  peopleError: {},
+  paidError: ""
 };
 
 export default EditableBillPeopleList;
