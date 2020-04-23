@@ -10,6 +10,44 @@ import PaymentIcon from "@material-ui/icons/Payment";
 import Pagination from "@material-ui/lab/Pagination";
 import "../App.css";
 
+// eslint-disable-next-line no-unused-vars
+const sendFilters = async ({
+  sortField,
+  sortOrder,
+  isPaid,
+  payer,
+  payeeName,
+  pageNumber
+}) => {
+  const params = {
+    sort_field: sortField,
+    sort_order: sortOrder,
+    is_paid: isPaid,
+    payer,
+    payee_name: payeeName,
+    page_number: pageNumber
+  };
+
+  const requestBody = JSON.stringify(params);
+
+  const response = await fetch("api/bill_data", {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    method: "POST",
+    body: requestBody
+  })
+    .then(responseBody => responseBody.json())
+    .catch(error => {
+      console.log(error);
+    });
+
+  if (response) {
+    console.log(response.message);
+  }
+};
+
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
   bill.payments.forEach(payment => {
