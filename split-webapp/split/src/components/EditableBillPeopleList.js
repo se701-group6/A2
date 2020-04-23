@@ -211,8 +211,8 @@ const PeopleList = SortableContainer(
               nameError={peopleError[id]}
               paidError={i === people.allIds.length - 1 ? paidError : ""}
               showErrors={showErrors && !isAnimating}
-              onSetPayer={() => onPayeeChange(null)}
-              onSetPayee={() => onPayeeChange(id)}
+              onSetPayer={() => paidPersonId === id && onPayeeChange(null)}
+              onSetPayee={() => paidPersonId !== id && onPayeeChange(id)}
               onNameChange={event => onNameChange(id, event.target.value)}
               onRemove={() => onRemovePerson(id)}
             />
