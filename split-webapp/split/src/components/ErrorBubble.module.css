@@ -13,7 +13,7 @@
   transition: opacity 0.2s, transform 0.2s;
   background-color: #e95eb1;
   font-family: "Open Sans", sans-serif !important;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 12px;
   font-style: italic;
   color: white;
