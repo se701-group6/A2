@@ -98,6 +98,11 @@ class Split extends Component {
 
     delete updatedTransaction.users.byId[userId];
 
+    // Payed reference is no longer valid.
+    if (transaction.payed === userId) {
+      updatedTransaction.payed = null;
+    }
+
     if (updatedTransaction.users.allIds.length >= MINIMUM_PEOPLE_COUNT) {
       this.setState({
         transaction: updatedTransaction
@@ -234,7 +239,7 @@ class Split extends Component {
       errors.hasError = true;
     }
 
-    if (!transaction.payed) {
+    if (!transaction.users.byId[transaction.payed]) {
       errors.payed = "Please choose a payee for this bill";
       errors.hasError = true;
     }
