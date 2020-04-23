@@ -47,6 +47,7 @@ class TransactionList extends React.Component {
         this.setState({
           bills: data.bills
         });
+        console.log(data.bills);
       })
       .catch(err => {
         console.log(err);
