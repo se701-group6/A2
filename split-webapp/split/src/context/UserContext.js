@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { getCookie } from "../utils/helpers";
 
 export const UserContext = React.createContext({});
@@ -23,7 +24,7 @@ export class UserProvider extends Component {
     return (
       <UserContext.Provider
         value={{
-          username: username,
+          username,
           setUsername: this.setUsername
         }}
       >
@@ -32,3 +33,7 @@ export class UserProvider extends Component {
     );
   }
 }
+
+UserProvider.propTypes = {
+  children: PropTypes.node.isRequired
+};

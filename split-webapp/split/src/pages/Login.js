@@ -68,7 +68,9 @@ class Login extends Component {
           this.handleAuth();
         }
       })
-      .catch(err => {});
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
