@@ -88,7 +88,7 @@ class TransactionList extends React.Component {
           <div className={styles.paymentsTitle}>
             <PaymentIcon className={styles.paymentHeaders} />
             <div className={styles.runningTotal}>
-              <div className={[styles.billTitle, styles.percentage]}>
+              <div className={`${styles.billTitle} ${styles.percentage}`}>
                 (
                 {Math.round(
                   (calculateTotalPaid(bill) / calculateTotalOutstanding(bill)) *
