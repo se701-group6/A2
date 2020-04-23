@@ -68,7 +68,8 @@ const FluidInput = ({ inputRef, className, placeholder, ...other }) => {
         }
         <span
           style={{
-            color: "transparent"
+            color: "transparent",
+            whiteSpace: "pre"
           }}
         >
           {value.toString().length ? value : placeholder}
