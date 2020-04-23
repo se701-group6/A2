@@ -29,11 +29,6 @@
   color: rgb(112, 76, 182);
 }
 
-.SplitLogo {
-  color: white;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .CardTitle {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
@@ -64,14 +59,6 @@
 }
 
 /* Sign In */
-
-.SignInContainer .InnerContainer .TextField {
-  margin-top: 2em;
-}
-
-.SignInContainer .InnerContainer button {
-  margin-top: 2.5em;
-}
 
 .AddButton {
   border-radius: 3% !important;
