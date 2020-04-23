@@ -10,6 +10,8 @@ import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
+import { UserContext } from "../context/UserContext";
+import { getCookie } from "../utils/helpers";
 
 class SignUp extends Component {
   constructor(props) {
@@ -21,28 +23,53 @@ class SignUp extends Component {
         password: "",
         confPassword: ""
       },
-      failed: false
+      failed: false,
+      validation: {
+        validPassword: true,
+        matchPassword: true
+      }
     };
   }
 
   handleTextChange = event => {
-    const { user } = this.state;
+    const { user, validation } = this.state;
     user[event.target.name] = event.target.value;
-    this.setState({ user, failed: false });
+    validation.validPassword = true;
+    this.setState({ user, failed: false, validation });
+  };
+
+  handleBlurChange = () => {
+    const { validation } = this.state;
+    validation.matchPassword = this.validatePassword();
+    validation.validPassword = !this.emptyPassword();
+    this.setState({ validation });
   };
 
   // Creates a new user JSON and sends to the create account end point.
   // User should get logged in as well as session created.
 
-  createUser() {
-    const { user } = this.state;
+  createUser(setUsername) {
+    const { user, validation } = this.state;
     const { history } = this.props;
 
-    if (!(this.validateUsername() && this.validatePassword())) {
+    if (!this.validateUsername()) {
       this.setState({
         failed: true
       });
-    } else {
+    }
+
+    if (this.emptyPassword()) {
+      validation.validPassword = false;
+      this.setState({
+        validation
+      });
+    }
+
+    if (
+      this.validateUsername() === true &&
+      this.emptyPassword() === false &&
+      this.validatePassword() === true
+    ) {
       fetch("api/account/register", {
         method: "POST",
         body: JSON.stringify({
@@ -57,6 +84,7 @@ class SignUp extends Component {
           return res.json();
         })
         .then(data => {
+          setUsername(getCookie("username"));
           if (data.success === true) {
             history.push("/home/split");
           } else {
@@ -75,13 +103,18 @@ class SignUp extends Component {
     return user.password === user.confPassword;
   }
 
+  emptyPassword() {
+    const { user } = this.state;
+    return user.password.length === 0;
+  }
+
   validateUsername() {
     const { user } = this.state;
     return user.username !== "";
   }
 
   render() {
-    const { failed, user } = this.state;
+    const { failed, user, validation } = this.state;
     return (
       <React.Fragment key="SignUpKey">
         <CssBaseline />
@@ -116,10 +149,10 @@ class SignUp extends Component {
                         label="Username"
                         name="username"
                         variant="filled"
-                        error={failed || !this.validatePassword()}
+                        error={failed}
                         helperText={
-                          failed || !this.validatePassword()
-                            ? "Invalid Username or Password. Cannot be empty or in use. Passwords must match"
+                          failed
+                            ? "Invalid Username. Cannot be empty or in use."
                             : ""
                         }
                         onChange={this.handleTextChange}
@@ -133,6 +166,12 @@ class SignUp extends Component {
                       />
 
                       <TextField
+                        required
+                        error={!validation.validPassword}
+                        helperText={
+                          !validation.validPassword ? "Password required" : ""
+                        }
+                        onBlur={this.handleBlurChange}
                         id="outlined-password-input"
                         name="password"
                         type="password"
@@ -149,6 +188,14 @@ class SignUp extends Component {
                         }}
                       />
                       <TextField
+                        required
+                        error={!validation.matchPassword}
+                        helperText={
+                          !validation.matchPassword
+                            ? "Passwords do not match"
+                            : ""
+                        }
+                        onBlur={this.handleBlurChange}
                         id="outlined-password-input-confirm"
                         name="confPassword"
                         type="password"
@@ -178,15 +225,21 @@ class SignUp extends Component {
                       </NavLink>
 
                       <NavLink to="/SignUp">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className="margin"
-                          onClick={() => this.createUser()}
-                        >
-                          Sign up
-                        </Button>
+                        <UserContext.Consumer>
+                          {({ setUsername }) => {
+                            return (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                borderRadius={30}
+                                className="margin"
+                                onClick={() => this.createUser(setUsername)}
+                              >
+                                Sign up
+                              </Button>
+                            );
+                          }}
+                        </UserContext.Consumer>
                       </NavLink>
                     </Typography>
                   </Box>

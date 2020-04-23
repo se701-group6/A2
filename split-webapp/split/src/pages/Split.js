@@ -86,24 +86,6 @@ class Split extends Component {
 
     const paymentArray = [];
 
-    usersArray.forEach(user => {
-      if (user !== transaction.payed) {
-        paymentArray.push({
-          person: user,
-          amount: perPersonCost
-        });
-      }
-    });
-
-    const bill = {
-      title,
-      payer: transaction.payed,
-      total: cost,
-      outstanding_payments: paymentArray
-    };
-
-    createBill(bill);
-
     if (!title) {
       alert("Please enter a title description for this bill.");
       return;
@@ -122,6 +104,24 @@ class Split extends Component {
       alert("Please choose a payee for this bill.");
       return;
     }
+
+    usersArray.forEach(user => {
+      if (user !== transaction.payed) {
+        paymentArray.push({
+          person: user,
+          amount: perPersonCost
+        });
+      }
+    });
+
+    const bill = {
+      title,
+      payer: transaction.payed,
+      total: cost,
+      outstanding_payments: paymentArray
+    };
+
+    createBill(bill);
 
     history.push("/home/transactions");
   }

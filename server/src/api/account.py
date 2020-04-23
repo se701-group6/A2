@@ -22,6 +22,12 @@ class AccountApi(object):
     def __init__(self, database):
         self.database = database
 
+    def setUsernameCookie(self, username):
+        cookie = cherrypy.response.cookie
+        cookie["username"] = username
+        cookie["username"]["path"] = "/"
+        cookie["username"]["max-age"] = 3600
+
     @cherrypy.expose
     def register(self):
         """Called when client requests to register, should create the user on the user table, 
@@ -39,6 +45,8 @@ class AccountApi(object):
             isRegistered = self.database.add_user(username, password)
             cherrypy.session["username"] = username
             cherrypy.session["password"] = password
+
+            self.setUsernameCookie(username = username)
         except Exception as e:
             print(e)
         finally:
@@ -63,6 +71,8 @@ class AccountApi(object):
             isLoggedIn = self.database.get_password(username) == password
             cherrypy.session["username"] = username
             cherrypy.session["password"] = password
+
+            self.setUsernameCookie(username = username)
         except Exception as e:
             isLoggedIn = False
             print(e)
