@@ -16,9 +16,9 @@ import {
 } from "react-sortable-hoc";
 import { Flipped, spring } from "react-flip-toolkit";
 
-import { ErrorBubble, ErrorBubbleAnchor } from "./ErrorBubble";
+import { ErrorBubble, ErrorBubbleAnchor } from "../../components/ErrorBubble";
 
-import styles from "./EditableBillPeopleList.module.css";
+import styles from "./PeopleList.module.css";
 
 const DragHandle = SortableHandle(props => (
   // Wrapper span element to provide a
@@ -154,7 +154,7 @@ PersonRow.defaultProps = {
   paidError: ""
 };
 
-const PeopleList = SortableContainer(
+const PeopleListInternal = SortableContainer(
   ({
     className,
     people,
@@ -223,7 +223,7 @@ const PeopleList = SortableContainer(
   }
 );
 
-const EditableBillPeopleList = ({
+const PeopleList = ({
   className,
   people,
   paidPersonId,
@@ -262,7 +262,7 @@ const EditableBillPeopleList = ({
   };
 
   return (
-    <PeopleList
+    <PeopleListInternal
       className={className}
       lockAxis="y"
       lockToContainerEdges
@@ -284,7 +284,7 @@ const EditableBillPeopleList = ({
   );
 };
 
-EditableBillPeopleList.propTypes = {
+PeopleList.propTypes = {
   className: PropTypes.string,
   people: PropTypes.shape({
     allIds: PropTypes.arrayOf(PropTypes.string.isRequired),
@@ -304,11 +304,11 @@ EditableBillPeopleList.propTypes = {
   onSwapOrder: PropTypes.func.isRequired
 };
 
-EditableBillPeopleList.defaultProps = {
+PeopleList.defaultProps = {
   className: "",
   paidPersonId: null,
   peopleError: {},
   paidError: ""
 };
 
-export default EditableBillPeopleList;
+export default PeopleList;

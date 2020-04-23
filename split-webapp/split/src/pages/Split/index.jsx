@@ -7,10 +7,10 @@ import AddIcon from "@material-ui/icons/Add";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-import EditableBillHeader from "../components/EditableBillHeader";
-import EditableBillPeopleList from "../components/EditableBillPeopleList";
+import Header from "./Header";
+import PeopleList from "./PeopleList";
 
-import styles from "./Split.module.css";
+import styles from "./index.module.css";
 
 const DEFAULT_BILL_TITLE = "Untitled Bill";
 const MINIMUM_PEOPLE_COUNT = 2;
@@ -291,7 +291,7 @@ class Split extends Component {
             <div className={styles.card}>
               <Flipped inverseFlipId="Split-card">
                 <div>
-                  <EditableBillHeader
+                  <Header
                     className={styles.header}
                     title={transaction.title}
                     titlePlaceholder={DEFAULT_BILL_TITLE}
@@ -302,7 +302,7 @@ class Split extends Component {
                     onCostChange={this.handleTotalChange}
                   />
 
-                  <EditableBillPeopleList
+                  <PeopleList
                     className={styles.peopleList}
                     people={transaction.users}
                     paidPersonId={transaction.payed}

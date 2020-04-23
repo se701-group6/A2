@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import styles from "./ErrorBubble.module.css";
+import styles from "./index.module.css";
 
 export const ErrorBubble = ({
   className,

@@ -7,12 +7,12 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Flipped } from "react-flip-toolkit";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 
-import FluidInput from "./FluidInput";
-import { ErrorBubble, ErrorBubbleAnchor } from "./ErrorBubble";
+import FluidInput from "../../components/FluidInput";
+import { ErrorBubble, ErrorBubbleAnchor } from "../../components/ErrorBubble";
 
-import styles from "./EditableBillHeader.module.css";
+import styles from "./Header.module.css";
 
-const EditableBillHeader = ({
+const Header = ({
   className,
   title,
   titlePlaceholder,
@@ -22,7 +22,7 @@ const EditableBillHeader = ({
   onTitleChange,
   onCostChange
 }) => (
-  <Flipped flipId="EditableBillHeader-header" translate>
+  <Flipped flipId="Header-header" translate>
     <div className={[styles.header, className].join(" ")}>
       <label className={styles.titleLabel} htmlFor="title">
         <TextField
@@ -93,7 +93,7 @@ const EditableBillHeader = ({
   </Flipped>
 );
 
-EditableBillHeader.propTypes = {
+Header.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
   titlePlaceholder: PropTypes.string.isRequired,
@@ -104,9 +104,9 @@ EditableBillHeader.propTypes = {
   onCostChange: PropTypes.func.isRequired
 };
 
-EditableBillHeader.defaultProps = {
+Header.defaultProps = {
   className: "",
   costError: ""
 };
 
-export default EditableBillHeader;
+export default Header;
