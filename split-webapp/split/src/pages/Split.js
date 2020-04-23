@@ -13,6 +13,7 @@ import EditableBillPeopleList from "../components/EditableBillPeopleList";
 import styles from "./Split.module.css";
 
 const DEFAULT_BILL_TITLE = "Untitled Bill";
+const MINIMUM_PEOPLE_COUNT = 2;
 
 const createBill = data => {
   fetch("/api/bill_exec/create_bill", {
@@ -48,17 +49,21 @@ class Split extends Component {
   constructor(props) {
     super(props);
 
-    const firstRowId = uuidv4();
+    const initialUsers = {
+      allIds: [],
+      byId: {}
+    };
+
+    for (let i = 0; i < MINIMUM_PEOPLE_COUNT; i += 1) {
+      const userId = uuidv4();
+      initialUsers.allIds.push(userId);
+      initialUsers.byId[userId] = { name: "" };
+    }
 
     this.state = {
       transaction: {
         title: "",
-        users: {
-          allIds: [firstRowId],
-          byId: {
-            [firstRowId]: { name: "" }
-          }
-        },
+        users: initialUsers,
         cost: 0,
         payed: null
       }
@@ -86,7 +91,7 @@ class Split extends Component {
 
     delete updatedTransaction.users.byId[userId];
 
-    if (updatedTransaction.users.allIds.length) {
+    if (updatedTransaction.users.allIds.length >= MINIMUM_PEOPLE_COUNT) {
       this.setState({
         transaction: updatedTransaction
       });
