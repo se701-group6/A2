@@ -34,18 +34,6 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.MenuBar {
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-}
-
-.ProfileName {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 20px;
-  color: #79a2f4;
-}
-
 .CardTitle {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
