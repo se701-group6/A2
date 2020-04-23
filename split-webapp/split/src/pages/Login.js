@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
 import { getCookie } from "../utils/helpers";
 import { UserContext } from "../context/UserContext";
+import styles from "./Login.module.css";
 
 class Login extends Component {
   constructor(props) {
@@ -92,15 +93,15 @@ class Login extends Component {
                 <Box
                   component="div"
                   borderRadius={12}
-                  className="SignInContainer"
+                  className={styles.signInContainer}
                 >
                   <img
                     src={mainLogo}
                     style={{ width: "50%", marginTop: "10%" }}
                     alt="Main logo for login"
                   />
-                  <Box component="div" className="InnerContainer">
-                    <Typography component="h3" className="SignIn">
+                  <Box component="div" className={styles.innerContainer}>
+                    <Typography component="h3" className={styles.signIn}>
                       Sign In
                     </Typography>
 
@@ -153,7 +154,7 @@ class Login extends Component {
                       </UserContext.Consumer>
 
                       <div>
-                        <NavLink to="/SignUp" className="SignUpLink">
+                        <NavLink to="/SignUp" className={styles.signUpLink}>
                           If you dont have an account, sign up here
                         </NavLink>
                       </div>
