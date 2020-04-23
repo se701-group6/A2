@@ -20,7 +20,8 @@ const Header = ({
   costError,
   showErrors,
   onTitleChange,
-  onCostChange
+  onCostChange,
+  onInputBlur
 }) => (
   <Flipped flipId="Header-header" translate>
     <div className={[styles.header, className].join(" ")}>
@@ -48,6 +49,7 @@ const Header = ({
           }}
           value={title}
           onChange={onTitleChange}
+          onBlur={onInputBlur}
         />
         <EditIcon className={styles.titleEditIcon} />
       </label>
@@ -62,6 +64,7 @@ const Header = ({
             value={cost}
             placeholder="0.00"
             onChange={onCostChange}
+            onBlur={onInputBlur}
             currencySymbol=""
             InputProps={{
               // Note: We need this InputBase component to be
@@ -101,7 +104,8 @@ Header.propTypes = {
   costError: PropTypes.string,
   showErrors: PropTypes.bool.isRequired,
   onTitleChange: PropTypes.func.isRequired,
-  onCostChange: PropTypes.func.isRequired
+  onCostChange: PropTypes.func.isRequired,
+  onInputBlur: PropTypes.func.isRequired
 };
 
 Header.defaultProps = {

@@ -81,6 +81,28 @@ class Split extends Component {
     };
   }
 
+  getNormalizedTransaction() {
+    const { transaction } = this.state;
+
+    const normalizedUsersById = {};
+
+    for (const userId of transaction.users.allIds) {
+      normalizedUsersById[userId] = {
+        ...transaction.users.byId[userId],
+        name: transaction.users.byId[userId].name.trim()
+      };
+    }
+
+    return {
+      ...transaction,
+      title: transaction.title.trim(),
+      users: {
+        ...transaction.users,
+        byId: normalizedUsersById
+      },
+    };
+  }
+
   addUser = () => {
     const { transaction } = this.state;
 
@@ -183,8 +205,14 @@ class Split extends Component {
     });
   };
 
+  normalizeInput = () => {
+    this.setState({
+      transaction: this.getNormalizedTransaction()
+    });
+  };
+
   split = async () => {
-    const { transaction } = this.state;
+    const transaction = this.getNormalizedTransaction();
     const { history } = this.props;
     const { users, cost } = transaction;
     const perPersonCost = cost / users.allIds.length;
@@ -231,7 +259,7 @@ class Split extends Component {
   };
 
   validate() {
-    const { transaction } = this.state;
+    const transaction = this.getNormalizedTransaction();
 
     const errors = {};
 
@@ -300,6 +328,7 @@ class Split extends Component {
                     showErrors={showErrors}
                     onTitleChange={this.handleTitleChange}
                     onCostChange={this.handleTotalChange}
+                    onInputBlur={this.normalizeInput}
                   />
 
                   <PeopleList
@@ -313,6 +342,7 @@ class Split extends Component {
                     onNameChange={this.handleNameChange}
                     onRemovePerson={this.removeUser}
                     onSwapOrder={this.handlePeopleSwapOrder}
+                    onInputBlur={this.normalizeInput}
                   />
 
                   <Flipped flipId="Split-addPerson" translation>

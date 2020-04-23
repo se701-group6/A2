@@ -54,6 +54,7 @@ const PersonRow = SortableElement(
     onSetPayee,
     onNameChange,
     onRemove,
+    onInputBlur,
     ...other
   }) => (
     // react-sortable-hoc needs to pass in some
@@ -68,6 +69,7 @@ const PersonRow = SortableElement(
             required
             value={person.name}
             onChange={onNameChange}
+            onBlur={onInputBlur}
             placeholder="Enter person’s name..."
             fullWidth
             className={styles.personNameTextField}
@@ -146,7 +148,8 @@ PersonRow.propTypes = {
   onSetPayer: PropTypes.func.isRequired,
   onSetPayee: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired
+  onRemove: PropTypes.func.isRequired,
+  onInputBlur: PropTypes.func.isRequired
 };
 
 PersonRow.defaultProps = {
@@ -165,7 +168,8 @@ const PeopleListInternal = SortableContainer(
     showErrors,
     onPayeeChange,
     onNameChange,
-    onRemovePerson
+    onRemovePerson,
+    onInputBlur
   }) => {
     // Animate new row entries: pop out and fade in.
     // They start at {START_SCALE} of the full size.
@@ -215,6 +219,7 @@ const PeopleListInternal = SortableContainer(
               onSetPayee={() => paidPersonId !== id && onPayeeChange(id)}
               onNameChange={event => onNameChange(id, event.target.value)}
               onRemove={() => onRemovePerson(id)}
+              onInputBlur={onInputBlur}
               style={{
                 // Fix for error bubble overlap bug.
                 // To reproduce:
@@ -246,7 +251,8 @@ const PeopleList = ({
   onPayeeChange,
   onNameChange,
   onRemovePerson,
-  onSwapOrder
+  onSwapOrder,
+  onInputBlur
 }) => {
   const [isSorting, setIsSorting] = useState(false);
 
@@ -293,6 +299,7 @@ const PeopleList = ({
       onPayeeChange={onPayeeChange}
       onNameChange={onNameChange}
       onRemovePerson={onRemovePerson}
+      onInputBlur={onInputBlur}
     />
   );
 };
@@ -314,7 +321,8 @@ PeopleList.propTypes = {
   onPayeeChange: PropTypes.func.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onRemovePerson: PropTypes.func.isRequired,
-  onSwapOrder: PropTypes.func.isRequired
+  onSwapOrder: PropTypes.func.isRequired,
+  onInputBlur: PropTypes.func.isRequired
 };
 
 PeopleList.defaultProps = {
