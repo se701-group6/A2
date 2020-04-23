@@ -212,7 +212,7 @@ class SignUp extends Component {
                       />
                     </form>
 
-                    <Typography component="h3" className="LogIn">
+                    <Typography component="h3">
                       <NavLink to="/">
                         <Button
                           variant="contained"
