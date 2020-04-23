@@ -215,6 +215,19 @@ const PeopleListInternal = SortableContainer(
               onSetPayee={() => paidPersonId !== id && onPayeeChange(id)}
               onNameChange={event => onNameChange(id, event.target.value)}
               onRemove={() => onRemovePerson(id)}
+              style={{
+                // Fix for error bubble overlap bug.
+                // To reproduce:
+                // 1. Disable this fix
+                // 2. Go to /home/split
+                // 3. Press 'Split'
+                // 4. Delete first row
+                // 5. Delete second row
+                // You should now see the name error bubble clipped in the first row.
+                // Repeat several times to check.
+                position: "relative",
+                zIndex: people.allIds.length - i
+              }}
             />
           </Flipped>
         ))}
