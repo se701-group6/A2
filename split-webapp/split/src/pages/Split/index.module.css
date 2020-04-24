@@ -8,11 +8,28 @@
 .card {
   position: relative;
   margin: 0 0 44px;
+}
+
+.card::before {
+  /* The actual background is specified in a pseudo element,
+   * rather than the actual .card element, because we do not
+   * want the border's thickness to mess up with the
+   * react-flip-toolkit's inverse transformation calculations.
+   * Moving the border to this element reduces the distortion
+   * that occurs during animations. */
+  display: block;
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  height: 100%;
+  width: 100%;
   border-radius: 6px;
   border: #afc6fd solid 1px;
   border-radius: 6px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
   background-color: white;
+  content: "";
+  pointer-events: none;
 }
 
 .header {
