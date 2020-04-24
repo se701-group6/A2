@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import styles from "./FluidInput.module.css";
+
 /**
  * Intended to be used as the internal input component
  * for material-ui text-fields when you want to
@@ -61,20 +63,8 @@ const FluidInput = ({ inputRef, className, placeholder, ...other }) => {
         // style as the input element so that the size calculation
         // is accurate.
       }
-      <span className={className}>
-        {
-          // This inner span is to override the emulated style and make
-          // it invisible.
-        }
-        <span
-          style={{
-            color: "transparent",
-            whiteSpace: "pre",
-            pointerEvents: "none"
-          }}
-        >
-          {value.toString().length ? value : placeholder}
-        </span>
+      <span className={[className, styles.hidden].join(" ")}>
+        {value.toString().length ? value : placeholder}
       </span>
     </>
   );
