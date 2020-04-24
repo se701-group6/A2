@@ -74,8 +74,12 @@
 }
 
 .personNameInput {
-  /* Fix minor clipping of descenders like 'g' */
-  padding: 0.1em !important;
+  padding: 0 !important;
+
+  /* Fix minor clipping of descenders like 'g' for Safari & Firefox */
+  height: auto !important;
+  /* Fix minor clipping of descenders like 'g' for Safari, Firefox, & Chrome */
+  line-height: normal !important;
 
   /* Account for the border's thickness for when it appears. */
   /* Also set up initial values for transition. */

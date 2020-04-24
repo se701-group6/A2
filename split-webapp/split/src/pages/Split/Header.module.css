@@ -33,22 +33,21 @@
 
 .titleInput,
 .totalInput {
-  /* Fix minor clipping of descenders like 'g' */
-  padding: 0.1em !important;
+  padding: 0 !important;
 
+  /* Fix minor clipping of descenders like 'g' for Safari & Firefox */
+  height: auto !important;
+  /* Fix minor clipping of descenders like 'g' for Safari, Firefox, & Chrome */
+  line-height: normal !important;
+
+  /* Prevent fluid input fake span from growing out of bounds */
   text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 .titleLabel,
 .totalLabel {
   cursor: pointer;
-
-  /* Prevent fluid input fake span from growing out of bounds */
-  /* Note: Do not apply overflow: hidden to children, as it
-   * will force the browser to create a new block formatting context
-   * that will cause the text's vertical alignment to be broken
-   * in Firefox */
-  overflow: hidden;
 }
 
 .titleLabel {
