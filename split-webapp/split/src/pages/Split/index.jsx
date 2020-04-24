@@ -219,8 +219,16 @@ class Split extends Component {
     //
     // The solution is to emulate Chrome's rewinding behaviour on
     // all browsers and use the single value syntax for text-overflow.
-    if (event.target.setSelectionRange) {
+    if (event.target.setSelectionRange && event.target.selectionStart > 0) {
       event.target.setSelectionRange(0, 0);
+
+      // Workaround for Safari:
+      // In Safari, setSelectionRange puts focus back into the input,
+      // causing the focus system to become 'stuck' on the first
+      // textbox the user clicks on.
+      // De-focus from the text-box once more.
+      // Be careful with infinite recursion here.
+      event.target.blur();
     }
 
     this.setState({
