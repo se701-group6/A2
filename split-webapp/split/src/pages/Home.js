@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route, NavLink, HashRouter } from "react-router-dom";
-import { Button } from "@material-ui/core";
 import Transactions from "./Transactions";
 import Split from "./Split";
 import "../App.css";
@@ -13,21 +12,13 @@ class Home extends Component {
     this.state = { isOpen: true };
   }
 
-  render() {
-    const toggleSidebar = () => {
-      this.setState(prevState => ({ isOpen: !prevState.isOpen }));
-    };
+  toggleSidebar = () => {
+    this.setState(prevState => ({ isOpen: !prevState.isOpen }));
+  };
 
+  render() {
     const SideBar = () => (
       <div className="Sidebar">
-        <Button
-          className="SidebarButton"
-          variant="contained"
-          color="primary"
-          onClick={() => toggleSidebar()}
-        >
-          {"<<<"}
-        </Button>
         <h1 className="SplitLogo">Sp/it</h1>
         <NavLink to="/">
           <button type="button">Sign Out</button>
@@ -36,26 +27,15 @@ class Home extends Component {
       </div>
     );
 
-    const CollapsedSideBar = () => (
-      <div className="CollapsedSidebar">
-        <Button
-          className="CollapsedSidebarButton"
-          variant="contained"
-          color="primary"
-          onClick={() => toggleSidebar()}
-        >
-          {">>>"}
-        </Button>
-      </div>
-    );
+    const CollapsedSideBar = () => <div className="CollapsedSidebar" />;
 
     const { isOpen } = this.state;
 
     return (
       <HashRouter>
-        <MenuBar className="AppBar" />
+        <MenuBar className="AppBar" toggleSidebar={this.toggleSidebar} />
         <div>
-          {isOpen ? SideBar() : CollapsedSideBar()}
+          {isOpen ? <SideBar /> : <CollapsedSideBar />}
           <div className="HomeScreen">
             <Route path="/home/transactions" component={Transactions} />
             <Route path="/home/split" component={Split} />
