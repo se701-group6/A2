@@ -1,7 +1,6 @@
 import cherrypy
 import urllib.request
 import json
-import traceback
 
 """
     Json receiving example:
@@ -57,8 +56,7 @@ class BillDataApi(object):
             try:
                 username = cherrypy.session["username"]
             except KeyError as e:
-                #raise InvalidDataException("login")
-                username="a"
+                raise InvalidDataException("login")
 
             bill_objects = self.database.get_bills_from_username(username)
             #converts internal object representation to appropriate json format
@@ -133,8 +131,6 @@ class BillDataApi(object):
                 #Invalid API call
                 raise InvalidDataException("sort_field")
 
-            print("Unsorted size",len(bills))
-            print("sorted size", len(sort))
             bills=sort
 
             #check for names in the payee and payer fields
@@ -161,8 +157,6 @@ class BillDataApi(object):
                 #Invalid API call
                 raise InvalidDataException("is_paid")
 
-            print(len(bills))
-            print(bills)
 
             #Check what page we are on and make sure to only return those
             if ( (page_number)*page_size-1 >= len(bills) ):
@@ -187,7 +181,6 @@ class BillDataApi(object):
 
         except Exception as e:
             print(e)
-            traceback.print_exc()
             error_msg = "Unknown error occured"
         finally:
             response = {
