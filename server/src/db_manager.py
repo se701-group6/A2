@@ -254,7 +254,7 @@ class DatabaseManager(object):
         """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        try:  
+        try:
             c.execute("""insert into bills
                     (title, creator_username, total, payer) 
                     values 
@@ -303,15 +303,18 @@ class DatabaseManager(object):
             conn.commit()
 
             ''' Update existing payment details '''
+            print("Updating payers") 
             payment_details = self.get_payments_from_bill_id(bill_id)
-            for i in range(len(payment_details)):
+            x = min(len(payments),len(payment_details) )
+            for i in range(x):
                 payment = payments[i]
                 c.execute("""UPDATE payments
                     SET bill_id=?, payee_name=?, amount_owed=?, is_paid=?
                     WHERE payment_id=?""", (bill_id,payment.payee_name, payment.amount_owed, payment.is_paid,payment_details[i].payment_id))
                 conn.commit()
                 
-            ''' Add any new payments ''' 
+            ''' Add any new payers ''' 
+            print("Adding payers") 
             if (len(payments)>len(payment_details)):
                 indicies = range(len(payment_details), len(payments))
                 for i in indicies:
@@ -320,7 +323,18 @@ class DatabaseManager(object):
                         (bill_id, payee_name, amount_owed, is_paid) 
                         values 
                         (?, ?, ?, ?)""", (bill_id, payment.payee_name, payment.amount_owed, payment.is_paid))
-                    conn.commit()       
+                    conn.commit()  
+                    
+            ''' Delete any removed payers '''      
+            print("Deleting payers") 
+            if (len(payments)<len(payment_details)):    
+                indicies = range(len(payments), len(payment_details))
+                for i in indicies:
+                    payment = payment_details[i]
+                    c.execute("""delete from payments
+                        WHERE payment_id=?""", (payment.payment_id,))
+                    conn.commit()                           
+                         
             return True
         except Exception as e:
             print("Error:",e)
