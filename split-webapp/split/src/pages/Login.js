@@ -10,6 +10,8 @@ import VpnKey from "@material-ui/icons/VpnKey";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
+import { getCookie } from "../utils/helpers";
+import { UserContext } from "../context/UserContext";
 
 class Login extends Component {
   constructor(props) {
@@ -20,6 +22,16 @@ class Login extends Component {
       failedAuth: false
     };
   }
+
+  componentDidMount = () => {
+    const inputField = document.getElementById("inner-container-id");
+    inputField.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("login-button").click();
+      }
+    });
+  };
 
   handleOnChangeUser = event => {
     this.setState({ username: event.target.value });
@@ -33,130 +45,148 @@ class Login extends Component {
     this.setState({ failedAuth: true });
   };
 
-  createDetails() {
+  createDetails(setUsername) {
     const { username, password, failedAuth } = this.state;
     const user = {
       username,
       password,
       failedAuth
     };
-    this.authenticate(user);
+    this.authenticate(user, setUsername);
   }
 
-  authenticate(user) {
+  authenticate(user, setUsername) {
     const { history } = this.props;
     fetch("/api/account/login", {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
         "Content-Type": "application/json"
-      }
+      },
+      credentials: "same-origin"
     })
       .then(res => {
         return res.json();
       })
       .then(data => {
+        const username = getCookie("username");
+        setUsername(username);
+
         if (data.success === true) {
           history.push("/home/transactions");
         } else {
           this.handleAuth();
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
     const { failedAuth } = this.state;
     return (
       <React.Fragment key="LoginKey">
-        <form onSubmit={() => this.createDetails()}>
-          <CssBaseline />
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh" }}
-          >
-            <Grid item xs={0}>
-              <Container fixed justifyContent="center">
-                <Container fixed>
+        <CssBaseline />
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Grid item xs={0}>
+            <Container fixed justifyContent="center">
+              <Container fixed>
+                <Box
+                  component="div"
+                  borderRadius={12}
+                  className="SignInContainer"
+                >
+                  <img
+                    src={mainLogo}
+                    style={{ width: "50%", marginTop: "10%" }}
+                    alt="Main logo for login"
+                  />
                   <Box
                     component="div"
-                    borderRadius={12}
-                    className="SignInContainer"
+                    className="InnerContainer"
+                    id="inner-container-id"
                   >
-                    <img
-                      src={mainLogo}
-                      style={{ width: "50%", marginTop: "10%" }}
-                      alt="Main logo for login"
+                    <Typography component="h3" className="SignIn">
+                      Sign In
+                    </Typography>
+
+                    <TextField
+                      id="outlined-basic"
+                      label="Username"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircle />
+                          </InputAdornment>
+                        )
+                      }}
+                      onChange={this.handleOnChangeUser}
                     />
-                    <Box component="div" className="InnerContainer">
-                      <Typography component="h3" className="SignIn">
-                        Sign In
-                      </Typography>
 
-                      <TextField
-                        id="outlined-basic"
-                        label="Username"
-                        variant="filled"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <AccountCircle />
-                            </InputAdornment>
-                          )
+                    <TextField
+                      id="outlined-password-input"
+                      type="password"
+                      label="Password"
+                      variant="filled"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKey />
+                          </InputAdornment>
+                        )
+                      }}
+                      onChange={this.handleOnChangePassword}
+                    />
+
+                    <Typography component="h3" className="LogIn">
+                      <UserContext.Consumer>
+                        {({ setUsername }) => {
+                          return (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              borderRadius={30}
+                              className="margin"
+                              id="login-button"
+                              onClick={() => {
+                                this.createDetails(setUsername);
+                              }}
+                            >
+                              Log In
+                            </Button>
+                          );
                         }}
-                        onChange={this.handleOnChangeUser}
-                      />
+                      </UserContext.Consumer>
 
-                      <TextField
-                        id="outlined-password-input"
-                        type="password"
-                        label="Password"
-                        variant="filled"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <VpnKey />
-                            </InputAdornment>
-                          )
-                        }}
-                        onChange={this.handleOnChangePassword}
-                      />
-
-                      <Typography component="h3" className="LogIn">
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          color="primary"
-                          borderRadius={30}
-                          className="margin"
-                        >
-                          Log In
-                        </Button>
-                        <div>
-                          <NavLink to="/SignUp" className="SignUpLink">
-                            If you dont have an account, sign up here
-                          </NavLink>
-                        </div>
-                        <Box
-                          component="div"
-                          visibility={failedAuth ? "visible" : "hidden"}
-                          marginTop="50px"
-                          color="white"
-                        >
-                          Incorrect Username or Password
-                        </Box>
-                      </Typography>
-                    </Box>
+                      <div>
+                        <NavLink to="/SignUp" className="SignUpLink">
+                          If you dont have an account, sign up here
+                        </NavLink>
+                      </div>
+                      <Box
+                        component="div"
+                        visibility={failedAuth ? "visible" : "hidden"}
+                        marginTop="50px"
+                        color="white"
+                      >
+                        Incorrect Username or Password
+                      </Box>
+                    </Typography>
                   </Box>
-                </Container>
+                </Box>
               </Container>
-            </Grid>
+            </Container>
           </Grid>
-        </form>
+        </Grid>
       </React.Fragment>
     );
   }
