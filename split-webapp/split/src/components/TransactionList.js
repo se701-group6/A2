@@ -92,7 +92,7 @@ class TransactionList extends React.Component {
               <Link
                 to={{
                   pathname: "split",
-                  bill: bill
+                  bill
                 }}><EditIcon /></Link>
               <PaymentIcon />
             </div>
