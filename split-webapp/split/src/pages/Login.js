@@ -14,6 +14,8 @@ import { getCookie } from "../utils/helpers";
 import { UserContext } from "../context/UserContext";
 
 class Login extends Component {
+  buttonRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,14 +25,11 @@ class Login extends Component {
     };
   }
 
-  componentDidMount = () => {
-    const inputField = document.getElementById("inner-container-id");
-    inputField.addEventListener("keyup", function(event) {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        document.getElementById("login-button").click();
-      }
-    });
+  onEnterKey = event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.buttonRef.current.click();
+    }
   };
 
   handleOnChangeUser = event => {
@@ -112,7 +111,7 @@ class Login extends Component {
                   <Box
                     component="div"
                     className="InnerContainer"
-                    id="inner-container-id"
+                    onKeyUp={this.onEnterKey}
                   >
                     <Typography component="h3" className="SignIn">
                       Sign In
@@ -156,7 +155,7 @@ class Login extends Component {
                               color="primary"
                               borderRadius={30}
                               className="margin"
-                              id="login-button"
+                              ref={this.buttonRef}
                               onClick={() => {
                                 this.createDetails(setUsername);
                               }}
