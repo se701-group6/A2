@@ -2,7 +2,6 @@ import React from "react";
 import { List, ListItem, ListItemText, Divider } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
-import "../App.css";
 import styles from "./NavList.module.css";
 
 function ListItemLink(props) {
