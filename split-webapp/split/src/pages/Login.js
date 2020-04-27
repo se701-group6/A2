@@ -69,7 +69,7 @@ class Login extends Component {
     const { failedAuth } = this.state;
     return (
       <React.Fragment key="LoginKey">
-        <form onSubmit={this.createDetails()}>
+        <form onSubmit={() => this.createDetails()}>
           <CssBaseline />
           <Grid
             container
