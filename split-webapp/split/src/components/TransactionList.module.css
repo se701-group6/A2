@@ -1,0 +1,71 @@
+.bills {
+  box-shadow: none !important;
+  outline: none;
+  background: none !important;
+}
+
+.billSummary {
+  display: flex !important;
+  justify-content: space-between !important;
+  justify-items: flex-start;
+  flex-direction: row;
+  align-items: flex-start !important;
+  width: 100%;
+  padding: 10px;
+  padding-right: 38xpx;
+}
+
+.billAmount {
+  display: flex;
+  font-size: 20px;
+  font-weight: 600;
+  justify-content: flex-end;
+  align-content: flex-end;
+}
+
+.billTitle {
+  display: flex;
+  font-size: 20px;
+  font-variant-caps: petite-caps;
+  align-self: flex-start;
+}
+
+.payments {
+  flex-direction: column;
+  align-items: flex-start;
+  border-top-width: 0.3px;
+  border-top-style: solid;
+  justify-content: space-evenly;
+}
+
+.paymentsTitle {
+  padding: 10px 0 5px 0;
+  flex-direction: row;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.paymentHeaders {
+  margin-left: -2px;
+  size: 8px;
+  color: #3e8ef6;
+}
+
+.runningTotal {
+  flex-direction: row;
+  display: flex;
+}
+
+.percentage {
+  font-weight: 500;
+  padding-right: 5px;
+  color: #e071ae;
+}
+
+.noTransactions {
+  display: flex;
+  justify-content: center;
+  font-size: 13px;
+  padding: 10px;
+}
