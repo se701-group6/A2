@@ -1,0 +1,134 @@
+/**
+ * Section:
+ * Overall header layout
+ */
+
+.header {
+  display: flex;
+  padding: 20px 30px 15px;
+}
+
+/**
+ * Section:
+ * Input and their labels
+ */
+
+/*
+ * The InputBase component needs the same font settings
+ * as the actual <input> elements themselves
+ * to get the baseline alignment correct
+ */
+.titleLabel,
+.totalLabel,
+.titleInput,
+.totalInput,
+.titleInputBase,
+.totalInputBase {
+  text-transform: none !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-weight: bold !important;
+  font-size: 20px !important;
+  color: #e95eb1 !important;
+}
+
+.titleInput,
+.totalInput {
+  padding: 0 !important;
+
+  /* Fix minor clipping of descenders like 'g' for Safari & Firefox */
+  height: auto !important;
+  /* Fix minor clipping of descenders like 'g' for Safari, Firefox, & Chrome */
+  line-height: normal !important;
+
+  /* Prevent fluid input fake span from growing out of bounds */
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+.titleLabel,
+.totalLabel {
+  cursor: pointer;
+}
+
+.titleLabel {
+  display: flex;
+  flex-grow: 1;
+  margin-right: 30px;
+  min-width: 0;
+  text-align: left;
+  align-items: baseline;
+}
+
+.totalLabel {
+  flex-shrink: 0;
+}
+
+/**
+ * Section:
+ * Input Placeholders
+ */
+
+.titleInput::placeholder {
+  opacity: 1 !important;
+}
+
+.titleInput:focus::placeholder {
+  opacity: 0.4 !important;
+}
+
+.totalInput::placeholder {
+  opacity: 0.4 !important;
+}
+
+.totalInput:focus::placeholder {
+  opacity: 0.2 !important;
+}
+
+/**
+ * Section:
+ * TextField - underlining and alignment
+ */
+
+.titleTextField,
+.totalTextField {
+  width: auto;
+  margin-left: 0 !important;
+  border-bottom: 1px solid transparent !important;
+  transition: border 0.3s;
+  vertical-align: baseline !important;
+}
+
+.totalTextField:focus-within,
+.titleTextField:focus-within,
+.titleLabel:hover .titleTextField:focus-within,
+.totalLabel:hover .totalTextField:focus-within {
+  border-bottom-color: #d6e3fe !important;
+}
+
+.titleLabel:hover .titleTextField,
+.totalLabel:hover .totalTextField {
+  border-bottom-color: #afc6fd !important;
+}
+
+/**
+ * Section:
+ * Edit icons
+ */
+
+.titleEditIcon,
+.totalEditIcon {
+  width: 16px !important;
+  height: 16px !important;
+  transition: fill 0.3s;
+  fill: #d6e3fe !important;
+}
+
+.titleLabel:hover .titleEditIcon,
+.totalLabel:hover .totalEditIcon {
+  fill: #afc6fd !important;
+}
+
+.titleLabel:focus-within .titleEditIcon,
+.totalLabel:focus-within .totalEditIcon {
+  fill: transparent !important;
+}
