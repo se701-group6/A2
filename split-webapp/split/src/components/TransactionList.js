@@ -7,7 +7,46 @@ import {
   FormControlLabel
 } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
+import Pagination from "@material-ui/lab/Pagination";
 import "../App.css";
+
+// eslint-disable-next-line no-unused-vars
+const sendFilters = async ({
+  sortField,
+  sortOrder,
+  isPaid,
+  payer,
+  payeeName,
+  pageNumber
+}) => {
+  const params = {
+    sort_field: sortField,
+    sort_order: sortOrder,
+    is_paid: isPaid,
+    payer,
+    payee_name: payeeName,
+    page_number: pageNumber
+  };
+
+  const requestBody = JSON.stringify(params);
+
+  const response = await fetch("api/bill_data", {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    method: "POST",
+    body: requestBody
+  })
+    .then(responseBody => responseBody.json())
+    .catch(error => {
+      console.log(error);
+    });
+
+  if (response) {
+    console.log(response.message);
+  }
+};
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
@@ -34,24 +73,15 @@ class TransactionList extends React.Component {
     super(props);
 
     this.state = {
-      bills: []
+      bills: [],
+      page: 1
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    fetch("/api/bill_data/get_bills")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({
-          bills: data.bills
-        });
-        console.log(data.bills);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.retrieveBills();
   }
 
   setPaidStatus(paymentId, paid) {
@@ -72,6 +102,21 @@ class TransactionList extends React.Component {
         };
       })
     });
+  }
+
+  retrieveBills() {
+    fetch("/api/bill_data/get_bills")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        this.setState({
+          bills: data.bills
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   populateBills(bills) {
@@ -151,9 +196,27 @@ class TransactionList extends React.Component {
       .catch(err => console.log(err));
   }
 
+  handleChange(event, value) {
+    console.log(value);
+    this.setState({
+      page: value
+    });
+    this.retrieveBills();
+  }
+
   render() {
-    const { bills } = this.state;
-    return <div>{this.populateBills(bills)} </div>;
+    const { bills, page } = this.state;
+    return (
+      <div>
+        {this.populateBills(bills)}
+        <Pagination
+          count={10}
+          page={page}
+          color="primary"
+          onChange={this.handleChange}
+        />
+      </div>
+    );
   }
 }
 
