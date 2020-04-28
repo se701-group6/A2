@@ -80,7 +80,7 @@ class Split extends Component {
     let title = "";
     if (this.editBill) {
       users = this.editBill.payments.map(person => person.from);
-      users.push(this.editBill.payments[0].to); 
+      users.unshift(this.editBill.payments[0].to); 
       cost = this.editBill.total;
       title = this.editBill.title;
     }
@@ -89,7 +89,7 @@ class Split extends Component {
     for (let i = 0; i < userLength; i += 1) {
       const userId = uuidv4();
       initialUsers.allIds.push(userId);
-      initialUsers.byId[userId] = { name: users.pop() || "" };
+      initialUsers.byId[userId] = { name: users.shift() || "" };
     }
     const payee = this.editBill ? initialUsers.allIds[0] : null;
 
