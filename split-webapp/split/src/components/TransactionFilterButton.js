@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import Modal from "@material-ui/core/Modal";
+import PropTypes from "prop-types";
 import "../App.css";
 
 class TransactionFilterButton extends Component {
@@ -8,8 +9,8 @@ class TransactionFilterButton extends Component {
     super(props);
     this.state = {
       open: false,
-      sort_field: "created_time",
-      sort_order: "desc",
+      sortField: "created_time",
+      sortOrder: "desc",
       complete: "all",
       payer: "",
       payee: ""
@@ -36,31 +37,27 @@ class TransactionFilterButton extends Component {
     };
 
     const handleClose = () => {
+      const { sortField, sortOrder, complete, payer, payee } = this.state;
+      const { changeFilters } = this.props;
+      changeFilters(sortField, sortOrder, complete, payer, payee);
       this.setState({ open: false });
-
-      console.log(this.state);
     };
     const { open, sortField, sortOrder, Complete, payer, payee } = this.state;
 
     const handleChangeSortField = event => {
-      this.setState({ sort_field: event.target.value });
-      console.log(this.state);
+      this.setState({ sortField: event.target.value });
     };
     const handleChangeSortOrder = event => {
-      this.setState({ sort_order: event.target.value });
-      console.log(this.state);
+      this.setState({ sortOrder: event.target.value });
     };
     const handleChangeComplete = event => {
       this.setState({ complete: event.target.value });
-      console.log(this.state);
     };
     const handleChangePayer = event => {
       this.setState({ payer: event.target.value });
-      console.log(this.state);
     };
     const handleChangePayee = event => {
       this.setState({ payee: event.target.value });
-      console.log(this.state);
     };
 
     return (
@@ -118,5 +115,9 @@ class TransactionFilterButton extends Component {
     );
   }
 }
+
+TransactionFilterButton.propTypes = {
+  changeFilters: PropTypes.func.isRequired
+};
 
 export default TransactionFilterButton;
