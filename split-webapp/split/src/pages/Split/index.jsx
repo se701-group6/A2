@@ -362,11 +362,11 @@ class Split extends Component {
     // or re-ordering.
     const flipKey = transaction.users.allIds.join(" ");
 
-    let submitButtonText = "Split This Bill";
+    let submitButtonText = this.editBill ? "Update This Bill" : "Split This Bill";
     if (submissionFailed) {
       submitButtonText = "We found some things to fix";
     } else if (submitAcknowledged) {
-      submitButtonText = "Splitting...";
+      submitButtonText = this.editBill ? "Updating..." : "Splitting...";
     }
 
     return (
