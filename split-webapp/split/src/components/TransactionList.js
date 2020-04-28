@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PaymentIcon from "@material-ui/icons/Payment";
-import styles from "./TransactionList.module.css";
 import { Link } from "react-router-dom";
+import styles from "./TransactionList.module.css";
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
