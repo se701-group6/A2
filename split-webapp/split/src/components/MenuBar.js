@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import PropTypes from "prop-types";
 import { UserContext } from "../context/UserContext";
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MenuBar() {
+export default function MenuBar(props) {
   const classes = useStyles();
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -49,6 +50,7 @@ export default function MenuBar() {
                 className={classes.menuButton}
                 color="pink"
                 aria-label="menu"
+                onClick={props.toggleSidebar}
               >
                 <MenuIcon />
               </IconButton>
@@ -92,3 +94,7 @@ export default function MenuBar() {
     </UserContext.Consumer>
   );
 }
+
+MenuBar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired
+};

@@ -325,3 +325,57 @@ class DatabaseManager(object):
             payment1 = Payment("Jim", 45.98, False, 0)
             payment2 = Payment("Tom", 10.00, False, 0)
             self.add_bill("Bob", "Bob", "maccas", 105.98, [payment1, payment2])
+
+    def delete_bill(self, bill_id : int):
+        """
+        Arguments:
+            bill_id {Integer}
+
+        Returns:
+            boolean -- success or fail
+        """
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        try:
+            c.execute("""DELETE FROM bills
+                    WHERE 
+                    bill_id = ?""", [bill_id])
+            conn.commit()
+        except Exception as e:
+            print(e)
+            return False
+        finally:
+            try:
+                conn.close()
+            except UnboundLocalError:
+                pass
+
+    def check_if_user_owns_bill(self, username : str, bill_id : int):
+        """
+        Arguments:
+            username {String}
+            bill_id {Integer}
+
+        Returns:
+            boolean -- success or fail
+        """
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        try:
+            c.execute("""SELECT * FROM bills
+                    WHERE 
+                    bill_id = ?""", [bill_id])
+            data = c.fetchone()
+            requested_by = data[2]
+            if (requested_by == username):
+                return True
+            else:
+                return False
+        except Exception as e:
+            print(e)
+            return False
+        finally:
+            try:
+                conn.close()
+            except UnboundLocalError:
+                pass
