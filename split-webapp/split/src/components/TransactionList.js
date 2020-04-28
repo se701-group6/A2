@@ -8,7 +8,10 @@ import {
 } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
 import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
 import "../App.css";
+
+/* eslint react/no-unused-prop-types: 0 */
 
 // eslint-disable-next-line no-unused-vars
 const sendFilters = async ({
@@ -16,7 +19,7 @@ const sendFilters = async ({
   sortOrder,
   isPaid,
   payer,
-  payeeName,
+  payee,
   pageNumber
 }) => {
   const params = {
@@ -24,21 +27,26 @@ const sendFilters = async ({
     sort_order: sortOrder,
     is_paid: isPaid,
     payer,
-    payee_name: payeeName,
+    payee,
     page_number: pageNumber
   };
 
   const requestBody = JSON.stringify(params);
 
-  const response = await fetch("api/bill_data", {
+  const response = await fetch("api/bill_data/get_bills", {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json"
     },
-    method: "POST",
+    method: "GET",
     body: requestBody
   })
     .then(responseBody => responseBody.json())
+    .then(data => {
+      this.setState({
+        bills: data.bills
+      });
+    })
     .catch(error => {
       console.log(error);
     });
@@ -81,7 +89,7 @@ class TransactionList extends React.Component {
   }
 
   componentDidMount() {
-    this.retrieveBills();
+    sendFilters(this.props);
   }
 
   setPaidStatus(paymentId, paid) {
@@ -219,5 +227,13 @@ class TransactionList extends React.Component {
     );
   }
 }
+
+TransactionList.propTypes = {
+  sortField: PropTypes.string.isRequired,
+  sortOrder: PropTypes.string.isRequired,
+  isPaid: PropTypes.string.isRequired,
+  payer: PropTypes.string.isRequired,
+  payee: PropTypes.string.isRequired
+};
 
 export default TransactionList;
