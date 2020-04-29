@@ -57,21 +57,34 @@
   height: 45px;
 }
 
-.button {
+.submitButton,
+.cancelButton {
   min-width: 100%;
-  cursor: pointer;
   margin-right: 0.25em;
   margin-top: 0.5em;
   padding: 0.938em;
-  border: none;
+  cursor: pointer;
   border-radius: 4px;
+}
+.submitButton {
+  border: none;
   background-color: #22223b;
   color: #fefefe;
 }
 
-.button:hover {
+.submitButton:hover {
   background-color: #4a4e69;
   color: #fefefe;
+}
+
+.cancelButton {
+  border: 2px solid #838383;
+  background-color: white;
+  color: black;
+}
+
+.cancelButton:hover {
+  background: #e7e7e7;
 }
 
 .SearchTransactions {

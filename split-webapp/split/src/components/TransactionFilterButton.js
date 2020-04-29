@@ -22,10 +22,14 @@ class TransactionFilterButton extends Component {
       this.setState({ open: true });
     };
 
-    const handleClose = () => {
+    const handleSubmit = () => {
       const { sortField, sortOrder, complete, payer, payee } = this.state;
       const { changeFilters } = this.props;
       changeFilters(sortField, sortOrder, complete, payer, payee);
+      this.handleClose();
+    };
+
+    const handleClose = () => {
       this.setState({ open: false });
     };
 
@@ -117,6 +121,7 @@ class TransactionFilterButton extends Component {
                   className={styles.input}
                   type="text"
                   name="Payer"
+                  placeholder="Any if blank"
                   onChange={handleChangePayer}
                 />
               </label>
@@ -126,16 +131,24 @@ class TransactionFilterButton extends Component {
                   className={styles.input}
                   type="text"
                   name="Payee"
+                  placeholder="Any if blank"
                   onChange={handleChangePayee}
                 />
               </label>
 
               <button
                 type="submit"
-                className={styles.button}
-                onClick={handleClose}
+                className={styles.submitButton}
+                onClick={handleSubmit}
               >
-                Search
+                Apply Filters
+              </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                className={styles.cancelButton}
+              >
+                Cancel
               </button>
             </form>
           </div>
