@@ -9,9 +9,9 @@ class Transactions extends Component {
     super(props);
     this.changeFilters = this.changeFilters.bind(this);
     this.state = {
-      sortField: "",
-      sortOrder: "",
-      isPaid: "",
+      sortField: "created_time",
+      sortOrder: "asc",
+      isPaid: "either",
       payer: "",
       payee: ""
     };

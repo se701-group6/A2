@@ -13,48 +13,21 @@ import "../App.css";
 
 /* eslint react/no-unused-prop-types: 0 */
 
-// eslint-disable-next-line no-unused-vars
-const sendFilters = async ({
-  sortField,
-  sortOrder,
-  isPaid,
-  payer,
-  payee,
-  pageNumber
-}) => {
-  const params = {
-    sort_field: sortField,
-    sort_order: sortOrder,
-    is_paid: isPaid,
-    payer,
-    payee,
-    page_number: pageNumber
-  };
+function buildUrl(url, parameters) {
+  let qs = "";
+  let newUrl = url;
 
-  const requestBody = JSON.stringify(params);
+  Object.keys(parameters).forEach(key => {
+    const value = parameters[key];
+    qs += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+  });
 
-  const response = await fetch("api/bill_data/get_bills", {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    method: "GET",
-    body: requestBody
-  })
-    .then(responseBody => responseBody.json())
-    .then(data => {
-      this.setState({
-        bills: data.bills
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    });
-
-  if (response) {
-    console.log(response.message);
+  if (qs.length > 0) {
+    qs = qs.substring(0, qs.length - 1); // chop off last "&"
+    newUrl = `${url}?${qs}`;
   }
-};
+  return newUrl;
+}
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
@@ -89,7 +62,13 @@ class TransactionList extends React.Component {
   }
 
   componentDidMount() {
-    sendFilters(this.props);
+    this.sendFilters(this.props);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.sendFilters(this.props);
+    }
   }
 
   setPaidStatus(paymentId, paid) {
@@ -112,20 +91,41 @@ class TransactionList extends React.Component {
     });
   }
 
-  retrieveBills() {
-    fetch("/api/bill_data/get_bills")
-      .then(res => {
-        return res.json();
-      })
+  // eslint-disable-next-line no-unused-vars
+  sendFilters = async ({ sortField, sortOrder, isPaid, payer, payee }) => {
+    const { page } = this.state;
+    const params = {
+      sort_field: sortField,
+      sort_order: sortOrder,
+      is_paid: isPaid,
+      payer,
+      payee,
+      page_number: page
+    };
+
+    const url = "api/bill_data/get_bills";
+
+    const response = await fetch(buildUrl(url, params), {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      method: "GET"
+    })
+      .then(responseBody => responseBody.json())
       .then(data => {
         this.setState({
           bills: data.bills
         });
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
       });
-  }
+
+    if (response) {
+      console.log(response.message);
+    }
+  };
 
   populateBills(bills) {
     const transaction = bills.map(bill => (
@@ -205,20 +205,24 @@ class TransactionList extends React.Component {
   }
 
   handleChange(event, value) {
-    console.log(value);
-    this.setState({
-      page: value
-    });
-    this.retrieveBills();
+    this.setState(
+      {
+        page: value
+      },
+      () => {
+        this.sendFilters(this.props);
+      }
+    );
   }
 
   render() {
     const { bills, page } = this.state;
+    const pageSize = 5;
     return (
       <div>
         {this.populateBills(bills)}
         <Pagination
-          count={10}
+          count={Math.ceil(bills.length / pageSize)}
           page={page}
           color="primary"
           onChange={this.handleChange}
