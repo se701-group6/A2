@@ -57,7 +57,10 @@ class TransactionFilterButton extends Component {
 
     return (
       <div>
-        <SearchIcon className="SearchTransactions" onClick={handleOpen} />
+        <SearchIcon
+          className={styles.SearchTransactions}
+          onClick={handleOpen}
+        />
         <Modal
           open={open}
           onClose={handleClose}

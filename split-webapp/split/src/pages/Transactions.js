@@ -39,10 +39,7 @@ class Transactions extends Component {
       <div className="Transactions">
         <div className="TransactionsTitle">
           <h1 className="TransactionsText">Transactions </h1>
-          <TransactionFilterButton
-            className="SearchTransactions"
-            changeFilters={this.changeFilters}
-          />
+          <TransactionFilterButton changeFilters={this.changeFilters} />
         </div>
         <Divider />
         <TransactionList

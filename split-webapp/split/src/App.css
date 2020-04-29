@@ -85,15 +85,6 @@
   padding-top: 20px;
 }
 
-.SearchTransactions {
-  size: 10px;
-  color: #e071ae;
-  padding: 15px;
-  margin-bottom: -3px;
-  margin-right: 50px;
-  padding-top: 20px;
-}
-
 .TransactionsTitle {
   display: flex;
   flex-direction: row;

@@ -17,6 +17,7 @@ function buildUrl(url, parameters) {
   let qs = "";
   let newUrl = url;
 
+  // Build the query string
   Object.keys(parameters).forEach(key => {
     const value = parameters[key];
     qs += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
