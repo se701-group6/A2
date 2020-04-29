@@ -280,6 +280,73 @@ class DatabaseManager(object):
                 pass
 
 
+    
+    def edit_bill(self, bill_id : float, payer : str, creator_username : str, title : str, total : float, payments: List[Payment]):
+        """
+        Arguments:
+            bill_id {Integer}
+            username {String}
+            bill_name {String}
+            total {Integer} 
+            payments {List of tuple} -- (bill_id, payee_name, amount_owed, is_paid)
+        
+        Returns:
+            boolean -- success or fail
+        """        
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        try:
+            ''' Update bill details '''
+            c.execute("""UPDATE bills
+                    SET title=?, creator_username=?, total=?, payer=?
+                    WHERE bill_id=?""", (title, creator_username, total, payer, bill_id))
+            conn.commit()
+
+            ''' Update existing payment details '''
+            print("Updating payers") 
+            payment_details = self.get_payments_from_bill_id(bill_id)
+            x = min(len(payments),len(payment_details) )
+            for i in range(x):
+                payment = payments[i]
+                c.execute("""UPDATE payments
+                    SET bill_id=?, payee_name=?, amount_owed=?, is_paid=?
+                    WHERE payment_id=?""", (bill_id,payment.payee_name, payment.amount_owed, payment.is_paid,payment_details[i].payment_id))
+                conn.commit()
+                
+            ''' Add any new payers ''' 
+            print("Adding payers") 
+            if (len(payments)>len(payment_details)):
+                indicies = range(len(payment_details), len(payments))
+                for i in indicies:
+                    payment = payments[i]
+                    c.execute("""insert into payments
+                        (bill_id, payee_name, amount_owed, is_paid) 
+                        values 
+                        (?, ?, ?, ?)""", (bill_id, payment.payee_name, payment.amount_owed, payment.is_paid))
+                    conn.commit()  
+                    
+            ''' Delete any removed payers '''      
+            print("Deleting payers") 
+            if (len(payments)<len(payment_details)):    
+                indicies = range(len(payments), len(payment_details))
+                for i in indicies:
+                    payment = payment_details[i]
+                    c.execute("""delete from payments
+                        WHERE payment_id=?""", (payment.payment_id,))
+                    conn.commit()                           
+                         
+            return True
+        except Exception as e:
+            print("Error:",e)
+            return False
+        finally:
+            try:
+                conn.close()
+            except UnboundLocalError:
+                pass
+    
+
+
     def make_payment(self, payment_id : int, done : bool):
         """
         Arguments:
