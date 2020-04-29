@@ -81,3 +81,25 @@ class AccountApi(object):
                 'success': isLoggedIn
             }
             return json.dumps(response)
+
+    @cherrypy.expose
+    def logout(self):
+        """Called when the user wants to signout of the app, should update the cherrypy.session
+            related variables to reflect this
+        """
+        try:
+            cherrypy.session["username"] = None
+            cherrypy.session["password"] = None
+            self.setUsernameCookie(username = None)
+
+            cherrypy.lib.sessions.expire()
+
+            isLoggedOut = True            
+        except Exception as e:
+            isLoggedOut = False
+            print(e)
+        finally:
+            response = {
+                'success': isLoggedOut
+            }
+            return json.dumps(response)
