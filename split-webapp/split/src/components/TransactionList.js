@@ -56,7 +56,8 @@ class TransactionList extends React.Component {
 
     this.state = {
       bills: [],
-      page: 1
+      page: 1,
+      numOfBills: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -116,7 +117,8 @@ class TransactionList extends React.Component {
       .then(responseBody => responseBody.json())
       .then(data => {
         this.setState({
-          bills: data.bills
+          bills: data.bills,
+          numOfBills: data.num_of_bills
         });
       })
       .catch(error => {
@@ -219,13 +221,13 @@ class TransactionList extends React.Component {
   }
 
   render() {
-    const { bills, page } = this.state;
+    const { bills, page, numOfBills } = this.state;
     const pageSize = 5;
     return (
       <div>
         {this.populateBills(bills)}
         <Pagination
-          count={Math.ceil(bills.length / pageSize)}
+          count={Math.ceil(numOfBills / pageSize)}
           page={page}
           color="primary"
           onChange={this.handleChange}

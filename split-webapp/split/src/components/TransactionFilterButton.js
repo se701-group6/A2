@@ -3,7 +3,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import Modal from "@material-ui/core/Modal";
 import PropTypes from "prop-types";
 import styles from "./TransactionFilterButton.module.css";
-import "../App.css";
 
 class TransactionFilterButton extends Component {
   constructor(props) {
