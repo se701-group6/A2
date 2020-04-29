@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Divider } from "@material-ui/core";
 import TransactionList from "../components/TransactionList";
+import styles from "./Transactions.module.css";
 import TransactionFilterButton from "../components/TransactionFilterButton";
-import "../App.css";
 
 class Transactions extends Component {
   constructor(props) {
@@ -36,9 +36,9 @@ class Transactions extends Component {
   render() {
     const { sortField, sortOrder, isPaid, payer, payee } = this.state;
     return (
-      <div className="Transactions">
-        <div className="TransactionsTitle">
-          <h1 className="TransactionsText">Transactions </h1>
+      <div className={styles.transactions}>
+        <div className={styles.transactionsTitle}>
+          <h1 className={styles.transactionsText}>Transactions </h1>
           <TransactionFilterButton changeFilters={this.changeFilters} />
         </div>
         <Divider />

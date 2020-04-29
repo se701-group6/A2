@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Route, NavLink, HashRouter } from "react-router-dom";
 import Transactions from "./Transactions";
 import Split from "./Split";
-import "../App.css";
 import NavList from "../components/NavList";
 import MenuBar from "../components/MenuBar";
+import styles from "./Home.module.css";
 
 class Home extends Component {
   constructor(props) {
@@ -18,8 +18,8 @@ class Home extends Component {
 
   render() {
     const SideBar = () => (
-      <div className="Sidebar">
-        <h1 className="SplitLogo">Sp/it</h1>
+      <div className={styles.sideBar}>
+        <h1 className={styles.splitLogo}>Sp/it</h1>
         <NavLink to="/">
           <button type="button">Sign Out</button>
         </NavLink>
@@ -27,13 +27,13 @@ class Home extends Component {
       </div>
     );
 
-    const CollapsedSideBar = () => <div className="CollapsedSidebar" />;
+    const CollapsedSideBar = () => <div className={styles.collapsedSidebar} />;
 
     const { isOpen } = this.state;
 
     return (
       <HashRouter>
-        <MenuBar className="AppBar" toggleSidebar={this.toggleSidebar} />
+        <MenuBar className={styles.appBar} toggleSidebar={this.toggleSidebar} />
         <div>
           {isOpen ? <SideBar /> : <CollapsedSideBar />}
           <div className="HomeScreen">

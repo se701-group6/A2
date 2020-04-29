@@ -103,8 +103,8 @@ class BillDataApi(object):
                     field="timestamp"
                 elif (sort_field=="name"):
                     field="title"
-                    #Due to how ascii would end up at the front of an a descending sort
-                    #to make more intuitive sense the order is flipped for names
+                    #Due to how ascii works, z would end up at the front of an a descending sort
+                    #to make more intuitive sense the order is flipped for names so a shows up first
                     descending=not(descending)
 
                 for i in bills:
@@ -158,6 +158,7 @@ class BillDataApi(object):
                 #Invalid API call
                 raise InvalidDataException("is_paid")
 
+            num_of_bills=len(bills)
 
             #Check what page we are on and make sure to only return those
             if ( (page_number)*page_size-1 >= len(bills) ):
@@ -188,6 +189,7 @@ class BillDataApi(object):
         finally:
             response = {
                 'bills' : bills,
+                'num_of_bills' : num_of_bills,
                 'message' : error_msg
             }
             return json.dumps(response)

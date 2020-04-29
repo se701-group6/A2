@@ -1,0 +1,23 @@
+.menuBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.profileName {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 20px;
+  color: #79a2f4;
+}
+
+.appBar {
+  outline-color: pink;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 17%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: red;
+}

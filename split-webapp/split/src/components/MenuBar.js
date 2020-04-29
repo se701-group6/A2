@@ -12,6 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import PropTypes from "prop-types";
 import { UserContext } from "../context/UserContext";
+import styles from "./MenuBar.module.css";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,7 +44,7 @@ export default function MenuBar(props) {
     <UserContext.Consumer>
       {({ username }) => (
         <div className={classes.root}>
-          <AppBar position="static" className="AppBar" color="white">
+          <AppBar position="static" className={styles.appBar} color="white">
             <Toolbar>
               <IconButton
                 edge="start"
@@ -56,8 +57,8 @@ export default function MenuBar(props) {
               </IconButton>
               <Typography variant="h6" className={classes.title} />
               {auth && (
-                <div className="MenuBar">
-                  <h3 className="ProfileName">{username}</h3>
+                <div className={styles.menuBar}>
+                  <h3 className={styles.profileName}>{username}</h3>
                   <IconButton
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
