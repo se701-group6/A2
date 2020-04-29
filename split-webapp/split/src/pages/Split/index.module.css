@@ -1,0 +1,81 @@
+.page {
+  position: absolute;
+  width: 60%;
+  left: 17%;
+  margin: 100px;
+}
+
+.card {
+  position: relative;
+  margin: 0 0 44px;
+}
+
+.card::before {
+  /* The actual background is specified in a pseudo element,
+   * rather than the actual .card element, because we do not
+   * want the border's thickness to mess up with the
+   * react-flip-toolkit's inverse transformation calculations.
+   * Moving the border to this element reduces the distortion
+   * that occurs during animations. */
+  display: block;
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  border: #afc6fd solid 1px;
+  border-radius: 6px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
+  background-color: white;
+  content: "";
+  pointer-events: none;
+}
+
+.header {
+  position: relative;
+
+  /* Ensure error bubbles on the header stay above the list */
+  z-index: 2;
+}
+
+.peopleList {
+  position: relative;
+
+  /* Ensure error bubbles on the list stay above the button */
+  z-index: 1;
+}
+
+.addPersonButton,
+.splitButton {
+  height: 44px;
+  font-family: "Open Sans", sans-serif !important;
+  text-transform: none !important;
+}
+
+.addPersonButton {
+  position: relative;
+
+  /* Ensure error bubbles on the list stay above the button */
+  z-index: 0;
+
+  border-radius: 0 0 6px 6px !important;
+
+  /* Ensure it is not see-through - for later when FLIP animations are added */
+  background-color: white !important;
+
+  color: #777 !important;
+}
+
+.splitButton {
+  background-color: #2977ff !important;
+  color: white !important;
+}
+
+.splitButtonError {
+  background-color: #e95eb1 !important;
+}
+
+.splitButtonProgress {
+  background-color: #2d4583 !important;
+}

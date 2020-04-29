@@ -1,0 +1,198 @@
+/**
+ * Section:
+ * Fonts
+ */
+
+.personNameInput,
+.personPayeeToggleGroup > button {
+  font-family: "Open Sans", sans-serif !important;
+}
+
+/**
+ * Section:
+ * Overall list
+ */
+
+.peopleList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #d6e3fe;
+  border-bottom: 1px solid #d6e3fe;
+  list-style: none;
+}
+
+/* Align row borders with overall list borders */
+.peopleList::before {
+  display: block;
+  margin-top: -1px;
+  content: "";
+  height: 0px;
+}
+
+/**
+ * Section:
+ * Row and drag-and-drop container for each row
+ */
+
+.personRow {
+  display: flex;
+  height: 44px;
+  margin-bottom: -1px;
+  align-items: center;
+  border-top: 1px solid #d6e3fe;
+  border-bottom: 1px solid #d6e3fe;
+
+  /* We don't want them to be see-through when drag-and-dropping */
+  background-color: white;
+}
+
+.peopleListDragHelper {
+  list-style: none;
+  z-index: 3;
+}
+
+.peopleListDragHelper > .personRow {
+  width: calc(100% + 1em - 2px); /* 2px is to account the border */
+  margin: 0 -0.5em;
+  border: 1px solid #d6e3fe;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
+  cursor: grabbing;
+}
+
+.peopleListDragHelper .errorBubble {
+  opacity: 0;
+}
+
+/**
+ * Section:
+ * Name input text-field
+ */
+
+.personNameWrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+.personNameInput {
+  padding: 0 !important;
+
+  /* Fix minor clipping of descenders like 'g' for Safari & Firefox */
+  height: auto !important;
+  /* Fix minor clipping of descenders like 'g' for Safari, Firefox, & Chrome */
+  line-height: normal !important;
+
+  /* Account for the border's thickness for when it appears. */
+  /* Also set up initial values for transition. */
+  border-bottom: 1px solid transparent !important;
+
+  transition: border 0.3s;
+  color: #2d4583 !important;
+  font-size: 14px !important;
+  text-overflow: ellipsis;
+}
+
+.personNameInput::placeholder {
+  opacity: 1 !important;
+  color: #afc6fd !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+}
+
+.personNameInput:focus::placeholder {
+  opacity: 0.4 !important;
+}
+
+.personRow:hover .personNameInput {
+  border-bottom-color: #afc6fd !important;
+}
+
+.personNameInput:focus,
+.personRow:hover .personNameInput:focus {
+  border-bottom-color: #d6e3fe !important;
+}
+
+.personNameWrapper .errorBubble {
+  top: calc(100% - 10px);
+}
+
+/**
+ * Section:
+ * Toggle buttons
+ */
+
+.personPayeeToggleGroup {
+  margin: 0 20px 0 30px;
+  display: flex;
+}
+
+.personPayeeToggleGroup > button {
+  height: 22px;
+  transition: background 0.3s, border 0.3s, color 0.3s;
+  line-height: 1;
+  text-transform: none !important;
+}
+
+.personPayeeToggleGroup .personIsPayerButton {
+  border-color: #d6e3fe;
+  color: #d6e3fe;
+}
+
+.personPayeeToggleGroup .personIsPayeeButton {
+  border-color: #ffd8f1;
+  color: #ffd8f1;
+}
+
+.personPayeeToggleGroup .personIsPayerButton:hover,
+.personPayeeToggleGroup .personIsPayerButtonSelected {
+  border-color: #afc6fd;
+  background-color: #afc6fd !important;
+  color: white !important;
+}
+
+.personPayeeToggleGroup .personIsPayeeButton:hover,
+.personPayeeToggleGroup .personIsPayeeButtonSelected {
+  border-color: #e95eb1;
+  background-color: #e95eb1 !important;
+  color: white !important;
+}
+
+.personPayeeWrapper .errorBubble {
+  top: calc(100% + 10px);
+}
+
+/**
+ * Section:
+ * Person row action icons / buttons
+ */
+
+.dragHandle,
+.personRemoveButton {
+  height: 100%;
+  min-width: 44px !important;
+  border-radius: 0 !important;
+  transition: color 0.3s !important;
+  color: #d6e3fe !important;
+}
+
+.personRow:hover .dragHandle,
+.personRow:hover .personRemoveButton {
+  color: #afc6fd !important;
+}
+
+.dragHandle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+  cursor: grab;
+}
+
+.dragHandle:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.dragHandle:active,
+.peopleListDragHelper .dragHandle {
+  background-color: #d6e3fe;
+  color: white !important;
+}

@@ -10,7 +10,9 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import PropTypes from "prop-types";
 import { UserContext } from "../context/UserContext";
+import styles from "./MenuBar.module.css";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MenuBar() {
+export default function MenuBar(props) {
   const classes = useStyles();
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,20 +44,21 @@ export default function MenuBar() {
     <UserContext.Consumer>
       {({ username }) => (
         <div className={classes.root}>
-          <AppBar position="static" className="AppBar" color="white">
+          <AppBar position="static" className={styles.appBar} color="white">
             <Toolbar>
               <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="pink"
                 aria-label="menu"
+                onClick={props.toggleSidebar}
               >
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" className={classes.title} />
               {auth && (
-                <div className="MenuBar">
-                  <h3 className="ProfileName">{username}</h3>
+                <div className={styles.menuBar}>
+                  <h3 className={styles.profileName}>{username}</h3>
                   <IconButton
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
@@ -92,3 +95,7 @@ export default function MenuBar() {
     </UserContext.Consumer>
   );
 }
+
+MenuBar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired
+};

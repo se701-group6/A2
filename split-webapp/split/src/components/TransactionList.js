@@ -7,7 +7,7 @@ import {
   FormControlLabel
 } from "@material-ui/core";
 import PaymentIcon from "@material-ui/icons/Payment";
-import "../App.css";
+import styles from "./TransactionList.module.css";
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
@@ -75,18 +75,20 @@ class TransactionList extends React.Component {
 
   populateBills(bills) {
     const transaction = bills.map(bill => (
-      <ExpansionPanel className="Bills">
+      <ExpansionPanel className={styles.bills}>
         <ExpansionPanelSummary>
-          <div className="BillSummary">
-            <div className="BillTitle">{bill.title}</div>
-            <div className="BillAmount">${Number(bill.total).toFixed(2)}</div>
+          <div className={styles.billSummary}>
+            <div className={styles.billTitle}>{bill.title}</div>
+            <div className={styles.billAmount}>
+              ${Number(bill.total).toFixed(2)}
+            </div>
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className="Payments">
-          <div className="PaymentsTitle">
-            <PaymentIcon className="PaymentHeaders" />
-            <div className="RunningTotal">
-              <div className="BillTitle Percentage">
+        <ExpansionPanelDetails className={styles.payments}>
+          <div className={styles.paymentsTitle}>
+            <PaymentIcon className={styles.paymentHeaders} />
+            <div className={styles.runningTotal}>
+              <div className={`${styles.billTitle} ${styles.percentage}`}>
                 (
                 {Math.round(
                   (calculateTotalPaid(bill) / calculateTotalOutstanding(bill)) *
@@ -94,7 +96,7 @@ class TransactionList extends React.Component {
                 )}
                 %){" "}
               </div>
-              <div className="BillTitle">
+              <div className={styles.billTitle}>
                 ${calculateTotalPaid(bill).toFixed(2)}/$
                 {calculateTotalOutstanding(bill).toFixed(2)}
               </div>
@@ -127,7 +129,7 @@ class TransactionList extends React.Component {
 
     if (transaction.length === 0) {
       return (
-        <div className="NoTransactions">
+        <div className={styles.noTransactions}>
           You have no outstanding transactions.
         </div>
       );

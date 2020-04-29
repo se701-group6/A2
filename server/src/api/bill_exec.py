@@ -108,3 +108,37 @@ class BillExecApi(object):
                 'message' : error_msg
             }
             return json.dumps(response)
+
+    @cherrypy.expose
+    def del_bill(self):
+        """Searches database for the bill
+            deletes it if the username matches
+            authorised user
+
+        JSON Arguments:
+            bill_id (Integer): Bill Identification number
+        JSON Returns:
+            message (Optional) -- error message if applicable
+        """
+
+        error_msg = ""
+        JSON_object = json.loads(cherrypy.request.body.read().decode('utf-8'))
+        bill_id = JSON_object.get("bill_id")
+
+        try:
+            username = cherrypy.session["username"]
+            valid_user = self.database.check_if_user_owns_bill(username, bill_id)
+
+            if (valid_user == True):
+                self.database.delete_bill(bill_id)
+            else:
+                error_msg = "Bill does not exist or you are not authorised to delete this bill!"
+
+        except Exception as e:
+            print(e)
+            error_msg = "Unknown error occured"
+        finally:
+            response = {
+                'message': error_msg
+            }
+            return json.dumps(response)

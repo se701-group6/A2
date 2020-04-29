@@ -12,8 +12,11 @@ import PropTypes from "prop-types";
 import mainLogo from "./split2.png";
 import { getCookie } from "../utils/helpers";
 import { UserContext } from "../context/UserContext";
+import styles from "./Login.module.css";
 
 class Login extends Component {
+  buttonRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +25,13 @@ class Login extends Component {
       failedAuth: false
     };
   }
+
+  onEnterKey = event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      this.buttonRef.current.click();
+    }
+  };
 
   handleOnChangeUser = event => {
     this.setState({ username: event.target.value });
@@ -92,15 +102,19 @@ class Login extends Component {
                 <Box
                   component="div"
                   borderRadius={12}
-                  className="SignInContainer"
+                  className={styles.signInContainer}
                 >
                   <img
                     src={mainLogo}
                     style={{ width: "50%", marginTop: "10%" }}
                     alt="Main logo for login"
                   />
-                  <Box component="div" className="InnerContainer">
-                    <Typography component="h3" className="SignIn">
+                  <Box
+                    component="div"
+                    className={styles.innerContainer}
+                    onKeyUp={this.onEnterKey}
+                  >
+                    <Typography component="h3" className={styles.signIn}>
                       Sign In
                     </Typography>
 
@@ -133,7 +147,7 @@ class Login extends Component {
                       onChange={this.handleOnChangePassword}
                     />
 
-                    <Typography component="h3" className="LogIn">
+                    <Typography component="h3">
                       <UserContext.Consumer>
                         {({ setUsername }) => {
                           return (
@@ -142,6 +156,7 @@ class Login extends Component {
                               color="primary"
                               borderRadius={30}
                               className="margin"
+                              ref={this.buttonRef}
                               onClick={() => {
                                 this.createDetails(setUsername);
                               }}
@@ -153,7 +168,7 @@ class Login extends Component {
                       </UserContext.Consumer>
 
                       <div>
-                        <NavLink to="/SignUp" className="SignUpLink">
+                        <NavLink to="/SignUp" className={styles.signUpLink}>
                           If you dont have an account, sign up here
                         </NavLink>
                       </div>
