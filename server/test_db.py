@@ -11,7 +11,7 @@ class TestDatabaseMethods(unittest.TestCase):
         test_db = DatabaseManager()
         test_db.init_db("test.db")
         test_db.add_user("bob", "bobiscool1")
-        self.assertEqual(test_db.get_password("bob"), "bobiscool1")
+        self.assertTrue(test_db.password_is_correct("bob", "bobiscool1"))
         test_db.delete_db()
 
     def test_add_duplicate_user(self):

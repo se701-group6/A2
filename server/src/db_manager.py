@@ -1,5 +1,7 @@
 import sqlite3
 import os
+import hashlib
+import binascii
 from typing import List
 
 class Bill(object):
@@ -40,6 +42,46 @@ class DatabaseManager(object):
             return False
         else: return True
 
+    def migrate_passwords_to_hash(self):
+        try:
+            conn = sqlite3.connect(self.db_name)
+            c = conn.cursor()
+
+            c.execute("SELECT COUNT(*) FROM (SELECT 1 FROM PRAGMA_TABLE_INFO('users') WHERE name = 'password')")
+            password_col_present = bool(c.fetchone()[0])
+
+            if password_col_present:
+                print("Found passwords that are not hashed, migrating to hashed passwords")
+                c.execute("SELECT username, password FROM `users`")
+                username_to_passwords = { x[0]: x[1] for x in c.fetchall() }
+                c.execute("DROP TABLE `users`")
+                c.execute("""CREATE TABLE `users` (
+                    `username` TEXT NOT NULL,
+                    `password_hash` TEXT NOT NULL,
+                    `password_salt` TEXT NOT NULL,
+                    UNIQUE(username) ON CONFLICT ABORT
+                )
+                """)
+
+                for k, v in username_to_passwords.items():
+                    self.add_user(k, v)
+        except Exception as e:
+            print(e)
+        finally:
+            try: 
+                conn.close()
+            except UnboundLocalError:
+                pass
+    
+    def hash_password(self, password):
+        password_salt = hashlib.sha256(os.urandom(60)).hexdigest()
+        password_hash = hashlib.scrypt(password.encode('utf-8'), salt=password_salt.encode('ascii'), n=1024, r=8, p=1)
+        return (binascii.hexlify(password_hash).decode('ascii'), password_salt)
+    
+    def password_hash_matches(self, password, password_hash, password_salt):
+        return binascii.hexlify(hashlib.scrypt(password.encode('utf-8'), salt=password_salt.encode('ascii'), n=1024, r=8, p=1)).decode('ascii') == password_hash
+
+
     def init_db(self, filename : str):
         """
         
@@ -52,6 +94,7 @@ class DatabaseManager(object):
         self.db_name = filename
         if(self.check_db_exists()):
             print("Existing SQL database detected!")
+            self.migrate_passwords_to_hash()
             return True
         else:
             print("No SQL database detected! Creating...")
@@ -61,7 +104,8 @@ class DatabaseManager(object):
 
                 c.execute("""CREATE TABLE `users` (
                             `username`	TEXT NOT NULL,
-                            `password`	TEXT NOT NULL,
+                            `password_hash` TEXT NOT NULL,
+                            `password_salt` TEXT NOT NULL,
                             unique (username) on conflict abort 
                         );""")
 
@@ -92,20 +136,21 @@ class DatabaseManager(object):
                 except UnboundLocalError:
                     pass
 
-    def get_password(self, username : str):
+    def password_is_correct(self, username : str, password : str):
         """
         Arguments:
             username {string}
+            password {string}
         
         Returns:
-            string -- password
+            bool -- whether the password is correct for the given user
         """        
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
-            c.execute("""select password from users where username=?""", (username,))
-            password = c.fetchone()[0]
-            return password
+            c.execute("""select password_hash, password_salt from users where username=?""", (username,))
+            hash_and_salt = c.fetchone()
+            return self.password_hash_matches(password, hash_and_salt[0], hash_and_salt[1])
         except Exception as e:
             print(e)
         finally:
@@ -226,10 +271,11 @@ class DatabaseManager(object):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         try:
+            (password_hash, password_salt) = self.hash_password(password)
             c.execute("""insert into users
-                    (username, password) 
+                    (username, password_hash, password_salt) 
                     values 
-                    (?, ?)""", (username, password))
+                    (?, ?, ?)""", (username, password_hash, password_salt))
             conn.commit()
             return True
         except Exception as e:
