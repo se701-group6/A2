@@ -8,8 +8,29 @@ import {
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import PaymentIcon from "@material-ui/icons/Payment";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styles from "./TransactionList.module.css";
+
+/* eslint react/no-unused-prop-types: 0 */
+
+function buildUrl(url, parameters) {
+  let qs = "";
+  let newUrl = url;
+
+  // Build the query string
+  Object.keys(parameters).forEach(key => {
+    const value = parameters[key];
+    qs += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+  });
+
+  if (qs.length > 0) {
+    qs = qs.substring(0, qs.length - 1); // chop off last "&"
+    newUrl = `${url}?${qs}`;
+  }
+  return newUrl;
+}
 
 function calculateTotalPaid(bill) {
   let runningTotal = 0;
@@ -36,23 +57,22 @@ class TransactionList extends React.Component {
     super(props);
 
     this.state = {
-      bills: []
+      bills: [],
+      page: 1,
+      numOfBills: 0
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    fetch("/api/bill_data/get_bills")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({
-          bills: data.bills
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.sendFilters(this.props);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.sendFilters(this.props);
+    }
   }
 
   setPaidStatus(paymentId, paid) {
@@ -75,6 +95,43 @@ class TransactionList extends React.Component {
     });
   }
 
+  // eslint-disable-next-line no-unused-vars
+  sendFilters = async ({ sortField, sortOrder, isPaid, payer, payee }) => {
+    const { page } = this.state;
+    const params = {
+      sort_field: sortField,
+      sort_order: sortOrder,
+      is_paid: isPaid,
+      payer,
+      payee,
+      page_number: page
+    };
+
+    const url = "api/bill_data/get_bills";
+
+    const response = await fetch(buildUrl(url, params), {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      method: "GET"
+    })
+      .then(responseBody => responseBody.json())
+      .then(data => {
+        this.setState({
+          bills: data.bills,
+          numOfBills: data.num_of_bills
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    if (response) {
+      console.log(response.message);
+    }
+  };
+
   populateBills(bills) {
     const transaction = bills.map(bill => (
       <ExpansionPanel className={styles.bills}>
@@ -93,7 +150,10 @@ class TransactionList extends React.Component {
                 to={{
                   pathname: "split",
                   bill
-                }}><EditIcon /></Link>
+                }}
+              >
+                <EditIcon />
+              </Link>
               <PaymentIcon />
             </div>
             <div className={styles.runningTotal}>
@@ -161,10 +221,40 @@ class TransactionList extends React.Component {
       .catch(err => console.log(err));
   }
 
+  handleChange(event, value) {
+    this.setState(
+      {
+        page: value
+      },
+      () => {
+        this.sendFilters(this.props);
+      }
+    );
+  }
+
   render() {
-    const { bills } = this.state;
-    return <div>{this.populateBills(bills)} </div>;
+    const { bills, page, numOfBills } = this.state;
+    const pageSize = 5;
+    return (
+      <div>
+        {this.populateBills(bills)}
+        <Pagination
+          count={Math.ceil(numOfBills / pageSize)}
+          page={page}
+          color="primary"
+          onChange={this.handleChange}
+        />
+      </div>
+    );
   }
 }
+
+TransactionList.propTypes = {
+  sortField: PropTypes.string.isRequired,
+  sortOrder: PropTypes.string.isRequired,
+  isPaid: PropTypes.string.isRequired,
+  payer: PropTypes.string.isRequired,
+  payee: PropTypes.string.isRequired
+};
 
 export default TransactionList;

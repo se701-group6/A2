@@ -42,12 +42,13 @@ class BillDataApi(object):
             message (optional) -- error message if applicable
         """
         page_size = 5
-        bill_sort_fields=["amount","created time","name"]
+        bill_sort_fields=["amount","created_time","name"]
 
         bills = []
         error_msg = ""
 
         try:
+            page_number = int(page_number)
             #Quick sanity check
             if(page_number < 0):
                 raise InvalidDataException("page_number")
@@ -98,7 +99,7 @@ class BillDataApi(object):
                 #Translate the sort_field to the related dict key
                 if(sort_field=="amount"):
                     field="total"
-                elif(sort_field=="created time"):
+                elif(sort_field=="created_time"):
                     field="timestamp"
                 elif (sort_field=="name"):
                     field="title"
@@ -174,7 +175,9 @@ class BillDataApi(object):
             elif(e.args[0]=="sort_order"):
                 error_msg="Invalid sort_order field. Values should be 'asc' or 'desc' "
             elif(e.args[0]=="sort_field"):
-                error_msg="Invalid sort_field field. Values should be 'name', 'amount' or 'created time' "
+                error_msg="Invalid sort_field field. Values should be 'name', 'amount' or 'created_time' "
+            elif(e.args[0]=="is_paid"):
+                error_msg="Invalid is_paid field. Values should be 'paid', 'unpaid' or 'either' "
             else:
                 print(e)
                 error_msg = "Unknown error occured"

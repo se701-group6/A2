@@ -64,6 +64,7 @@ const addUserTo = (transaction, insertionIndex) => {
 };
 
 class Split extends Component {
+  // eslint-disable-next-line react/prop-types, react/destructuring-assignment
   editBill = this.props.location.bill; // only defined during bill edit
 
   constructor(props) {
@@ -95,9 +96,9 @@ class Split extends Component {
 
     this.state = {
       transaction: {
-        title: title,
+        title,
         users: initialUsers,
-        cost: cost,
+        cost,
         payed: payee
       },
 
