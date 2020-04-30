@@ -4,6 +4,8 @@ import Transactions from "./Transactions";
 import Split from "./Split";
 import NavList from "../components/NavList";
 import MenuBar from "../components/MenuBar";
+import { getCookie } from "../utils/helpers";
+import { UserContext } from "../context/UserContext";
 import styles from "./Home.module.css";
 
 class Home extends Component {
@@ -16,12 +18,45 @@ class Home extends Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
+  changeDetails(setUsername){
+    fetch("/api/account/logout", {
+      method: "POST",
+      body: "",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => {
+      return res.json
+    })
+    .then(data => {
+      const username = getCookie("username");
+      setUsername = username;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  }
+
   render() {
     const SideBar = () => (
       <div className={styles.sideBar}>
         <h1 className={styles.splitLogo}>Sp/it</h1>
         <NavLink to="/">
-          <button type="button">Sign Out</button>
+          <UserContext.Consumer>
+            {({ setUsername }) => {
+              return (
+                <button 
+                  type="button"
+                  onClick={() => {
+                    this.changeDetails(setUsername);
+                  }}
+                >
+                  Sign Out
+                </button>
+              );
+            }} 
+          </UserContext.Consumer>
         </NavLink>
         <NavList />
       </div>
