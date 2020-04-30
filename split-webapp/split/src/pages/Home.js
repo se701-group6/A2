@@ -4,7 +4,33 @@ import Transactions from "./Transactions";
 import Split from "./Split";
 import NavList from "../components/NavList";
 import MenuBar from "../components/MenuBar";
+import { getCookie } from "../utils/helpers";
+import { UserContext } from "../context/UserContext";
 import styles from "./Home.module.css";
+
+const logout = (setUsername) => {
+  fetch("/api/account/logout", {
+    method: "POST",
+    body: "",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => {
+    return res.json();
+  })
+  .then(data => {
+    const username = getCookie("username");
+    if (data.success === true) {
+      setUsername(null);
+    } else {
+      setUsername(username);
+    }
+  })
+  .catch(err => {
+    console.log(err);
+  });
+};
 
 class Home extends Component {
   constructor(props) {
@@ -21,7 +47,20 @@ class Home extends Component {
       <div className={styles.sideBar}>
         <h1 className={styles.splitLogo}>Sp/it</h1>
         <NavLink to="/">
-          <button type="button">Sign Out</button>
+          <UserContext.Consumer>
+            {({ setUsername }) => {
+              return (
+                <button 
+                  type="button"
+                  onClick={() => {
+                    logout(setUsername);
+                  }}
+                >
+                  Sign Out
+                </button>
+              );
+            }} 
+          </UserContext.Consumer>
         </NavLink>
         <NavList />
       </div>
