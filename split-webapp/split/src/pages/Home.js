@@ -8,6 +8,30 @@ import { getCookie } from "../utils/helpers";
 import { UserContext } from "../context/UserContext";
 import styles from "./Home.module.css";
 
+const logout = (setUsername) => {
+  fetch("/api/account/logout", {
+    method: "POST",
+    body: "",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => {
+    return res.json()
+  })
+  .then(data => {
+    const username = getCookie("username");
+    if (data.success === true) {
+      setUsername(null);
+    } else {
+      setUsername(username);
+    }
+  })
+  .catch(err => {
+    console.log(err);
+  });
+};
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -17,30 +41,6 @@ class Home extends Component {
   toggleSidebar = () => {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
-
-  logout(setUsername){
-    fetch("/api/account/logout", {
-      method: "POST",
-      body: "",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(res => {
-      return res.json()
-    })
-    .then(data => {
-      const username = getCookie("username");
-      if (data.success === true) {
-        setUsername(null);
-      } else {
-        setUsername(username);
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  }
 
   render() {
     const SideBar = () => (
@@ -53,7 +53,7 @@ class Home extends Component {
                 <button 
                   type="button"
                   onClick={() => {
-                    this.logout(setUsername);
+                    logout(setUsername);
                   }}
                 >
                   Sign Out
