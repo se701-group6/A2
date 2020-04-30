@@ -29,6 +29,20 @@ const createBill = data => {
     .catch(err => console.log(err));
 };
 
+const editBill = data => {
+  fetch("/api/bill_exec/edit_bill", {
+    method: "PUT",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => {
+      return res;
+    })
+    .catch(err => console.log(err));
+};
+
 const addUserTo = (transaction, insertionIndex) => {
   const newId = uuidv4();
   return {
@@ -50,6 +64,9 @@ const addUserTo = (transaction, insertionIndex) => {
 };
 
 class Split extends Component {
+  // eslint-disable-next-line react/prop-types, react/destructuring-assignment
+  editBill = this.props.location.bill; // only defined during bill edit
+
   constructor(props) {
     super(props);
 
@@ -58,18 +75,31 @@ class Split extends Component {
       byId: {}
     };
 
-    for (let i = 0; i < MINIMUM_PEOPLE_COUNT; i += 1) {
+    // Populate fields with values of existing bill
+    let users = [];
+    let cost = 0;
+    let title = "";
+    if (this.editBill) {
+      users = this.editBill.payments.map(person => person.from);
+      users.unshift(this.editBill.payments[0].to); 
+      cost = this.editBill.total;
+      title = this.editBill.title;
+    }
+
+    const userLength = users.length > 0 ? users.length : MINIMUM_PEOPLE_COUNT;
+    for (let i = 0; i < userLength; i += 1) {
       const userId = uuidv4();
       initialUsers.allIds.push(userId);
-      initialUsers.byId[userId] = { name: "" };
+      initialUsers.byId[userId] = { name: users.shift() || "" };
     }
+    const payee = this.editBill ? initialUsers.allIds[0] : null;
 
     this.state = {
       transaction: {
-        title: "",
+        title,
         users: initialUsers,
-        cost: 0,
-        payed: null
+        cost,
+        payed: payee
       },
 
       // Do not start validating until after the first submission attempt.
@@ -236,7 +266,7 @@ class Split extends Component {
     });
   };
 
-  split = async () => {
+  split = async (billAction) => {
     const transaction = this.getNormalizedTransaction();
     const { history } = this.props;
     const { users, cost } = transaction;
@@ -277,8 +307,11 @@ class Split extends Component {
       total: cost,
       outstanding_payments: paymentArray
     };
+    if (this.editBill) {
+      bill.bill_id = this.editBill.bill_id;
+    }
 
-    createBill(bill);
+    billAction(bill);
 
     history.push("/home/transactions");
   };
@@ -330,11 +363,11 @@ class Split extends Component {
     // or re-ordering.
     const flipKey = transaction.users.allIds.join(" ");
 
-    let submitButtonText = "Split This Bill";
+    let submitButtonText = this.editBill ? "Update This Bill" : "Split This Bill";
     if (submissionFailed) {
       submitButtonText = "We found some things to fix";
     } else if (submitAcknowledged) {
-      submitButtonText = "Splitting...";
+      submitButtonText = this.editBill ? "Updating..." : "Splitting...";
     }
 
     return (
@@ -395,7 +428,7 @@ class Split extends Component {
               variant="contained"
               fullWidth
               disabled={submitAcknowledged}
-              onClick={this.split}
+              onClick={() => this.editBill ? this.split(editBill) : this.split(createBill)}
             >
               {submitButtonText}
             </Button>
