@@ -18,7 +18,7 @@ class Home extends Component {
     this.setState(prevState => ({ isOpen: !prevState.isOpen }));
   };
 
-  changeDetails(setUsername){
+  logout(setUsername){
     fetch("/api/account/logout", {
       method: "POST",
       body: "",
@@ -27,11 +27,15 @@ class Home extends Component {
       }
     })
     .then(res => {
-      return res.json
+      return res.json()
     })
     .then(data => {
       const username = getCookie("username");
-      setUsername(username);
+      if (data.success === true) {
+        setUsername(null);
+      } else {
+        setUsername(username);
+      }
     })
     .catch(err => {
       console.log(err);
@@ -49,7 +53,7 @@ class Home extends Component {
                 <button 
                   type="button"
                   onClick={() => {
-                    this.changeDetails(setUsername);
+                    this.logout(setUsername);
                   }}
                 >
                   Sign Out
