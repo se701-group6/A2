@@ -84,7 +84,7 @@ class TransactionFilterButton extends Component {
         </Grid>
         <Modal
           open={open}
-          onClose={handleSubmit}
+          onClose={handleClose}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           styles={modalStyles}
