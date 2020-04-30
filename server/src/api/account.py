@@ -28,6 +28,13 @@ class AccountApi(object):
         cookie["username"]["path"] = "/"
         cookie["username"]["max-age"] = 3600
 
+    def clearUsernameCookie(self):
+        cookie = cherrypy.response.cookie
+        cookie["username"] = ""
+        cookie["username"]["path"] = "/"
+        cookie["username"]["max-age"] = 3600
+        cookie["username"]["expires"] = 0
+
     @cherrypy.expose
     def register(self):
         """Called when client requests to register, should create the user on the user table, 
@@ -90,11 +97,11 @@ class AccountApi(object):
         try:
             cherrypy.session["username"] = None
             cherrypy.session["password"] = None
-            self.setUsernameCookie(username = None)
-
+            self.clearUsernameCookie()
+            
             cherrypy.lib.sessions.expire()
 
-            isLoggedOut = True            
+            isLoggedOut = True
         except Exception as e:
             isLoggedOut = False
             print(e)
