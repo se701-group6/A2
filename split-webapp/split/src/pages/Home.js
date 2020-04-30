@@ -31,7 +31,7 @@ class Home extends Component {
     })
     .then(data => {
       const username = getCookie("username");
-      setUsername = username;
+      setUsername(username);
     })
     .catch(err => {
       console.log(err);

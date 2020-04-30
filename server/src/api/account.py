@@ -85,7 +85,7 @@ class AccountApi(object):
     @cherrypy.expose
     def logout(self):
         """Called when the user wants to signout of the app, should update the cherrypy.session
-            related variables to reflect this
+            related variables to reflect this and expire the session
         """
         try:
             cherrypy.session["username"] = None
