@@ -32,7 +32,7 @@ class AccountApi(object):
         cookie = cherrypy.response.cookie
         cookie["username"] = ""
         cookie["username"]["path"] = "/"
-        cookie["username"]["max-age"] = 3600
+        cookie["username"]["max-age"] = 0
         cookie["username"]["expires"] = 0
 
     @cherrypy.expose
