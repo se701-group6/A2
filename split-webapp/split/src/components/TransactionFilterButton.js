@@ -1,17 +1,19 @@
 import React, { Component } from "react";
-import SearchIcon from "@material-ui/icons/Search";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import { Grid } from "@material-ui/core";
 import Modal from "@material-ui/core/Modal";
 import PropTypes from "prop-types";
 import styles from "./TransactionFilterButton.module.css";
 
+/* eslint jsx-a11y/no-onchange: 0 */
 class TransactionFilterButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       sortField: "created_time",
-      sortOrder: "asc",
-      complete: "either",
+      sortOrder: "desc",
+      isPaid: "either",
       payer: "",
       payee: ""
     };
@@ -21,12 +23,12 @@ class TransactionFilterButton extends Component {
     const handleOpen = () => {
       this.setState({ open: true });
     };
+    const { sortField, sortOrder, isPaid, payer, payee } = this.state;
 
     const handleSubmit = () => {
-      const { sortField, sortOrder, complete, payer, payee } = this.state;
       const { changeFilters } = this.props;
-      changeFilters(sortField, sortOrder, complete, payer, payee);
-      this.handleClose();
+      changeFilters(sortField, sortOrder, isPaid, payer, payee);
+      this.setState({ open: false });
     };
 
     const handleClose = () => {
@@ -41,14 +43,23 @@ class TransactionFilterButton extends Component {
     const handleChangeSortOrder = event => {
       this.setState({ sortOrder: event.target.value });
     };
-    const handleChangeComplete = event => {
-      this.setState({ complete: event.target.value });
+    const handleChangeIsPaid = event => {
+      this.setState({ isPaid: event.target.value });
     };
     const handleChangePayer = event => {
       this.setState({ payer: event.target.value });
     };
     const handleChangePayee = event => {
       this.setState({ payee: event.target.value });
+    };
+    const handleClear = () => {
+      this.setState({
+        sortField: "created_time",
+        sortOrder: "desc",
+        isPaid: "either",
+        payer: "",
+        payee: ""
+      });
     };
 
     const modalStyles = {
@@ -60,13 +71,20 @@ class TransactionFilterButton extends Component {
 
     return (
       <div>
-        <SearchIcon
-          className={styles.SearchTransactions}
-          onClick={handleOpen}
-        />
+        <Grid container direction="row" alignItems="center">
+          <Grid item>
+            <FilterListIcon
+              className={styles.FilterTransactions}
+              onClick={handleOpen}
+            />
+          </Grid>
+          <Grid item>
+            <p className={styles.filterText}>Filter</p>
+          </Grid>
+        </Grid>
         <Modal
           open={open}
-          onClose={handleClose}
+          onClose={handleSubmit}
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           styles={modalStyles}
@@ -74,12 +92,20 @@ class TransactionFilterButton extends Component {
           <div className={styles.modalDialog}>
             <form className={styles.form}>
               <h1>Filter Bills</h1>
+              <button
+                type="button"
+                className={styles.resetButton}
+                onClick={handleClear}
+              >
+                Clear
+              </button>
               <label className={styles.label}>
                 Sort By:
                 <select
                   className={styles.select}
                   id="sortField"
-                  onBlur={handleChangeSortField}
+                  value={sortField}
+                  onChange={handleChangeSortField}
                 >
                   <option value="name">Bill Name</option>
                   <option value="amount">Total Amount</option>
@@ -93,11 +119,10 @@ class TransactionFilterButton extends Component {
                 <select
                   className={styles.select}
                   id="sortOrder"
-                  onBlur={handleChangeSortOrder}
+                  value={sortOrder}
+                  onChange={handleChangeSortOrder}
                 >
-                  <option selected value="asc">
-                    Ascending
-                  </option>
+                  <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>
                 </select>
               </label>
@@ -105,8 +130,9 @@ class TransactionFilterButton extends Component {
                 Paid :
                 <select
                   className={styles.select}
-                  id="complete"
-                  onBlur={handleChangeComplete}
+                  id="isPaid"
+                  value={isPaid}
+                  onChange={handleChangeIsPaid}
                 >
                   <option selected value="either">
                     Either
@@ -122,6 +148,7 @@ class TransactionFilterButton extends Component {
                   type="text"
                   name="Payer"
                   placeholder="Any if blank"
+                  value={payer}
                   onChange={handleChangePayer}
                 />
               </label>
@@ -132,6 +159,7 @@ class TransactionFilterButton extends Component {
                   type="text"
                   name="Payee"
                   placeholder="Any if blank"
+                  value={payee}
                   onChange={handleChangePayee}
                 />
               </label>
