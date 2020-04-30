@@ -17,7 +17,7 @@ const logout = (setUsername) => {
     }
   })
   .then(res => {
-    return res.json()
+    return res.json();
   })
   .then(data => {
     const username = getCookie("username");
