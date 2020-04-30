@@ -43,7 +43,7 @@ class PayExecApi(object):
             #checking if user is logged in successfully
             username = cherrypy.session["username"]
             password = cherrypy.session["password"]
-            isLoggedIn = self.database.get_password(username) == password
+            isLoggedIn = self.database.password_is_correct(username, password)
 
             if (isLoggedIn == True):
                 #make payment if user is Logged in

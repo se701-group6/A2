@@ -75,7 +75,7 @@ class AccountApi(object):
         password = JSON_object.get("password")
 
         try:
-            isLoggedIn = self.database.get_password(username) == password
+            isLoggedIn = self.database.password_is_correct(username, password)
             cherrypy.session["username"] = username
             cherrypy.session["password"] = password
 
